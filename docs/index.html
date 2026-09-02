@@ -72,6 +72,15 @@
   .seg input { position: absolute; opacity: 0; pointer-events: none; }
   .seg input:checked + label { background: var(--ink); color: #fff; }
   .hint { color: var(--muted); font-size: .95rem; margin: .25rem 0 0; }
+  .mode-row { margin-bottom: .75rem; }
+  .intake-heading { margin: 0 0 .75rem; }
+  .chip {
+    font: inherit; font-size: .85rem; color: var(--ink);
+    background: #fff; border: 1px solid #c9c5bc; border-radius: 999px;
+    padding: .15rem .6rem; margin: .15rem .15rem 0 0; cursor: pointer;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .share { font-size: .95rem; color: var(--muted); margin: .5rem 0 0; }
   /* Results */
   .headline { font-size: 1.2rem; margin: 0 0 .25rem; }
   .headline strong { color: var(--accent); }
@@ -124,12 +133,25 @@
 <body>
 <main>
   <h1>What does a week of meat cost the animals?</h1>
-  <p class="lead">Enter how much you eat in a typical week. The calculator turns that into animals used and, for chicken, hours of pain, using published U.S. production data and the Welfare Footprint Project's pain estimates. <a href="#method">See the formula</a>.</p>
+  <p class="lead">Enter what was on your plate, or what you eat in a typical week. The calculator turns it into animals used and, for chicken, hours of pain, using published U.S. production data and the Welfare Footprint Project's pain estimates. <a href="#method">See the formula</a>.</p>
 
-  <section class="card" aria-labelledby="your-week">
-    <h2 id="your-week" style="margin-top:0">Your typical week</h2>
+  <section class="card" aria-labelledby="intake-heading">
+    <div class="mode-row">
+      <span class="seg" role="radiogroup" aria-label="Mode">
+        <input type="radio" name="mode" id="mode-meal" value="meal" checked><label for="mode-meal">One meal</label>
+        <input type="radio" name="mode" id="mode-week" value="week"><label for="mode-week">A typical week</label>
+      </span>
+    </div>
+    <h2 id="intake-heading" class="intake-heading">What was in this meal?</h2>
     <div class="intake" id="intake"></div>
-    <p class="hint">A restaurant chicken breast is about 6 oz cooked. A deck-of-cards serving is about 3 oz. A quarter-pound burger is 3 oz after cooking.</p>
+    <p class="hint">Quick fills:
+      <button type="button" class="chip" data-fill="chicken" data-oz="6">chicken breast, 6 oz</button>
+      <button type="button" class="chip" data-fill="chicken" data-oz="3">3 oz, deck of cards</button>
+      <button type="button" class="chip" data-fill="chicken" data-oz="10">half a rotisserie chicken, 10 oz</button>
+      <button type="button" class="chip" data-fill="beef" data-oz="3">quarter-pounder, 3 oz</button>
+      <button type="button" class="chip" data-fill="pork" data-oz="1">3 strips of bacon, 1 oz</button>
+      <button type="button" class="chip" data-fill="turkey" data-oz="2">turkey sandwich, 2 oz</button>
+    </p>
     <div class="toolbar">
       <div>
         Units:
@@ -138,7 +160,7 @@
           <input type="radio" name="unit" id="unit-g" value="g"><label for="unit-g">grams</label>
         </span>
       </div>
-      <div>
+      <div id="period-control">
         Show results:
         <span class="seg" role="radiogroup" aria-label="Period">
           <input type="radio" name="period" id="period-week" value="week"><label for="period-week">per week</label>
@@ -212,7 +234,7 @@ hours of pain  = animals used × hours of pain per animal   (chicken only)</div>
   'use strict';
   var C = window.WelfareCalc;
   var MEAT_KEYS = Object.keys(C.MEATS);
-  var STORAGE_KEY = 'meat-welfare-intake-v1';
+  var STORAGE_KEY = 'meat-welfare-intake-v2';
 
   // ---------- formatting ----------
   function fmtNum(x, opts) {
@@ -220,8 +242,7 @@ hours of pain  = animals used × hours of pain per animal   (chicken only)</div>
     if (!isFinite(x)) return '–';
     var abs = Math.abs(x);
     var digits;
-    if (abs >= 1000) digits = 0;
-    else if (abs >= 100) digits = 0;
+    if (abs >= 100) digits = 0;
     else if (abs >= 10) digits = 1;
     else if (abs >= 1) digits = 2;
     else if (abs === 0) digits = 0;
@@ -239,8 +260,19 @@ hours of pain  = animals used × hours of pain per animal   (chicken only)</div>
   function fmtKg(kg) { return fmtNum(kg) + ' kg'; }
   function fmtPct(v) { return Math.round(v * 100) + '%'; }
   function plural(n, one, many) { return (Math.abs(n - 1) < 1e-9 ? one : many); }
+  // "1/7 of a chicken" for fractions, "2.3 chickens" otherwise
+  function fmtAnimals(n, meat) {
+    if (n > 0 && n < 0.67) {
+      var denom = Math.round(1 / n);
+      return '1/' + denom + ' of a ' + meat.animalSingular;
+    }
+    return fmtNum(n) + ' ' + plural(n, meat.animalSingular, meat.animalPlural);
+  }
 
-  // ---------- inputs ----------
+  // ---------- state ----------
+  // Separate amounts are remembered for "one meal" and "typical week".
+  var vals = { meal: {}, week: {} };
+
   var intakeEl = document.getElementById('intake');
   MEAT_KEYS.forEach(function (key) {
     var m = C.MEATS[key];
@@ -249,12 +281,22 @@ hours of pain  = animals used × hours of pain per animal   (chicken only)</div>
     row.innerHTML =
       '<label for="in-' + key + '">' + m.label + '</label>' +
       '<div class="amount"><input type="number" id="in-' + key + '" min="0" step="any" inputmode="decimal" placeholder="0" data-key="' + key + '">' +
-      '<span class="unit-label" data-unit-label>oz per week</span></div>';
+      '<span class="unit-label" data-unit-label></span></div>';
     intakeEl.appendChild(row);
   });
 
+  function currentMode() { return document.querySelector('input[name=mode]:checked').value; }
   function currentUnit() { return document.querySelector('input[name=unit]:checked').value; }
   function currentPeriod() { return document.querySelector('input[name=period]:checked').value; }
+
+  function captureInputs() {
+    var mode = currentMode();
+    MEAT_KEYS.forEach(function (k) { vals[mode][k] = document.getElementById('in-' + k).value; });
+  }
+  function restoreInputs() {
+    var mode = currentMode();
+    MEAT_KEYS.forEach(function (k) { document.getElementById('in-' + k).value = vals[mode][k] || ''; });
+  }
 
   function readIntake() {
     var unit = currentUnit();
@@ -268,18 +310,19 @@ hours of pain  = animals used × hours of pain per animal   (chicken only)</div>
 
   function saveState() {
     try {
-      var vals = {};
-      MEAT_KEYS.forEach(function (k) { vals[k] = document.getElementById('in-' + k).value; });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ unit: currentUnit(), period: currentPeriod(), vals: vals }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        mode: currentMode(), unit: currentUnit(), period: currentPeriod(), vals: vals
+      }));
     } catch (e) { /* storage unavailable; ignore */ }
   }
   function loadState() {
     try {
       var s = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
       if (!s) return;
+      if (s.mode) document.getElementById('mode-' + s.mode).checked = true;
       if (s.unit) document.getElementById('unit-' + s.unit).checked = true;
       if (s.period) document.getElementById('period-' + s.period).checked = true;
-      MEAT_KEYS.forEach(function (k) { if (s.vals && s.vals[k] != null) document.getElementById('in-' + k).value = s.vals[k]; });
+      if (s.vals) { vals.meal = s.vals.meal || {}; vals.week = s.vals.week || {}; }
     } catch (e) { /* ignore */ }
   }
 
@@ -288,32 +331,35 @@ hours of pain  = animals used × hours of pain per animal   (chicken only)</div>
   var cardsEl = document.getElementById('cards');
 
   function render() {
+    var mode = currentMode();
+    var isMeal = mode === 'meal';
     var grams = readIntake();
-    var week = C.compute(grams);
-    var period = currentPeriod();
+    var base = C.compute(grams);
+    var period = isMeal ? 'meal' : currentPeriod();
     var mult = period === 'year' ? 52 : 1;
-    var periodWord = period === 'year' ? 'year' : 'week';
+    var periodWord = period === 'year' ? 'year' : period === 'week' ? 'week' : 'meal';
 
-    var active = MEAT_KEYS.filter(function (k) { return week[k].animals > 0; });
-    document.querySelectorAll('[data-unit-label]').forEach(function (el) { el.textContent = currentUnit() + ' per week'; });
+    document.getElementById('intake-heading').textContent = isMeal ? 'What was in this meal?' : 'What do you eat in a typical week?';
+    document.getElementById('period-control').style.display = isMeal ? 'none' : '';
+    document.querySelectorAll('[data-unit-label]').forEach(function (el) {
+      el.textContent = currentUnit() + (isMeal ? ' in this meal' : ' per week');
+    });
 
+    var active = MEAT_KEYS.filter(function (k) { return base[k].animals > 0; });
     if (active.length === 0) {
-      headlineEl.innerHTML = '<span class="empty">Enter an amount above to see the impact.</span>';
+      headlineEl.innerHTML = '<span class="empty">' + (isMeal ? 'Enter what was on your plate, or tap a quick fill.' : 'Enter an amount above to see the impact.') + '</span>';
       cardsEl.innerHTML = '';
       return;
     }
 
     var parts = active.map(function (k) {
-      var n = week[k].animals * mult;
-      var m = C.MEATS[k];
-      return '<strong>' + fmtNum(n) + ' ' + plural(n, m.animalSingular, m.animalPlural) + '</strong>';
+      return '<strong>' + fmtAnimals(base[k].animals * mult, C.MEATS[k]) + '</strong>';
     });
-    var totalDays = active.reduce(function (s, k) { return s + week[k].animalDays * mult; }, 0);
-    headlineEl.innerHTML = 'Over a ' + periodWord + ', this uses about ' + joinList(parts) +
-      ', which is ' + fmtNum(totalDays) + ' days of animal life.';
+    var totalDays = active.reduce(function (s, k) { return s + base[k].animalDays * mult; }, 0);
+    var opener = isMeal ? 'This meal used about ' : 'Over a ' + periodWord + ', this uses about ';
+    headlineEl.innerHTML = opener + joinList(parts) + ', which is ' + fmtNum(totalDays) + ' days of animal life.';
 
-    cardsEl.innerHTML = active.map(function (k) { return meatCard(k, week[k], mult, periodWord); }).join('');
-    // animate bars after insert
+    cardsEl.innerHTML = active.map(function (k) { return meatCard(k, base[k], mult, periodWord, isMeal); }).join('');
     requestAnimationFrame(function () {
       cardsEl.querySelectorAll('.bar-fill[data-w]').forEach(function (el) { el.style.width = el.getAttribute('data-w') + '%'; });
     });
@@ -325,12 +371,13 @@ hours of pain  = animals used × hours of pain per animal   (chicken only)</div>
     return items.slice(0, -1).join(', ') + ', and ' + items[items.length - 1];
   }
 
-  function meatCard(key, r, mult, periodWord) {
+  function meatCard(key, r, mult, periodWord, isMeal) {
     var m = C.MEATS[key];
     var animals = r.animals * mult;
     var days = r.animalDays * mult;
+    var amountLabel = fmtNum(r.cookedKg * mult * 1000) + ' g cooked' + (isMeal ? ' in this meal' : ' per ' + periodWord);
     var html = '<section class="card meat-card">' +
-      '<h3>' + m.label + ' <small>' + fmtNum(r.cookedKg * mult) + ' kg cooked per ' + periodWord + '</small></h3>' +
+      '<h3>' + m.label + ' <small>' + amountLabel + '</small></h3>' +
       '<div class="stats">' +
         stat(fmtNum(animals), plural(animals, m.animalSingular, m.animalPlural) + ' used') +
         stat(fmtNum(days), 'days of ' + m.animalSingular + ' life') +
@@ -339,8 +386,11 @@ hours of pain  = animals used × hours of pain per animal   (chicken only)</div>
 
     if (r.pain) {
       var maxHours = Math.max.apply(null, r.pain.byCause.map(function (c) { return c.hours; })) * mult || 1;
-      html += '<h3 style="margin-bottom:.25rem">Hours of pain, per ' + periodWord + '</h3>' +
-        '<p class="hint" style="margin-top:0">' + fmtHours(r.pain.totalHours * mult) + ' in total, by intensity:</p>' +
+      var intro = isMeal
+        ? 'The chicken on this plate is ' + fmtAnimals(animals, m) + '. That share of one bird\'s life includes ' + fmtHours(r.pain.totalHours * mult) + ' of pain, by intensity:'
+        : fmtHours(r.pain.totalHours * mult) + ' in total, by intensity:';
+      html += '<h3 style="margin-bottom:.25rem">Hours of pain' + (isMeal ? ' behind this meal' : ', per ' + periodWord) + '</h3>' +
+        '<p class="hint" style="margin-top:0">' + intro + '</p>' +
         '<div class="stats">' +
         r.pain.byIntensity.map(function (p) {
           var def = C.PAIN_BY_INTENSITY.filter(function (x) { return x.key === p.key; })[0];
@@ -357,6 +407,11 @@ hours of pain  = animals used × hours of pain per animal   (chicken only)</div>
             '<div class="bar-note">' + def.blurb + '</div></div>';
         }).join('') +
         '</div>';
+      if (isMeal) {
+        var perBird = C.PAIN_BY_CAUSE.filter(function (x) { return x.key === 'lameness'; })[0].hours;
+        html += '<p class="share">Put another way: one whole conventional chicken spends about ' + fmtHours(perBird) +
+          ' in pain from lameness over its ' + m.lifeDays.value + '-day life. This plate carries ' + fmtAnimals(animals, m) + ', so it carries that share of the hours.</p>';
+      }
     } else {
       html += '<p class="nopain">No cumulative-pain estimate has been published for ' + m.animalPlural + ' yet, so only animals and days of life are shown. This is a gap in the research, not evidence of less suffering.</p>';
     }
@@ -418,7 +473,6 @@ hours of pain  = animals used × hours of pain per animal   (chicken only)</div>
     }).join('') + '<tr><td><strong>Total</strong></td><td class="num"><strong>' +
       fmtHours(C.PAIN_BY_CAUSE.reduce(function (s, c) { return s + c.hours; }, 0)) + '</strong></td><td></td></tr>';
 
-    // Make sure the definitional and comparison sources appear in the list too.
     cite('wfpIntensities'); cite('wfpBook'); cite('faunalytics');
 
     document.getElementById('sources').innerHTML = sourceOrder.map(function (key) {
@@ -438,13 +492,28 @@ hours of pain  = animals used × hours of pain per animal   (chicken only)</div>
 
   // ---------- wiring ----------
   loadState();
+  restoreInputs();
   renderMethod();
   render();
   document.querySelectorAll('#intake input').forEach(function (el) {
-    el.addEventListener('input', function () { render(); saveState(); });
+    el.addEventListener('input', function () { captureInputs(); render(); saveState(); });
+  });
+  document.querySelectorAll('input[name=mode]').forEach(function (el) {
+    el.addEventListener('change', function () { restoreInputs(); render(); saveState(); });
   });
   document.querySelectorAll('input[name=unit], input[name=period]').forEach(function (el) {
     el.addEventListener('change', function () { render(); saveState(); });
+  });
+  document.querySelectorAll('.chip').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var key = btn.getAttribute('data-fill');
+      var oz = parseFloat(btn.getAttribute('data-oz'));
+      var input = document.getElementById('in-' + key);
+      var amount = currentUnit() === 'oz' ? oz : Math.round(oz * C.OZ_TO_G);
+      input.value = amount;
+      captureInputs(); render(); saveState();
+      input.focus();
+    });
   });
 })();
 </script>
