@@ -1,757 +1,452 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chicken Welfare Impact Calculator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            background: #f8f7f4;
-            min-height: 100vh;
-            color: #2d2d2d;
-        }
-
-        /* Top Navigation Bar */
-        .top-nav {
-            background: #2d2d2d;
-            border-bottom: 3px solid #b8860b;
-            padding: 1.5rem 2.5rem;
-            display: flex;
-            gap: 2.5rem;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .top-nav a {
-            color: #e8e8e8;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-            font-size: 0.95rem;
-        }
-
-        .top-nav a:hover {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-        }
-
-        .top-nav .logo {
-            font-family: 'Crimson Pro', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #b8860b;
-            letter-spacing: 0.01em;
-        }
-
-        /* Dropdown container */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background: #2d2d2d;
-            min-width: 220px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            border-radius: 2px;
-            z-index: 1000;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            border: 2px solid #b8860b;
-            overflow: hidden;
-        }
-
-        .dropdown-content a {
-            color: #e8e8e8;
-            padding: 0.875rem 1.25rem;
-            text-decoration: none;
-            display: block;
-            border-radius: 0;
-            transition: all 0.15s ease;
-            font-size: 0.95rem;
-            border-bottom: 1px solid rgba(184, 134, 11, 0.2);
-        }
-
-        .dropdown-content a:last-child {
-            border-bottom: none;
-        }
-
-        .dropdown-content a:hover {
-            background: rgba(184, 134, 11, 0.2);
-            color: #fff;
-            padding-left: 1.5rem;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .dropdown > a {
-            color: #e8e8e8;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .dropdown > a:hover {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-
-        /* Home Page - Search */
-        .home-page {
-            display: block;
-        }
-
-        .search-section {
-            background: white;
-            padding: 4rem 3rem;
-            border-radius: 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            text-align: center;
-            border: 1px solid #e5e7eb;
-        }
-
-        .search-section h1 {
-            font-family: 'Crimson Pro', serif;
-            color: #2d2d2d;
-            margin-bottom: 0.75rem;
-            font-size: 3rem;
-            font-weight: 700;
-            letter-spacing: 0;
-        }
-
-        .search-section p {
-            color: #6b7280;
-            margin-bottom: 2.5rem;
-            font-size: 1.1rem;
-        }
-
-        #foodSearch {
-            width: 100%;
-            max-width: 600px;
-            padding: 1rem 1.25rem;
-            font-size: 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            background: white;
-            transition: all 0.2s ease;
-            color: #1a1a1a;
-        }
-
-        #foodSearch:hover {
-            border-color: #d1d5db;
-        }
-
-        #foodSearch:focus {
-            outline: none;
-            border-color: #b8860b;
-            box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.1);
-        }
-
-        .search-results {
-            width: 100%;
-            max-width: 600px;
-            margin: 1rem auto 0;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            max-height: 400px;
-            overflow-y: auto;
-            display: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .search-results.visible {
-            display: block;
-        }
-
-        .search-result-item {
-            padding: 1rem 1.25rem;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            border-bottom: 1px solid #f3f4f6;
-        }
-
-        .search-result-item:last-child {
-            border-bottom: none;
-        }
-
-        .search-result-item:hover {
-            background: #fef9f0;
-            padding-left: 1.5rem;
-        }
-
-        .search-result-item .food-name {
-            color: #2d2d2d;
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-        }
-
-        .search-result-item .food-meta {
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-
-        .no-results {
-            padding: 2rem;
-            text-align: center;
-            color: #6b7280;
-        }
-
-        /* Food Detail Page */
-        .food-page {
-            display: none;
-        }
-
-        .food-header {
-            background: white;
-            padding: 3rem 2.5rem;
-            border-radius: 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            margin-bottom: 2.5rem;
-            text-align: center;
-            border: 1px solid #e5e7eb;
-        }
-
-        .food-header h2 {
-            color: #4b5563;
-            font-size: 1.25rem;
-            margin-bottom: 0.75rem;
-            font-weight: 500;
-        }
-
-        .food-header h3 {
-            color: #1a1a1a;
-            font-size: 2.25rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        .food-stats {
-            color: #6b7280;
-            font-size: 1rem;
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            color: #dc2626;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-        }
-
-        .back-link:hover {
-            background: #fef2f2;
-        }
-
-        /* Harm Grid - 2x2 */
-        .harm-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .harm-card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            border: 1px solid #e5e7eb;
-            text-align: center;
-        }
-
-        .harm-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
-            border-color: #b8860b;
-        }
-
-        .harm-card h3 {
-            color: #dc2626;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            display: none;
-        }
-
-        .harm-value {
-            font-family: 'Crimson Pro', serif;
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: #8b0000;
-            margin-bottom: 0.75rem;
-            letter-spacing: 0;
-        }
-
-        .harm-text {
-            color: #4b5563;
-            font-size: 1.1rem;
-            line-height: 1.5;
-            font-weight: 500;
-        }
-
-        /* Tooltip */
-        .tooltip {
-            position: absolute;
-            background: #1a1a1a;
-            color: white;
-            padding: 1rem 1.25rem;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            max-width: 320px;
-            z-index: 1000;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-            line-height: 1.5;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-
-        .harm-card:hover .tooltip {
-            opacity: 1;
-        }
-
-        /* Info Pages */
-        .info-page {
-            display: none;
-        }
-
-        .info-content {
-            background: white;
-            padding: 3.5rem;
-            border-radius: 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            border: 1px solid #e5e7eb;
-        }
-
-        .info-content h2 {
-            color: #1a1a1a;
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        .info-content h3 {
-            color: #1a1a1a;
-            font-size: 1.5rem;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .info-content p {
-            color: #4b5563;
-            line-height: 1.8;
-            margin-bottom: 1.25rem;
-            font-size: 1.05rem;
-        }
-
-        .info-content ul {
-            margin-left: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .info-content li {
-            color: #4b5563;
-            line-height: 1.8;
-            margin-bottom: 0.75rem;
-            font-size: 1.05rem;
-        }
-
-        .info-content strong {
-            color: #1a1a1a;
-            font-weight: 600;
-        }
-
-        @media (max-width: 768px) {
-            .harm-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .top-nav {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meat Welfare Calculator</title>
+<meta name="description" content="Enter how much chicken, turkey, pork and beef you eat in a week and see how many animals that uses and, for chicken, how many hours of pain it involves.">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --card: #ffffff;
+    --ink: #1f1f1f;
+    --muted: #666;
+    --line: #e4e1da;
+    --accent: #b5482b;
+    --accent-soft: #f6e4dd;
+    --bar: #c9643f;
+    --ok: #2f6f4f;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    font-size: 17px;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  h1 { font-size: 2rem; line-height: 1.15; margin: 0 0 .5rem; letter-spacing: -0.01em; }
+  h2 { font-size: 1.25rem; margin: 2.5rem 0 .75rem; }
+  h3 { font-size: 1.05rem; margin: 1.25rem 0 .5rem; }
+  p.lead { color: var(--muted); margin: 0 0 1.5rem; font-size: 1.05rem; }
+  a { color: var(--accent); }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+  /* Inputs */
+  .intake { display: grid; gap: .6rem; }
+  .intake-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: .75rem;
+  }
+  .intake-row label { font-weight: 600; }
+  .intake-row .amount { display: flex; align-items: center; gap: .5rem; }
+  .intake-row input[type=number] {
+    width: 6.5rem;
+    font: inherit;
+    font-size: 1.1rem;
+    padding: .45rem .6rem;
+    border: 1px solid #c9c5bc;
+    border-radius: 8px;
+    text-align: right;
+    background: #fff;
+  }
+  .intake-row input[type=number]:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .unit-label { color: var(--muted); min-width: 6.5rem; }
+  .toolbar {
+    display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; align-items: center;
+    justify-content: space-between; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: .95rem;
+  }
+  .seg { display: inline-flex; border: 1px solid #c9c5bc; border-radius: 8px; overflow: hidden; }
+  .seg label { padding: .3rem .75rem; cursor: pointer; background: #fff; color: var(--ink); }
+  .seg input { position: absolute; opacity: 0; pointer-events: none; }
+  .seg input:checked + label { background: var(--ink); color: #fff; }
+  .hint { color: var(--muted); font-size: .95rem; margin: .25rem 0 0; }
+  /* Results */
+  .headline { font-size: 1.2rem; margin: 0 0 .25rem; }
+  .headline strong { color: var(--accent); }
+  .empty { color: var(--muted); }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .75rem; margin: .75rem 0 0; }
+  .stat { background: var(--bg); border-radius: 10px; padding: .75rem .9rem; }
+  .stat .num { font-size: 1.45rem; font-weight: 700; line-height: 1.1; }
+  .stat .lbl { color: var(--muted); font-size: .85rem; margin-top: .2rem; }
+  .stat.pain .num { color: var(--accent); }
+  .stat .def { font-size: .8rem; color: var(--muted); margin-top: .35rem; line-height: 1.3; }
+  .bars { margin: .5rem 0 0; display: grid; gap: .5rem; }
+  .bar-row { display: grid; grid-template-columns: 1fr; gap: .15rem; }
+  .bar-head { display: flex; justify-content: space-between; font-size: .95rem; }
+  .bar-head .val { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .bar-track { height: 10px; background: var(--accent-soft); border-radius: 5px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--bar); border-radius: 5px; width: 0; transition: width .25s ease; }
+  .bar-note { font-size: .8rem; color: var(--muted); }
+  .meat-card h3 { margin-top: 0; display: flex; justify-content: space-between; align-items: baseline; }
+  .meat-card h3 small { color: var(--muted); font-weight: 400; font-size: .9rem; }
+  .nopain { font-size: .9rem; color: var(--muted); margin: .75rem 0 0; }
+  /* Method */
+  .formula {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .9rem;
+    background: #f3f1ec;
+    border-radius: 8px;
+    padding: .9rem 1rem;
+    overflow-x: auto;
+    white-space: pre;
+    line-height: 1.6;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+  th, td { text-align: left; padding: .45rem .5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-weight: 600; color: var(--muted); font-size: .85rem; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .table-wrap { overflow-x: auto; }
+  .src { font-size: .8rem; color: var(--muted); }
+  ol.sources { padding-left: 1.25rem; font-size: .92rem; }
+  ol.sources li { margin: .3rem 0; }
+  ul.notes { padding-left: 1.25rem; }
+  ul.notes li { margin: .35rem 0; }
+  footer { margin-top: 3rem; color: var(--muted); font-size: .85rem; }
+  @media (max-width: 480px) {
+    body { font-size: 16px; }
+    h1 { font-size: 1.6rem; }
+    .intake-row { grid-template-columns: 1fr; gap: .25rem; }
+  }
+</style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <nav class="top-nav">
-        <a href="#" class="logo" onclick="showPage('home')">Chicken Welfare Impact</a>
-        <div class="dropdown">
-            <a href="#">Harms ▾</a>
-            <div class="dropdown-content">
-                <a href="#" onclick="showInfoPage('lameness')">Lameness</a>
-                <a href="#" onclick="showInfoPage('ascites')">Ascites</a>
-                <a href="#" onclick="showInfoPage('heat-stress')">Heat Stress</a>
-                <a href="#" onclick="showInfoPage('foraging')">Foraging Deprivation</a>
-            </div>
-        </div>
-    </nav>
+<main>
+  <h1>What does a week of meat cost the animals?</h1>
+  <p class="lead">Enter how much you eat in a typical week. The calculator turns that into animals used and, for chicken, hours of pain, using published U.S. production data and the Welfare Footprint Project's pain estimates. <a href="#method">See the formula</a>.</p>
 
-    <div class="container">
-        <!-- HOME PAGE - Search -->
-        <div id="home" class="home-page">
-            <div class="search-section">
-                <h1>Chicken Welfare Impact Calculator</h1>
-                <p>Search for a chicken product to see its welfare impact</p>
-                <input type="text" id="foodSearch" placeholder="Type to search (e.g., chicken nuggets, wings...)" autocomplete="off">
-                <div id="searchResults" class="search-results"></div>
-            </div>
-        </div>
-
-        <!-- FOOD DETAIL PAGE -->
-        <div id="food-detail" class="food-page">
-            <a href="#" class="back-link" onclick="showPage('home')">← Back to search</a>
-            
-            <div class="food-header">
-                <h2>A typical serving of</h2>
-                <h3 id="foodTitle">Food Name</h3>
-                <h2>contains <span id="foodChicken"></span>.</h2>
-                <h2 style="margin-top: 1.5rem; color: #555;">To produce this, chickens experienced:</h2>
-            </div>
-
-            <div class="harm-grid" id="harmGrid">
-                <!-- Harm cards will be inserted here -->
-            </div>
-        </div>
-
-        <!-- INFO PAGES -->
-        <div id="info-lameness" class="info-page">
-            <a href="#" class="back-link" onclick="showPage('home')">← Back to home</a>
-            <div class="info-content">
-                <h2>Lameness in Broiler Chickens</h2>
-                <p>Lameness is one of the most significant welfare issues affecting broiler chickens in commercial production. It refers to difficulty or inability to walk normally, causing pain and restricting the bird's ability to perform natural behaviors.</p>
-                
-                <h3>What Causes Lameness?</h3>
-                <p>The primary causes include:</p>
-                <ul>
-                    <li><strong>Rapid growth:</strong> Modern broilers have been bred to grow extremely quickly, reaching market weight in just 6-7 weeks. Their leg bones and joints cannot keep pace with their muscle development.</li>
-                    <li><strong>Body weight:</strong> The disproportionate breast muscle mass puts excessive strain on the legs and joints.</li>
-                    <li><strong>Skeletal disorders:</strong> Conditions like tibial dyschondroplasia, bacterial chondronecrosis, and valgus/varus deformities.</li>
-                    <li><strong>Poor litter quality:</strong> Wet, dirty bedding can lead to foot pad dermatitis and hock burns.</li>
-                </ul>
-
-                <h3>Impact on Chickens</h3>
-                <p>Lame birds experience:</p>
-                <ul>
-                    <li>Chronic pain and discomfort</li>
-                    <li>Difficulty reaching food and water</li>
-                    <li>Inability to escape aggression from other birds</li>
-                    <li>Reduced ability to rest comfortably</li>
-                    <li>Social isolation</li>
-                </ul>
-
-                <h3>Prevalence</h3>
-                <p>Studies suggest that 27-30% of broiler chickens experience some degree of lameness during their lives, with severity ranging from slight gait abnormalities to complete inability to walk.</p>
-            </div>
-        </div>
-
-        <div id="info-ascites" class="info-page">
-            <a href="#" class="back-link" onclick="showPage('home')">← Back to home</a>
-            <div class="info-content">
-                <h2>Ascites in Broiler Chickens</h2>
-                <p>Ascites, also known as "water belly," is a metabolic disorder characterized by the accumulation of fluid in the abdominal cavity. It's a consequence of the mismatch between rapid growth and the cardiovascular system's capacity.</p>
-                
-                <h3>What Causes Ascites?</h3>
-                <ul>
-                    <li><strong>Heart failure:</strong> The heart cannot pump enough blood to meet the oxygen demands of rapidly growing muscle tissue.</li>
-                    <li><strong>High altitude:</strong> Lower oxygen levels exacerbate the condition.</li>
-                    <li><strong>Poor ventilation:</strong> Inadequate air quality in barns increases oxygen stress.</li>
-                    <li><strong>Rapid growth rate:</strong> Selective breeding for fast growth has inadvertently increased susceptibility.</li>
-                </ul>
-
-                <h3>Impact on Chickens</h3>
-                <p>Birds with ascites experience:</p>
-                <ul>
-                    <li>Difficulty breathing</li>
-                    <li>Reduced mobility and activity</li>
-                    <li>Distended abdomen causing discomfort</li>
-                    <li>Often leads to sudden death</li>
-                </ul>
-
-                <h3>Prevalence</h3>
-                <p>Ascites affects approximately 4-5% of broiler chickens, though rates can be higher in certain conditions. It's one of the leading causes of mortality in the broiler industry.</p>
-            </div>
-        </div>
-
-        <div id="info-heat-stress" class="info-page">
-            <a href="#" class="back-link" onclick="showPage('home')">← Back to home</a>
-            <div class="info-content">
-                <h2>Heat Stress in Broiler Chickens</h2>
-                <p>Heat stress occurs when chickens cannot dissipate enough body heat to maintain a stable internal temperature. This is particularly problematic for fast-growing broilers, which generate substantial metabolic heat.</p>
-                
-                <h3>Why Are Broilers Vulnerable?</h3>
-                <ul>
-                    <li><strong>No sweat glands:</strong> Chickens cannot sweat and rely primarily on panting to cool down.</li>
-                    <li><strong>Rapid growth:</strong> High metabolic rate produces more body heat.</li>
-                    <li><strong>Heavy body weight:</strong> Large breast muscles generate significant heat during metabolism.</li>
-                    <li><strong>Dense stocking:</strong> Many birds in confined spaces increase ambient temperature.</li>
-                </ul>
-
-                <h3>Impact on Chickens</h3>
-                <p>Heat-stressed birds experience:</p>
-                <ul>
-                    <li>Panting and open-mouth breathing</li>
-                    <li>Reduced feed intake and growth</li>
-                    <li>Lethargy and depression</li>
-                    <li>Increased mortality, especially during heat waves</li>
-                    <li>Compromised immune function</li>
-                </ul>
-
-                <h3>Prevalence</h3>
-                <p>Approximately 10-15% of broiler chickens experience heat stress during their lives, with higher rates during summer months. Climate change is expected to increase this problem.</p>
-            </div>
-        </div>
-
-        <div id="info-foraging" class="info-page">
-            <a href="#" class="back-link" onclick="showPage('home')">← Back to home</a>
-            <div class="info-content">
-                <h2>Foraging and Exploration Deprivation</h2>
-                <p>Chickens are naturally curious, active birds with strong motivations to explore their environment, scratch, and forage for food. In intensive broiler production, these behavioral needs are severely restricted.</p>
-                
-                <h3>Natural Behaviors</h3>
-                <p>In natural or enriched environments, chickens spend much of their day:</p>
-                <ul>
-                    <li>Scratching and pecking at the ground</li>
-                    <li>Foraging for diverse food items</li>
-                    <li>Exploring their environment</li>
-                    <li>Dust bathing</li>
-                    <li>Perching at height</li>
-                    <li>Social interaction with varied group dynamics</li>
-                </ul>
-
-                <h3>Conditions in Industrial Production</h3>
-                <p>Broiler chickens in conventional systems face:</p>
-                <ul>
-                    <li><strong>Barren environments:</strong> Large, empty sheds with little to no enrichment</li>
-                    <li><strong>No substrate for foraging:</strong> Only litter (wood shavings or straw), no diverse materials to explore</li>
-                    <li><strong>Continuous food availability:</strong> Removes the motivation and opportunity to forage</li>
-                    <li><strong>High stocking density:</strong> Limited space for movement and exploration</li>
-                    <li><strong>Physical limitations:</strong> Lameness and rapid growth restrict mobility</li>
-                </ul>
-
-                <h3>Impact on Chickens</h3>
-                <p>The inability to express natural behaviors leads to:</p>
-                <ul>
-                    <li>Chronic frustration and boredom</li>
-                    <li>Abnormal behaviors like excessive sitting</li>
-                    <li>Reduced physical fitness</li>
-                    <li>Compromised psychological welfare</li>
-                </ul>
-
-                <h3>Scope of the Problem</h3>
-                <p>Essentially 100% of broiler chickens in conventional production experience severe restrictions on natural foraging and exploratory behaviors throughout their entire lives (approximately 42 days).</p>
-            </div>
-        </div>
+  <section class="card" aria-labelledby="your-week">
+    <h2 id="your-week" style="margin-top:0">Your typical week</h2>
+    <div class="intake" id="intake"></div>
+    <p class="hint">A restaurant chicken breast is about 6 oz cooked. A deck-of-cards serving is about 3 oz. A quarter-pound burger is 3 oz after cooking.</p>
+    <div class="toolbar">
+      <div>
+        Units:
+        <span class="seg" role="radiogroup" aria-label="Units">
+          <input type="radio" name="unit" id="unit-oz" value="oz" checked><label for="unit-oz">ounces</label>
+          <input type="radio" name="unit" id="unit-g" value="g"><label for="unit-g">grams</label>
+        </span>
+      </div>
+      <div>
+        Show results:
+        <span class="seg" role="radiogroup" aria-label="Period">
+          <input type="radio" name="period" id="period-week" value="week"><label for="period-week">per week</label>
+          <input type="radio" name="period" id="period-year" value="year" checked><label for="period-year">per year</label>
+        </span>
+      </div>
     </div>
+  </section>
 
-    <script>
-        let foodData = [];
-        let currentFood = null;
+  <section aria-live="polite" id="results">
+    <p class="headline" id="headline"></p>
+    <div id="cards"></div>
+  </section>
 
-        // Harm descriptions for tooltips
-        const harmDescriptions = {
-            'Lameness': 'Difficulty walking due to leg disorders, causing pain and limiting access to food and water',
-            'Ascites': 'Heart failure leading to fluid buildup in the abdomen, causing breathing difficulties and often death',
-            'Heat stress': 'Inability to regulate body temperature, leading to panting, distress, and potential mortality',
-            'Foraging and exploration deprivation': 'Inability to express natural behaviors like scratching, pecking, and exploring'
-        };
+  <section id="method">
+    <h2>How this is calculated</h2>
+    <p>Every number on this page comes from one chain of multiplications. There is no model and no fitting, just published averages strung together. Here it is in words:</p>
+    <div class="formula">animals used   = cooked meat eaten ÷ cooking yield ÷ raw edible meat per animal
+days of life   = animals used × days each animal lives
+hours of pain  = animals used × hours of pain per animal   (chicken only)</div>
 
-        const harmKeywords = {
-            'Lameness': ['Lameness', 'lameness', 'Lame'],
-            'Ascites': ['Ascites', 'ascites'],
-            'Heat stress': ['Heat', 'heat', 'thermal', 'Thermal'],
-            'Foraging and exploration deprivation': ['Foraging', 'foraging', 'Exploration', 'exploration', 'Dustbathing', 'dustbathing']
-        };
+    <h3>Worked example: chicken</h3>
+    <p>One conventional U.S. broiler, using 2024 production data, gives:</p>
+    <div class="formula" id="chicken-chain"></div>
+    <p>So for every kilogram of cooked chicken you eat, roughly <strong id="chicken-per-kg"></strong> of a chicken was raised and killed, and each one lived about <strong id="chicken-days"></strong> days. A 4 oz portion is about <strong id="chicken-per-serving"></strong> of a chicken.</p>
 
-        // Load JSON data
-        fetch('chicken_food_impacts.json')
-            .then(response => response.text())
-            .then(text => {
-                foodData = JSON.parse(text);
-                console.log('✓ Loaded', foodData.length, 'foods');
-                setupSearch();
-            })
-            .catch(error => {
-                console.error('Error loading data:', error);
-            });
+    <h3>Meat per animal, all four meats</h3>
+    <div class="table-wrap"><table id="meat-table">
+      <thead><tr>
+        <th>Meat</th><th class="num">Live weight</th><th class="num">Dressing</th><th class="num">Carcass</th><th class="num">Edible share</th><th class="num">Raw edible</th><th class="num">Cooked</th><th class="num">Days alive</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <p class="src">USDA reports pork and beef on a carcass-weight basis, so no dressing step is applied to them. Cooking yield of <span id="cooking-yield"></span> is applied to every meat. Footnote numbers link to the sources list at the bottom of the page.</p>
 
-        function setupSearch() {
-            const searchInput = document.getElementById('foodSearch');
-            const resultsDiv = document.getElementById('searchResults');
+    <h3>Hours of pain per chicken</h3>
+    <p>The <a href="https://welfarefootprint.org/broilers/">Welfare Footprint Project</a> estimated how long an average conventional broiler (fast-growing breed, ~42 days) spends in pain, by tracking each welfare problem from onset to death and weighting it by how many birds are affected. They split pain into four intensities:</p>
+    <div class="table-wrap"><table id="intensity-table">
+      <thead><tr><th>Intensity</th><th class="num">Per chicken</th><th class="num">90% range</th><th>What it means</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <p>The same estimate can be split by what causes the pain. These totals add all four intensities together:</p>
+    <div class="table-wrap"><table id="cause-table">
+      <thead><tr><th>Cause</th><th class="num">Hours per chicken</th><th>Why it happens</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <p class="src">The by-cause split comes from the project's per-harm dataset and sums to about 4% more than the by-intensity totals, because the two were published at different times with slightly different rounding. Treat the by-cause numbers as proportions rather than exact hours.</p>
 
-            searchInput.addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase().trim();
+    <h3>What this leaves out</h3>
+    <ul class="notes">
+      <li><strong>Only chicken has pain estimates.</strong> Nobody has yet published comparable cumulative-pain figures for pigs, cattle or turkeys, so those meats show animals and days of life only. That is not a claim that they suffer less.</li>
+      <li><strong>Pain during transport, stunning and slaughter</strong> is excluded. The Welfare Footprint Project has separate estimates for that stage.</li>
+      <li><strong>Breeder birds</strong> (the parents of meat chickens, who are kept chronically hungry) are excluded. Their pain would be spread across the roughly 150 chicks each hen produces.</li>
+      <li><strong>Diseases and injuries WFP did not model</strong> (contact dermatitis, infections, muscle disorders) are excluded, so the pain figures are conservative.</li>
+      <li><strong>Averages hide variation.</strong> Slower-growing or higher-welfare chicken cuts the Disabling pain by about two-thirds. Cull dairy cows and calves are folded into the beef average.</li>
+      <li><strong>Supply response.</strong> Eating one less chicken does not reduce production by exactly one chicken; economists estimate the long-run effect at roughly 0.3–0.8 animals per animal not eaten. This page reports the direct footprint without that adjustment.</li>
+    </ul>
 
-                if (searchTerm.length < 2) {
-                    resultsDiv.classList.remove('visible');
-                    resultsDiv.innerHTML = '';
-                    return;
-                }
+    <h3>Sources</h3>
+    <ol class="sources" id="sources"></ol>
+  </section>
 
-                // Filter foods
-                const matches = foodData.filter(food =>
-                    food.food_name.toLowerCase().includes(searchTerm)
-                ).sort((a, b) => a.food_name.localeCompare(b.food_name));
+  <footer>
+    Constants and formulas live in <code>calc.js</code> in this repository, with unit tests. If you find a better source for any number, please open an issue.
+  </footer>
+</main>
 
-                if (matches.length === 0) {
-                    resultsDiv.innerHTML = '<div class="no-results">No foods found matching "' + searchTerm + '"</div>';
-                    resultsDiv.classList.add('visible');
-                    return;
-                }
+<script src="calc.js"></script>
+<script>
+(function () {
+  'use strict';
+  var C = window.WelfareCalc;
+  var MEAT_KEYS = Object.keys(C.MEATS);
+  var STORAGE_KEY = 'meat-welfare-intake-v1';
 
-                // Display results
-                resultsDiv.innerHTML = matches.map(food => `
-                    <div class="search-result-item" data-food-code="${food.food_code}">
-                        <div class="food-name">${food.food_name}</div>
-                        <div class="food-meta">${food.chicken_grams}g chicken per serving</div>
-                    </div>
-                `).join('');
+  // ---------- formatting ----------
+  function fmtNum(x, opts) {
+    opts = opts || {};
+    if (!isFinite(x)) return '–';
+    var abs = Math.abs(x);
+    var digits;
+    if (abs >= 1000) digits = 0;
+    else if (abs >= 100) digits = 0;
+    else if (abs >= 10) digits = 1;
+    else if (abs >= 1) digits = 2;
+    else if (abs === 0) digits = 0;
+    else digits = Math.max(2, 1 - Math.floor(Math.log10(abs))); // 2 significant figures
+    if (opts.maxDigits != null) digits = Math.min(digits, opts.maxDigits);
+    return x.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: digits });
+  }
+  function fmtHours(h) {
+    if (h === 0) return '0 h';
+    if (h < 1 / 60) return fmtNum(h * 3600) + ' s';
+    if (h < 1) return fmtNum(h * 60) + ' min';
+    if (h >= 96) return fmtNum(h) + ' h (' + fmtNum(h / 24) + ' days)';
+    return fmtNum(h) + ' h';
+  }
+  function fmtKg(kg) { return fmtNum(kg) + ' kg'; }
+  function fmtPct(v) { return Math.round(v * 100) + '%'; }
+  function plural(n, one, many) { return (Math.abs(n - 1) < 1e-9 ? one : many); }
 
-                resultsDiv.classList.add('visible');
+  // ---------- inputs ----------
+  var intakeEl = document.getElementById('intake');
+  MEAT_KEYS.forEach(function (key) {
+    var m = C.MEATS[key];
+    var row = document.createElement('div');
+    row.className = 'intake-row';
+    row.innerHTML =
+      '<label for="in-' + key + '">' + m.label + '</label>' +
+      '<div class="amount"><input type="number" id="in-' + key + '" min="0" step="any" inputmode="decimal" placeholder="0" data-key="' + key + '">' +
+      '<span class="unit-label" data-unit-label>oz per week</span></div>';
+    intakeEl.appendChild(row);
+  });
 
-                // Add click handlers
-                resultsDiv.querySelectorAll('.search-result-item').forEach(item => {
-                    item.addEventListener('click', () => selectFood(item.dataset.foodCode));
-                });
-            });
+  function currentUnit() { return document.querySelector('input[name=unit]:checked').value; }
+  function currentPeriod() { return document.querySelector('input[name=period]:checked').value; }
 
-            // Hide results when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
-                    resultsDiv.classList.remove('visible');
-                }
-            });
-        }
+  function readIntake() {
+    var unit = currentUnit();
+    var grams = {};
+    MEAT_KEYS.forEach(function (key) {
+      var v = parseFloat(document.getElementById('in-' + key).value);
+      grams[key] = C.gramsFrom(v, unit);
+    });
+    return grams;
+  }
 
-        function selectFood(foodCode) {
-            console.log('selectFood called, foodCode:', foodCode);
-            console.log('foodData length:', foodData.length);
+  function saveState() {
+    try {
+      var vals = {};
+      MEAT_KEYS.forEach(function (k) { vals[k] = document.getElementById('in-' + k).value; });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ unit: currentUnit(), period: currentPeriod(), vals: vals }));
+    } catch (e) { /* storage unavailable; ignore */ }
+  }
+  function loadState() {
+    try {
+      var s = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      if (!s) return;
+      if (s.unit) document.getElementById('unit-' + s.unit).checked = true;
+      if (s.period) document.getElementById('period-' + s.period).checked = true;
+      MEAT_KEYS.forEach(function (k) { if (s.vals && s.vals[k] != null) document.getElementById('in-' + k).value = s.vals[k]; });
+    } catch (e) { /* ignore */ }
+  }
 
-            currentFood = foodData.find(f => f.food_code == foodCode);
-            console.log('Found food:', currentFood);
+  // ---------- results ----------
+  var headlineEl = document.getElementById('headline');
+  var cardsEl = document.getElementById('cards');
 
-            if (currentFood) {
-                // Clear search
-                document.getElementById('foodSearch').value = '';
-                document.getElementById('searchResults').classList.remove('visible');
+  function render() {
+    var grams = readIntake();
+    var week = C.compute(grams);
+    var period = currentPeriod();
+    var mult = period === 'year' ? 52 : 1;
+    var periodWord = period === 'year' ? 'year' : 'week';
 
-                showPage('food-detail');
-                setTimeout(() => displayFoodDetail(currentFood), 0);
-            } else {
-                console.error('No food found with code:', foodCode);
-            }
-        }
+    var active = MEAT_KEYS.filter(function (k) { return week[k].animals > 0; });
+    document.querySelectorAll('[data-unit-label]').forEach(function (el) { el.textContent = currentUnit() + ' per week'; });
 
-        function displayFoodDetail(food) {
-            // Set header info
-            document.getElementById('foodTitle').textContent = food.food_name;
-            document.getElementById('foodChicken').textContent =
-                `${food.chicken_grams}g of chicken`;
+    if (active.length === 0) {
+      headlineEl.innerHTML = '<span class="empty">Enter an amount above to see the impact.</span>';
+      cardsEl.innerHTML = '';
+      return;
+    }
 
-            // Group harms by category - sum up multiple entries for same harm type
-            const harmTotals = {
-                'Lameness': 0,
-                'Ascites': 0,
-                'Heat stress': 0,
-                'Foraging and exploration deprivation': 0
-            };
+    var parts = active.map(function (k) {
+      var n = week[k].animals * mult;
+      var m = C.MEATS[k];
+      return '<strong>' + fmtNum(n) + ' ' + plural(n, m.animalSingular, m.animalPlural) + '</strong>';
+    });
+    var totalDays = active.reduce(function (s, k) { return s + week[k].animalDays * mult; }, 0);
+    headlineEl.innerHTML = 'Over a ' + periodWord + ', this uses about ' + joinList(parts) +
+      ', which is ' + fmtNum(totalDays) + ' days of animal life.';
 
-            food.welfare_harms.forEach(harm => {
-                for (const [harmType, keywords] of Object.entries(harmKeywords)) {
-                    if (keywords.some(keyword => harm.condition.includes(keyword))) {
-                        harmTotals[harmType] += parseFloat(harm.hours_per_serving);
-                        break; // Only count each harm once
-                    }
-                }
-            });
+    cardsEl.innerHTML = active.map(function (k) { return meatCard(k, week[k], mult, periodWord); }).join('');
+    // animate bars after insert
+    requestAnimationFrame(function () {
+      cardsEl.querySelectorAll('.bar-fill[data-w]').forEach(function (el) { el.style.width = el.getAttribute('data-w') + '%'; });
+    });
+  }
 
-            // Create harm cards
-            const harmGrid = document.getElementById('harmGrid');
-            harmGrid.innerHTML = '';
+  function joinList(items) {
+    if (items.length === 1) return items[0];
+    if (items.length === 2) return items[0] + ' and ' + items[1];
+    return items.slice(0, -1).join(', ') + ', and ' + items[items.length - 1];
+  }
 
-            // Create cards for all 4 harms
-            Object.entries(harmTotals).forEach(([harmName, hours]) => {
-                const card = document.createElement('div');
-                card.className = 'harm-card';
-                card.onclick = () => {
-                    const harmType = getHarmType(harmName);
-                    showInfoPage(harmType);
-                };
+  function meatCard(key, r, mult, periodWord) {
+    var m = C.MEATS[key];
+    var animals = r.animals * mult;
+    var days = r.animalDays * mult;
+    var html = '<section class="card meat-card">' +
+      '<h3>' + m.label + ' <small>' + fmtNum(r.cookedKg * mult) + ' kg cooked per ' + periodWord + '</small></h3>' +
+      '<div class="stats">' +
+        stat(fmtNum(animals), plural(animals, m.animalSingular, m.animalPlural) + ' used') +
+        stat(fmtNum(days), 'days of ' + m.animalSingular + ' life') +
+        stat(fmtNum(m.lifeDays.value), 'days each ' + m.animalSingular + ' lives') +
+      '</div>';
 
-                const displayHours = hours > 0 ? hours.toFixed(2) : '0.00';
+    if (r.pain) {
+      var maxHours = Math.max.apply(null, r.pain.byCause.map(function (c) { return c.hours; })) * mult || 1;
+      html += '<h3 style="margin-bottom:.25rem">Hours of pain, per ' + periodWord + '</h3>' +
+        '<p class="hint" style="margin-top:0">' + fmtHours(r.pain.totalHours * mult) + ' in total, by intensity:</p>' +
+        '<div class="stats">' +
+        r.pain.byIntensity.map(function (p) {
+          var def = C.PAIN_BY_INTENSITY.filter(function (x) { return x.key === p.key; })[0];
+          return '<div class="stat pain"><div class="num">' + fmtHours(p.hours * mult) + '</div>' +
+            '<div class="lbl">' + p.label + '</div><div class="def">' + def.blurb + '</div></div>';
+        }).join('') +
+        '</div>' +
+        '<h3 style="margin-bottom:.25rem">By cause</h3><div class="bars">' +
+        r.pain.byCause.map(function (c) {
+          var def = C.PAIN_BY_CAUSE.filter(function (x) { return x.key === c.key; })[0];
+          var w = Math.max(0, Math.min(100, (c.hours * mult) / maxHours * 100));
+          return '<div class="bar-row"><div class="bar-head"><span>' + c.label + '</span><span class="val">' + fmtHours(c.hours * mult) + '</span></div>' +
+            '<div class="bar-track"><div class="bar-fill" data-w="' + w.toFixed(1) + '"></div></div>' +
+            '<div class="bar-note">' + def.blurb + '</div></div>';
+        }).join('') +
+        '</div>';
+    } else {
+      html += '<p class="nopain">No cumulative-pain estimate has been published for ' + m.animalPlural + ' yet, so only animals and days of life are shown. This is a gap in the research, not evidence of less suffering.</p>';
+    }
+    return html + '</section>';
+  }
 
-                card.innerHTML = `
-                    <h3>${harmName}</h3>
-                    <div class="harm-value">~${displayHours}</div>
-                    <div class="harm-text">hours of ${harmName.toLowerCase()}</div>
-                    <div class="tooltip">${harmDescriptions[harmName]}</div>
-                `;
+  function stat(num, lbl) {
+    return '<div class="stat"><div class="num">' + num + '</div><div class="lbl">' + lbl + '</div></div>';
+  }
 
-                harmGrid.appendChild(card);
-            });
-        }
+  // ---------- method section (rendered from the same constants) ----------
+  var sourceOrder = [];
+  function cite(key) {
+    var i = sourceOrder.indexOf(key);
+    if (i < 0) { sourceOrder.push(key); i = sourceOrder.length - 1; }
+    return '<sup><a href="#src-' + key + '">' + (i + 1) + '</a></sup>';
+  }
 
-        function getHarmType(harmName) {
-            if (harmName.includes('Lameness')) return 'lameness';
-            if (harmName.includes('Ascites')) return 'ascites';
-            if (harmName.includes('Heat')) return 'heat-stress';
-            return 'foraging';
-        }
+  function renderMethod() {
+    var ch = C.MEATS.chicken;
+    var d = C.derive(ch);
+    var p = ch.production;
+    var chain =
+      'live weight     = ' + fmtNum(p.liveLb / 1e9) + ' billion lb ÷ ' + fmtNum(p.head / 1e9) + ' billion birds  = ' + fmtNum(d.perHeadLb) + ' lb = ' + fmtKg(d.liveKg) + '\n' +
+      'carcass         = ' + fmtKg(d.liveKg) + ' × ' + ch.dressing.value + ' dressing                 = ' + fmtKg(d.carcassKg) + '\n' +
+      'raw edible meat = ' + fmtKg(d.carcassKg) + ' × ' + ch.edibleOfCarcass.value + ' edible share             = ' + fmtKg(d.rawEdibleKg) + '\n' +
+      'cooked meat     = ' + fmtKg(d.rawEdibleKg) + ' × ' + C.COOKING_YIELD.value + ' cooking yield            = ' + fmtKg(d.cookedKg) + '\n' +
+      '\n' +
+      'chickens per kg cooked = 1 ÷ ' + fmtNum(d.cookedKg) + '                         = ' + fmtNum(d.animalsPerCookedKg) + '\n' +
+      'days of life per kg    = ' + fmtNum(d.animalsPerCookedKg) + ' × ' + ch.lifeDays.value + ' days                  = ' + fmtNum(d.animalsPerCookedKg * ch.lifeDays.value) + '\n' +
+      'disabling pain per kg  = ' + fmtNum(d.animalsPerCookedKg) + ' × ' + C.PAIN_BY_INTENSITY[2].hours + ' h                  = ' + fmtNum(d.animalsPerCookedKg * C.PAIN_BY_INTENSITY[2].hours) + ' h';
+    document.getElementById('chicken-chain').textContent = chain;
+    document.getElementById('chicken-per-kg').textContent = fmtNum(d.animalsPerCookedKg);
+    document.getElementById('chicken-days').textContent = ch.lifeDays.value;
+    document.getElementById('chicken-per-serving').textContent = '1/' + Math.round(1 / (d.animalsPerCookedKg * C.gramsFrom(4, 'oz') / 1000));
+    document.getElementById('cooking-yield').innerHTML = C.COOKING_YIELD.value + cite(C.COOKING_YIELD.source);
 
-        function showPage(pageId) {
-            // Hide all pages
-            document.querySelectorAll('.home-page, .food-page, .info-page').forEach(page => {
-                page.style.display = 'none';
-            });
+    var tbody = document.querySelector('#meat-table tbody');
+    tbody.innerHTML = MEAT_KEYS.map(function (k) {
+      var m = C.MEATS[k]; var x = C.derive(m);
+      return '<tr><td>' + m.label + '</td>' +
+        '<td class="num">' + (x.liveKg ? fmtKg(x.liveKg) + cite(m.production.source) : '<span class="src">carcass basis</span>' + cite(m.production.source)) + '</td>' +
+        '<td class="num">' + (m.dressing ? fmtPct(m.dressing.value) + cite(m.dressing.source) : '–') + '</td>' +
+        '<td class="num">' + fmtKg(x.carcassKg) + '</td>' +
+        '<td class="num">' + fmtPct(m.edibleOfCarcass.value) + cite(m.edibleOfCarcass.source) + '</td>' +
+        '<td class="num">' + fmtKg(x.rawEdibleKg) + '</td>' +
+        '<td class="num">' + fmtKg(x.cookedKg) + '</td>' +
+        '<td class="num">' + m.lifeDays.value + cite(m.lifeDays.source) + '</td></tr>';
+    }).join('');
 
-            // Show selected page
-            document.getElementById(pageId).style.display = 'block';
-            
-            // Scroll to top
-            window.scrollTo(0, 0);
-        }
+    document.querySelector('#intensity-table tbody').innerHTML = C.PAIN_BY_INTENSITY.map(function (p) {
+      return '<tr><td>' + p.label + cite('wfpBroilers') + '</td><td class="num">' + fmtHours(p.hours) + '</td>' +
+        '<td class="num">' + fmtHours(p.low) + ' – ' + fmtHours(p.high) + '</td><td>' + p.blurb + '</td></tr>';
+    }).join('') + '<tr><td><strong>Total</strong></td><td class="num"><strong>' +
+      fmtHours(C.PAIN_BY_INTENSITY.reduce(function (s, p) { return s + p.hours; }, 0)) + '</strong></td><td></td><td class="src">Out of a ' + ch.lifeDays.value + '-day life, which is ' + fmtNum(ch.lifeDays.value * 24) + ' hours.</td></tr>';
 
-        function showInfoPage(harmType) {
-            showPage('info-' + harmType);
-        }
-    </script>
+    document.querySelector('#cause-table tbody').innerHTML = C.PAIN_BY_CAUSE.map(function (c) {
+      return '<tr><td>' + c.label + cite('painTrack') + '</td><td class="num">' + fmtHours(c.hours) + '</td><td>' + c.blurb + '</td></tr>';
+    }).join('') + '<tr><td><strong>Total</strong></td><td class="num"><strong>' +
+      fmtHours(C.PAIN_BY_CAUSE.reduce(function (s, c) { return s + c.hours; }, 0)) + '</strong></td><td></td></tr>';
+
+    // Make sure the definitional and comparison sources appear in the list too.
+    cite('wfpIntensities'); cite('wfpBook'); cite('faunalytics');
+
+    document.getElementById('sources').innerHTML = sourceOrder.map(function (key) {
+      var s = C.SOURCES[key];
+      var notes = [];
+      if (C.COOKING_YIELD.source === key) notes.push(C.COOKING_YIELD.note);
+      MEAT_KEYS.forEach(function (k) {
+        var m = C.MEATS[k];
+        ['production', 'dressing', 'edibleOfCarcass', 'lifeDays'].forEach(function (f) {
+          if (m[f] && m[f].source === key && m[f].note) notes.push(m.label + ': ' + m[f].note);
+        });
+      });
+      return '<li id="src-' + key + '"><a href="' + s.url + '" rel="noopener">' + s.title + '</a>' +
+        (notes.length ? '<div class="src">' + notes.join(' ') + '</div>' : '') + '</li>';
+    }).join('');
+  }
+
+  // ---------- wiring ----------
+  loadState();
+  renderMethod();
+  render();
+  document.querySelectorAll('#intake input').forEach(function (el) {
+    el.addEventListener('input', function () { render(); saveState(); });
+  });
+  document.querySelectorAll('input[name=unit], input[name=period]').forEach(function (el) {
+    el.addEventListener('change', function () { render(); saveState(); });
+  });
+})();
+</script>
 </body>
 </html>
