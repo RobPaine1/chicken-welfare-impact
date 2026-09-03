@@ -25,13 +25,17 @@ pain estimates for a conventional fast-growing broiler, both by intensity
 (Annoying, Hurtful, Disabling, Excruciating) and by cause (lameness, behavioural
 deprivation, heat stress, ascites, sudden death).
 
-The full worked example, constant table, limitations and source list are rendered
-on the page itself from the same constants the calculator uses, so they cannot
-drift apart.
+The explanation page renders the worked example, constant table, limitations and
+source list from the same constants the calculator uses, so they cannot drift
+apart.
 
 ## Files
 
-- `docs/index.html` – the page (markup, styles, UI code).
+- `docs/index.html` + `docs/app.js` – the calculator page.
+- `docs/method.html` + `docs/method.js` – the explanation page (formula, worked
+  example, constants table, limitations, sources), rendered from the same
+  constants the calculator uses.
+- `docs/style.css` – shared styles.
 - `docs/calc.js` – every constant, its source, and the pure formulas. Start here
   if you want to change or audit a number.
 - `tests/calc.test.js` – unit tests for the formulas and sanity checks against

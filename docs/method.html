@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How it's calculated · Meat Welfare Calculator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="index.html">Meat Welfare Calculator</a>
+  <nav><a href="index.html">Calculator</a><a href="method.html" class="active" aria-current="page">How it's calculated</a></nav>
+</div></header>
+
+<main>
+  <h1>How it's calculated</h1>
+  <p class="lead">Every number on the calculator comes from one chain of multiplications. There is no model and no fitting, just published averages strung together.</p>
+
+  <div class="formula">animals used   = cooked meat eaten ÷ cooking yield ÷ raw edible meat per animal
+days of life   = animals used × days each animal lives
+hours of pain  = animals used × hours of pain per animal   (chicken only)</div>
+
+  <h2>Worked example: chicken</h2>
+  <p>One conventional U.S. broiler, using 2024 production data:</p>
+  <div class="formula" id="chicken-chain"></div>
+  <p>So every kilogram of cooked chicken you eat used about <strong id="chicken-per-kg"></strong> of a chicken, and each one lived about <strong id="chicken-days"></strong> days. A 4 oz portion is <strong id="chicken-per-serving"></strong> of a chicken.</p>
+
+  <h2>Meat per animal</h2>
+  <div class="table-wrap"><table id="meat-table">
+    <thead><tr>
+      <th>Meat</th><th class="num">Live weight</th><th class="num">Dressing</th><th class="num">Carcass</th><th class="num">Edible share</th><th class="num">Raw edible</th><th class="num">Cooked</th><th class="num">Days alive</th>
+    </tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <p class="src">USDA reports pork and beef on a carcass-weight basis, so no dressing step is applied to them. A cooking yield of <span id="cooking-yield"></span> is applied to every meat. Footnote numbers link to the sources at the bottom.</p>
+
+  <h2 id="pain">Hours of pain per chicken</h2>
+  <p>The <a href="https://welfarefootprint.org/broilers/">Welfare Footprint Project</a> estimated how long an average conventional broiler (fast-growing breed, about 42 days old at slaughter) spends in pain, by tracking each welfare problem from onset to death and weighting it by how many birds are affected. Pain is split into four intensities:</p>
+  <div class="table-wrap"><table id="intensity-table">
+    <thead><tr><th>Intensity</th><th class="num">Per chicken</th><th class="num">90% range</th><th>What it means</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+
+  <h2 id="causes">What causes the pain</h2>
+  <p>The same estimate split by cause. These totals add all four intensities together.</p>
+  <div class="table-wrap"><table id="cause-table">
+    <thead><tr><th>Cause</th><th class="num">Hours per chicken</th><th>Why it happens</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <p class="src">The by-cause split comes from the project's per-harm dataset and sums to about 4% more than the by-intensity totals, because the two were published at different times with slightly different rounding. Treat the by-cause numbers as proportions rather than exact hours.</p>
+
+  <h2>What this leaves out</h2>
+  <ul class="notes">
+    <li><strong>Only chicken has pain estimates.</strong> Nobody has yet published comparable cumulative-pain figures for pigs, cattle or turkeys, so those meats show animals and days of life only. That is not a claim that they suffer less.</li>
+    <li><strong>Transport, stunning and slaughter</strong> are excluded. The Welfare Footprint Project has separate estimates for that stage.</li>
+    <li><strong>Breeder birds</strong> (the parents of meat chickens, who are kept chronically hungry) are excluded. Their pain would be spread across the roughly 150 chicks each hen produces.</li>
+    <li><strong>Diseases and injuries WFP did not model</strong> (contact dermatitis, infections, muscle disorders) are excluded, so the pain figures are conservative.</li>
+    <li><strong>Averages hide variation.</strong> Slower-growing or higher-welfare chicken cuts the Disabling pain by about two-thirds. Cull dairy cows and calves are folded into the beef average.</li>
+    <li><strong>Supply response.</strong> Eating one less chicken does not reduce production by exactly one chicken; economists put the long-run effect at roughly 0.3–0.8 animals per animal not eaten. The calculator reports the direct footprint without that adjustment.</li>
+  </ul>
+
+  <h2>Sources</h2>
+  <ol class="sources" id="sources"></ol>
+
+  <footer>Constants and formulas live in <code>calc.js</code> in the repository, with unit tests. If you find a better source for any number, please open an issue.</footer>
+</main>
+
+<script src="calc.js"></script>
+<script src="method.js"></script>
+</body>
+</html>
