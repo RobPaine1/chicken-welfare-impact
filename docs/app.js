@@ -23,6 +23,7 @@
     if (h >= 96) return fmtNum(h) + ' h (' + fmtNum(h / 24) + ' days)';
     return fmtNum(h) + ' h';
   }
+  function fmtWeight(kg) { return kg >= 1 ? fmtNum(kg) + ' kg' : fmtNum(kg * 1000) + ' g'; }
   function plural(n, one, many) { return Math.abs(n - 1) < 1e-9 ? one : many; }
   function fmtAnimals(n, meat) {
     if (n > 0 && n < 0.67) return '1/' + Math.round(1 / n) + ' of a ' + meat.animalSingular;
@@ -98,7 +99,7 @@
     var m = C.MEATS[key];
     var animals = r.animals * mult;
     var html = '<section class="card meat-card"><h3>' + m.label +
-      ' <small>' + fmtNum(r.cookedKg * mult * 1000) + ' g cooked' + (isMeal ? '' : ' per ' + period) + '</small></h3>' +
+      ' <small>' + fmtWeight(r.cookedKg * mult) + ' cooked' + (isMeal ? '' : ' per ' + period) + '</small></h3>' +
       '<div class="stats">' +
       '<div class="stat"><div class="num">' + fmtAnimals(animals, m) + '</div><div class="lbl">' + (isMeal ? 'on this plate' : 'used') + '</div></div>' +
       '<div class="stat"><div class="num">' + fmtNum(r.animalDays * mult) + '</div><div class="lbl">days of ' + m.animalSingular + ' life (each lives ' + m.lifeDays.value + ')</div></div>' +
