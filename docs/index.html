@@ -33,12 +33,24 @@
         <input type="radio" name="period" id="period-year" value="year" checked><label for="period-year">per year</label>
       </span>
     </div>
+    <div class="subcontrols" id="meal-input-control">
+      <span class="seg" role="radiogroup" aria-label="How to enter the meal">
+        <input type="radio" name="mealInput" id="mealInput-preset" value="preset" checked><label for="mealInput-preset">Pick a meal</label>
+        <input type="radio" name="mealInput" id="mealInput-weight" value="weight"><label for="mealInput-weight">Enter weight</label>
+      </span>
+    </div>
+    <div id="preset-panel">
+      <select id="preset" aria-label="Meal"></select>
+      <p class="muted" id="preset-note"></p>
+    </div>
+    <div id="weight-panel">
     <div class="intake" id="intake"></div>
     <p class="chips">Chicken portions:
       <button type="button" class="chip" data-fill="chicken" data-oz="3">3 oz, deck of cards</button>
       <button type="button" class="chip" data-fill="chicken" data-oz="6">6 oz breast</button>
       <button type="button" class="chip" data-fill="chicken" data-oz="10">10 oz, half a rotisserie</button>
     </p>
+    </div>
   </section>
 
   <section aria-live="polite">

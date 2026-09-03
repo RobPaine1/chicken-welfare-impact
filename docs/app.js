@@ -3,7 +3,47 @@
   'use strict';
   var C = window.WelfareCalc;
   var MEAT_KEYS = Object.keys(C.MEATS);
-  var STORAGE_KEY = 'meat-welfare-intake-v2';
+  var STORAGE_KEY = 'meat-welfare-intake-v3';
+
+  // Preset meals: cooked meat in grams. Portions are typical U.S. servings
+  // (FNDDS / NHANES medians where available, otherwise common menu sizes).
+  var PRESETS = [
+    { group: 'Chicken', items: [
+      { id: 'chk-sandwich', name: 'Grilled chicken sandwich', grams: { chicken: 85 } },
+      { id: 'chk-fried-sandwich', name: 'Fried chicken sandwich', grams: { chicken: 100 } },
+      { id: 'chk-nuggets', name: 'Chicken nuggets, 6 pieces', grams: { chicken: 95 } },
+      { id: 'chk-tenders', name: 'Chicken tenders, 3 pieces', grams: { chicken: 100 } },
+      { id: 'chk-wings', name: 'Chicken wings, 6 wings', grams: { chicken: 90 } },
+      { id: 'chk-breast', name: 'Chicken breast dinner', grams: { chicken: 170 } },
+      { id: 'chk-thigh', name: 'Two chicken thighs', grams: { chicken: 120 } },
+      { id: 'chk-rotisserie', name: 'Quarter rotisserie chicken', grams: { chicken: 140 } },
+      { id: 'chk-bowl', name: 'Chicken burrito or rice bowl', grams: { chicken: 110 } },
+      { id: 'chk-salad', name: 'Chicken caesar salad', grams: { chicken: 85 } },
+      { id: 'chk-soup', name: 'Bowl of chicken noodle soup', grams: { chicken: 25 } }
+    ] },
+    { group: 'Turkey', items: [
+      { id: 'tky-sandwich', name: 'Turkey deli sandwich', grams: { turkey: 56 } },
+      { id: 'tky-dinner', name: 'Roast turkey dinner', grams: { turkey: 170 } },
+      { id: 'tky-burger', name: 'Turkey burger', grams: { turkey: 110 } }
+    ] },
+    { group: 'Pork', items: [
+      { id: 'prk-bacon', name: 'Three strips of bacon', grams: { pork: 24 } },
+      { id: 'prk-sausage', name: 'Two breakfast sausage links', grams: { pork: 50 } },
+      { id: 'prk-ham', name: 'Ham sandwich', grams: { pork: 56 } },
+      { id: 'prk-chop', name: 'Pork chop', grams: { pork: 140 } },
+      { id: 'prk-pulled', name: 'Pulled pork sandwich', grams: { pork: 110 } },
+      { id: 'prk-pizza', name: 'Two slices of pepperoni pizza', grams: { pork: 20 } }
+    ] },
+    { group: 'Beef', items: [
+      { id: 'bf-burger', name: 'Quarter-pound burger', grams: { beef: 85 } },
+      { id: 'bf-bacon-burger', name: 'Bacon cheeseburger', grams: { beef: 85, pork: 16 } },
+      { id: 'bf-steak', name: '8 oz steak', grams: { beef: 170 } },
+      { id: 'bf-tacos', name: 'Two beef tacos', grams: { beef: 85 } },
+      { id: 'bf-bolognese', name: 'Spaghetti bolognese', grams: { beef: 85 } }
+    ] }
+  ];
+  var PRESET_BY_ID = {};
+  PRESETS.forEach(function (g) { g.items.forEach(function (it) { PRESET_BY_ID[it.id] = it; }); });
 
   // ---------- formatting ----------
   function fmtNum(x) {
@@ -47,22 +87,35 @@
     intakeEl.appendChild(row);
   });
   function $(id) { return document.getElementById(id); }
+  var presetEl = $('preset');
+  presetEl.innerHTML = '<option value="">Choose a meal…</option>' + PRESETS.map(function (g) {
+    return '<optgroup label="' + g.group + '">' + g.items.map(function (it) {
+      return '<option value="' + it.id + '">' + it.name + '</option>';
+    }).join('') + '</optgroup>';
+  }).join('');
+  function usingPreset() { return checked('mode') === 'meal' && checked('mealInput') === 'preset'; }
   function checked(name) { return document.querySelector('input[name=' + name + ']:checked').value; }
   function captureInputs() { MEAT_KEYS.forEach(function (k) { vals[checked('mode')][k] = $('in-' + k).value; }); }
   function restoreInputs() { MEAT_KEYS.forEach(function (k) { $('in-' + k).value = vals[checked('mode')][k] || ''; }); }
   function readIntakeGrams() {
     var g = {};
+    if (usingPreset()) {
+      var it = PRESET_BY_ID[presetEl.value];
+      MEAT_KEYS.forEach(function (k) { g[k] = it ? (it.grams[k] || 0) : 0; });
+      return g;
+    }
     MEAT_KEYS.forEach(function (k) { g[k] = C.gramsFrom(parseFloat($('in-' + k).value), checked('unit')); });
     return g;
   }
   function saveState() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ mode: checked('mode'), unit: checked('unit'), period: checked('period'), vals: vals })); } catch (e) {}
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ mode: checked('mode'), unit: checked('unit'), period: checked('period'), mealInput: checked('mealInput'), preset: presetEl.value, vals: vals })); } catch (e) {}
   }
   function loadState() {
     try {
       var s = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
       if (!s) return;
-      ['mode', 'unit', 'period'].forEach(function (n) { if (s[n] && $(n + '-' + s[n])) $(n + '-' + s[n]).checked = true; });
+      ['mode', 'unit', 'period', 'mealInput'].forEach(function (n) { if (s[n] && $(n + '-' + s[n])) $(n + '-' + s[n]).checked = true; });
+      if (s.preset && PRESET_BY_ID[s.preset]) presetEl.value = s.preset;
       if (s.vals) { vals.meal = s.vals.meal || {}; vals.week = s.vals.week || {}; }
     } catch (e) {}
   }
@@ -74,14 +127,37 @@
     var mult = period === 'year' ? 52 : 1;
     var base = C.compute(readIntakeGrams());
 
+    var preset = usingPreset();
     $('period-control').style.display = isMeal ? 'none' : '';
+    $('meal-input-control').style.display = isMeal ? '' : 'none';
+    $('preset-panel').style.display = preset ? '' : 'none';
+    $('weight-panel').style.display = preset ? 'none' : '';
+    if (preset) {
+      var it = PRESET_BY_ID[presetEl.value];
+      $('preset-note').innerHTML = it
+        ? 'Assumes about ' + Object.keys(it.grams).map(function (k) {
+            return fmtWeight(it.grams[k] / 1000) + ' (' + fmtNum(it.grams[k] / C.OZ_TO_G) + ' oz) of cooked ' + C.MEATS[k].label.toLowerCase();
+          }).join(' and ') + '. <a href="#" id="adjust-link">Adjust the weight</a>'
+        : 'Portions are typical U.S. servings. Pick "Enter weight" to use your own.';
+      var adj = $('adjust-link');
+      if (adj) adj.addEventListener('click', function (e) {
+        e.preventDefault();
+        var unit = checked('unit');
+        MEAT_KEYS.forEach(function (k) {
+          var g = it.grams[k] || 0;
+          vals.meal[k] = g ? (unit === 'oz' ? Math.round(g / C.OZ_TO_G * 10) / 10 : g) : '';
+        });
+        $('mealInput-weight').checked = true;
+        restoreInputs(); render(); saveState();
+      });
+    }
     document.querySelectorAll('[data-unit-label]').forEach(function (el) {
       el.textContent = checked('unit') + (isMeal ? ' in this meal' : ' per week');
     });
 
     var active = MEAT_KEYS.filter(function (k) { return base[k].animals > 0; });
     if (!active.length) {
-      $('headline').innerHTML = '<span class="empty">' + (isMeal ? 'Enter what was on your plate, or tap a portion above.' : 'Enter what you eat in a typical week.') + '</span>';
+      $('headline').innerHTML = '<span class="empty">' + (preset ? 'Choose a meal above.' : isMeal ? 'Enter what was on your plate, or tap a portion above.' : 'Enter what you eat in a typical week.') + '</span>';
       $('cards').innerHTML = '';
       return;
     }
@@ -132,6 +208,10 @@
   document.querySelectorAll('input[name=mode]').forEach(function (el) {
     el.addEventListener('change', function () { restoreInputs(); render(); saveState(); });
   });
+  document.querySelectorAll('input[name=mealInput]').forEach(function (el) {
+    el.addEventListener('change', function () { render(); saveState(); });
+  });
+  presetEl.addEventListener('change', function () { render(); saveState(); });
   document.querySelectorAll('input[name=unit], input[name=period]').forEach(function (el) {
     el.addEventListener('change', function () { render(); saveState(); });
   });

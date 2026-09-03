@@ -42,6 +42,9 @@ h3 { font-size: 1rem; margin: 1rem 0 .4rem; }
 /* Calculator inputs */
 .controls { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; margin-bottom: 1rem; }
 .controls .spacer { flex: 1; }
+.subcontrols { margin: -.25rem 0 .9rem; }
+#preset { width: 100%; font: inherit; font-size: 1rem; padding: .5rem .6rem; border: 1px solid #c9c5bc; border-radius: 8px; background: #fff; }
+#preset-note { margin: .5rem 0 0; }
 .intake { display: grid; gap: .5rem; }
 .intake-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: .75rem; }
 .intake-row label { font-weight: 600; }
