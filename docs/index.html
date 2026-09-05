@@ -105,18 +105,12 @@ function buildTree(oz) {
 
   return {
     id: 'top',
-    eq: LF('harm-per-serving', 'Specific Harm', 'Serving') + ' = ' +
-        LF('lifetimes-per-serving', 'Animal Lifetime', 'Serving') + ' \\times ' +
-        LF('harm-per-lifetime', 'Specific Harm', 'Animal Lifetime') +
-        '\\\\[0.8em] ' + LT('harm-per-serving', 'hours behind your meal') + ' = ' + L('#lifetimes-per-serving', lx) + ' \\times ' + LT('harm-per-lifetime', 'hours per lifetime'),
+    ops: ['\u00d7', '='],   // written between the top-level rows
+    eq: LF('lifetimes-per-serving', 'Animal Lifetime', 'Serving') + ' \\times ' +
+        LF('harm-per-lifetime', 'Specific Harm', 'Animal Lifetime') + ' = ' +
+        LF('harm-per-serving', 'Specific Harm', 'Serving') +
+        '\\\\[0.8em] ' + L('#lifetimes-per-serving', lx) + ' \\times ' + LT('harm-per-lifetime', 'hours per lifetime') + ' = ' + LT('harm-per-serving', 'hours behind your meal'),
     children: [
-      {
-        id: 'harm-per-serving', name: 'Specific Harm / Serving', open: true,
-        note: 'Your serving\'s share of each harm, for a ' + n(oz) + ' oz serving:',
-        eq: aligned(HARMS.map(function (h) {
-          return [F(h[0], 'Serving'), '= ' + lx + ' \\times ' + L(SRC.track, hrs(h[1])), '= \\mathbf{' + hrs(h[1] * lifetimes) + '}'];
-        }).concat([['\\hline ' + F('All Harms', 'Serving'), '= ' + lx + ' \\times ' + hrs(HARM_TOTAL), '= \\mathbf{' + hrs(HARM_TOTAL * lifetimes) + '}']]))
-      },
       {
         id: 'lifetimes-per-serving', name: 'Animal Lifetime / Serving',
         note: 'How many chickens\' worth of meat is on the plate: the raw meat in the serving divided by the raw meat one chicken yields in its lifetime.',
@@ -195,6 +189,13 @@ function buildTree(oz) {
             ]
           }
         ]
+      },
+      {
+        id: 'harm-per-serving', name: 'Specific Harm / Serving', open: true,
+        note: 'Your serving\'s share of each harm, for a ' + n(oz) + ' oz serving:',
+        eq: aligned(HARMS.map(function (h) {
+          return [F(h[0], 'Serving'), '= ' + lx + ' \\times ' + L(SRC.track, hrs(h[1])), '= \\mathbf{' + hrs(h[1] * lifetimes) + '}'];
+        }).concat([['\\hline ' + F('All Harms', 'Serving'), '= ' + lx + ' \\times ' + hrs(HARM_TOTAL), '= \\mathbf{' + hrs(HARM_TOTAL * lifetimes) + '}']]))
       }
     ]
   };
@@ -211,9 +212,17 @@ function renderNode(node) {
   if (node.note && node.eq) html += '<p>' + node.note + '</p>';
   if (node.eq) html += '<div class="eq" data-tex="' + esc(node.eq).replace(/"/g, '&quot;') + '"></div>';
   if (node.children) {
-    html += node.children.map(function (c) {
+    var top = node.id === 'top';
+    html += node.children.map(function (c, i) {
       var open = openState[c.id] === undefined ? !!c.open : openState[c.id];
-      return '<details id="' + c.id + '"' + (open ? ' open' : '') + '><summary><b>' + esc(c.name) + '</b></summary><blockquote>' + renderNode(c) + '</blockquote></details>';
+      var details = '<details id="' + c.id + '"' + (open ? ' open' : '') + '>';
+      if (top) {
+        // Big centered row with the operator between rows; content inside goes back to left-aligned.
+        var sep = i > 0 ? '<h2 align="center">' + node.ops[i - 1] + '</h2>' : '';
+        return sep + '<center>' + details + '<summary><big><big><b>' + esc(c.name) + '</b></big></big></summary>' +
+               '<div align="left"><blockquote>' + renderNode(c) + '</blockquote></div></details></center>';
+      }
+      return details + '<summary><b>' + esc(c.name) + '</b></summary><blockquote>' + renderNode(c) + '</blockquote></details>';
     }).join('');
   }
   return html;
