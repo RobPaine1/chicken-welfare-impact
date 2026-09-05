@@ -13,7 +13,7 @@
 
 <p>One serving is <input type="number" id="oz" value="6" min="0" step="0.5" size="4"> oz of cooked chicken.</p>
 
-<p>Left: the equation in words. Right: the same equation with the numbers plugged in. Click any row or underlined term to open its own equation beneath it.</p>
+<p>Left: the equation in words. Right: the same equation with the numbers plugged in. Rows with a triangle open into their own equation, laid out the same way.</p>
 
 <div id="tree"></div>
 
@@ -73,8 +73,6 @@ function tex(x, d) { return n(x, d).replace(/,/g, '{,}'); }
 function T(words) { return '\\text{' + words + '}'; }
 function F(top, bottom) { return '\\frac{' + T(top) + '}{' + T(bottom) + '}'; }          // word fraction
 function L(url, body) { return '\\href{' + url + '}{' + body + '}'; }                   // link
-function LF(id, top, bottom) { return L('#' + id, F(top, bottom)); }                    // clickable word fraction
-function LT(id, words) { return L('#' + id, T(words)); }                               // clickable words
 function G(x) { return tex(x, 0) + '\\ \\text{g}'; }
 function hrs(h) {
   if (h === 0) return '0\\ \\text{h}';
@@ -87,17 +85,17 @@ function range(lo, hi) {
   var k = unit === 's' ? 3600 : unit === 'min' ? 60 : 1;
   return '[\\,' + tex(lo * k) + '\\text{–}' + tex(hi * k) + '\\ \\text{' + unit + '}\\,]';
 }
-function aligned(rows) {
-  return '\\begin{aligned}' + rows.map(function (r) { return r.join(' & '); }).join(' \\\\ ') + '\\end{aligned}';
-}
 function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+function rep(x, k) { var a = []; for (var i = 0; i < k; i++) a.push(x); return a; }
 
 // ---------------------------------------------------------------------------
-// The equation tree. Each node has:
-//   name   words for the row title (left)        value  the number for the row title (right)
-//   sym    equation in words (left)              num    the same equation in numbers (right)
-//   note   HTML explanation                      children
-// Children render as <details> directly beneath their parent's equation.
+// The equation tree.
+//
+// Every node is one row: words on the left (name), the number on the right (value).
+// A node with `terms` opens into a vertical equation: its terms stacked with `ops`
+// between them, then "=" and a result row (the node itself, or `result`).
+// `note` is an explanation shown first; `extras` are plain rows shown after the
+// result; `subs` are further dropdowns shown last.
 // ---------------------------------------------------------------------------
 function buildTree(oz) {
   var cookedG = oz * OZ_TO_G;
@@ -107,107 +105,117 @@ function buildTree(oz) {
   var approx = lifetimes > 0 && lifetimes < 0.67 ? ' \\approx \\tfrac{1}{' + Math.round(1 / lifetimes) + '}' : '';
   var im = 0, ilo = 0, ihi = 0; INTENSITIES.forEach(function (i) { im += i[1]; ilo += i[2]; ihi += i[3]; });
 
-  return {
-    id: 'top',
-    ops: ['\u00d7', '='],   // written between the top-level rows
-    children: [
+  var lifetimesPerServing = {
+    id: 'lifetimes-per-serving', name: F('Animal Lifetime', 'Serving'), value: lx + approx,
+    note: 'How many chickens\' worth of meat is on the plate: the raw meat in the serving divided by the raw meat one chicken yields in its lifetime.',
+    ops: ['\u00f7'],
+    terms: [
       {
-        id: 'lifetimes-per-serving', name: F('Animal Lifetime', 'Serving'), value: lx + approx,
-        note: 'How many chickens\' worth of meat is on the plate: the raw meat in the serving divided by the raw meat one chicken yields in its lifetime.',
-        sym: F('Animal Lifetime', 'Serving') + ' = ' + LF('raw-per-serving', 'Raw Meat', 'Serving') + ' \\div ' + LF('raw-per-lifetime', 'Raw Meat', 'Animal Lifetime'),
-        num: lx + ' = ' + L('#raw-per-serving', G(rawG)) + ' \\div ' + L('#raw-per-lifetime', G(RAW_MEAT_PER_BIRD)),
-        children: [
-          {
-            id: 'raw-per-serving', name: F('Raw Meat', 'Serving'), value: G(rawG),
-            note: 'Meat loses about a quarter of its weight in cooking, so divide the cooked weight by the cooking yield to get back to raw.',
-            sym: F('Raw Meat', 'Serving') + ' = ' + LF('cooked-per-serving', 'Cooked Meat', 'Serving') + ' \\div ' + LT('cooking-yield', 'Cooking Yield'),
-            num: G(rawG) + ' = ' + L('#cooked-per-serving', G(cookedG)) + ' \\div ' + L('#cooking-yield', tex(COOKING_YIELD, 2)),
-            children: [
-              { id: 'cooked-per-serving', name: F('Cooked Meat', 'Serving'), value: G(cookedG),
-                sym: F('Cooked Meat', 'Serving') + ' = ' + T('ounces eaten') + ' \\times ' + T('grams per ounce'),
-                num: G(cookedG) + ' = ' + tex(oz) + '\\ \\text{oz} \\times 28.35\\ \\text{g/oz}',
-                note: 'The ounces are the number you typed at the top.' },
-              { id: 'cooking-yield', name: T('Cooking Yield'), value: L(SRC.cooking, tex(COOKING_YIELD, 2)),
-                note: 'Share of raw weight left after cooking. Most roasted, grilled or fried cuts keep 70–80%. Source: <a href="' + SRC.cooking + '">USDA Table of Cooking Yields for Meat and Poultry</a>.' }
-            ]
-          },
-          {
-            id: 'raw-per-lifetime', name: F('Raw Meat', 'Animal Lifetime'), value: G(RAW_MEAT_PER_BIRD),
-            note: 'What one chicken yields: its live weight, times the share that is carcass, times the share of the carcass that is boneless meat.',
-            sym: F('Raw Meat', 'Animal Lifetime') + ' = ' + LF('live-weight', 'Live Weight', 'Animal') + ' \\times ' + LT('dressing', 'Dressing') + ' \\times ' + LT('edible-share', 'Edible Share'),
-            num: G(RAW_MEAT_PER_BIRD) + ' = ' + L('#live-weight', G(LIVE_G)) + ' \\times ' + L('#dressing', tex(DRESSING, 2)) + ' \\times ' + L('#edible-share', tex(EDIBLE_SHARE, 2)),
-            children: [
-              { id: 'live-weight', name: F('Live Weight', 'Animal'), value: G(LIVE_G),
-                note: 'U.S. average for 2024: all the live weight produced in the year divided by the number of birds. Source: <a href="' + SRC.nass + '">USDA NASS, Poultry Production and Value 2024 Summary</a>.',
-                sym: F('Live Weight', 'Animal') + ' = ' + F('Live Weight Produced', 'Year') + ' \\div ' + F('Animals Produced', 'Year'),
-                num: G(LIVE_G) + ' = ' + L(SRC.nass, '61.1 \\times 10^{9}\\ \\text{lb}') + ' \\div ' + L(SRC.nass, '9.33 \\times 10^{9}') + '\\\\[0.4em] (= ' + tex(LIVE_LB, 2) + '\\ \\text{lb})' },
-              { id: 'dressing', name: T('Dressing'), value: L(SRC.umaine, tex(DRESSING, 2)),
-                note: 'The ready-to-cook carcass as a share of live weight; 70–78% is typical. Source: <a href="' + SRC.umaine + '">University of Maine Extension, Understanding Poultry Yields</a>.' },
-              { id: 'edible-share', name: T('Edible Share'), value: L(SRC.wisc, tex(EDIBLE_SHARE, 2)),
-                note: 'Boneless meat as a share of the carcass. Source: <a href="' + SRC.wisc + '">University of Wisconsin Extension, Bird Breakdown</a>. These yields are industry averages; individual birds and cuts vary by roughly &plusmn;10%.' }
-            ]
-          }
+        id: 'raw-per-serving', name: F('Raw Meat', 'Serving'), value: G(rawG),
+        note: 'Meat loses about a quarter of its weight in cooking, so divide the cooked weight by the cooking yield to get back to raw.',
+        ops: ['\u00f7'],
+        terms: [
+          { id: 'cooked-per-serving', name: F('Cooked Meat', 'Serving'), value: G(cookedG),
+            note: 'The ounces are the number you typed at the top.',
+            ops: ['\u00d7'],
+            terms: [
+              { name: T('Ounces Eaten'), value: tex(oz) + '\\ \\text{oz}' },
+              { name: T('Grams per Ounce'), value: '28.35\\ \\text{g/oz}' }
+            ] },
+          { id: 'cooking-yield', name: T('Cooking Yield'), value: L(SRC.cooking, tex(COOKING_YIELD, 2)),
+            note: 'Share of raw weight left after cooking. Most roasted, grilled or fried cuts keep 70–80%. Source: <a href="' + SRC.cooking + '">USDA Table of Cooking Yields for Meat and Poultry</a>.' }
         ]
       },
       {
-        id: 'harm-per-lifetime', name: F('Specific Harm', 'Animal Lifetime'), value: hrs(HARM_TOTAL) + '\\ \\text{(all harms)}',
-        note: 'How many hours an average conventional meat chicken spends in each kind of pain over its whole life, from the ' +
-              '<a href="' + SRC.wfp + '">Welfare Footprint Project</a>. For each cause they combined how many birds are affected, how long it lasts and how intense it is, then summed over the bird\'s life. ' +
-              'That is why the lifetime is not a separate multiplier: it is the window over which the hours accumulate.',
-        rows: HARMS.map(function (h) { return [F(h[0], 'Animal Lifetime'), L(SRC.track, hrs(h[1]))]; })
-              .concat(['hr',
-                       [F('All Harms', 'Animal Lifetime'), hrs(HARM_TOTAL)],
-                       [T('Animal Lifetime'), L(SRC.ncc, LIFETIME_DAYS + '\\ \\text{days}') + ' = ' + tex(LIFETIME_DAYS * 24, 0) + '\\ \\text{h}'],
-                       [F('Time in Pain', 'Animal Lifetime'), '\\frac{' + hrs(HARM_TOTAL) + '}{' + tex(LIFETIME_DAYS * 24, 0) + '\\ \\text{h}} = ' + tex(HARM_TOTAL / (LIFETIME_DAYS * 24) * 100, 0) + '\\%']]),
-        children: [
-          { id: 'what-harms', name: T('What each harm is'), value: '',
-            note: '<ul>' + HARMS.map(function (h) { return '<li><b>' + esc(h[0]) + '</b>: ' + esc(h[4]) + '.</li>'; }).join('') + '</ul>' +
-                  '<p>The project publishes a lower and upper bound for each cause as well; they are not yet loaded here (see the repository\'s TODO).</p>' },
-          { id: 'by-intensity', name: T('The same hours by intensity, with uncertainty'), value: hrs(im) + '\\ ' + range(ilo, ihi),
-            note: 'The project ran its estimate many times with every input varied over its plausible range and reports the <b>mean</b> and a <b>90% interval</b> ' +
-                  '(the 5th to 95th percentile of those runs; no median or 95% interval is published). Mean, then interval in brackets:',
-            rows: INTENSITIES.map(function (i) {
-                return [F(i[0], 'Serving') + ' = ' + F('Animal Lifetime', 'Serving') + ' \\times ' + F(i[0], 'Animal Lifetime'),
-                        hrs(i[1] * lifetimes) + '\\ ' + range(i[2] * lifetimes, i[3] * lifetimes) + ' = ' + lx + ' \\times ' + L(SRC.wfp, hrs(i[1])) + '\\ ' + range(i[2], i[3])];
-              }).concat(['hr',
-                [F('All Intensities', 'Serving') + ' = ' + F('Animal Lifetime', 'Serving') + ' \\times ' + F('All Intensities', 'Animal Lifetime'),
-                 '\\mathbf{' + hrs(im * lifetimes) + '}\\ ' + range(ilo * lifetimes, ihi * lifetimes) + ' = ' + lx + ' \\times ' + hrs(im) + '\\ ' + range(ilo, ihi)]]),
-            children: [
-              { id: 'intensity-defs', name: T('What the intensities mean'), value: '',
-                note: '<ul>' + INTENSITIES.map(function (i) { return '<li><b>' + i[0] + '</b>: ' + i[4] + '.</li>'; }).join('') + '</ul>' +
-                      '<p>Source: <a href="' + SRC.defs + '">Welfare Footprint Institute, pain intensity definitions</a>.</p>' },
-              { id: 'uncertainty-notes', name: T('Reading the uncertainty'), value: '',
-                note: '<p>Most of the uncertainty is in these pain estimates, not in the weights: the intervals are roughly &plusmn;40% around the mean. ' +
-                      'The by-cause figures rest on the same evidence, so treat them as carrying about the same uncertainty. ' +
-                      'The two breakdowns come from different releases of the same data and differ by about 4%, so read the by-cause numbers as proportions rather than exact hours. ' +
-                      'The bracket on the total adds the individual intervals, which slightly overstates its width.</p>' +
-                      '<p>Not included anywhere on this page: pain during transport and slaughter, breeder birds, and diseases the project did not model. The numbers are conservative.</p>' }
-            ]
-          }
+        id: 'raw-per-lifetime', name: F('Raw Meat', 'Animal Lifetime'), value: G(RAW_MEAT_PER_BIRD),
+        note: 'What one chicken yields: its live weight, times the share that is carcass, times the share of the carcass that is boneless meat.',
+        ops: ['\u00d7', '\u00d7'],
+        terms: [
+          { id: 'live-weight', name: F('Live Weight', 'Animal'), value: G(LIVE_G) + '\\ (' + tex(LIVE_LB, 2) + '\\ \\text{lb})',
+            note: 'U.S. average for 2024: all the live weight produced in the year divided by the number of birds. Source: <a href="' + SRC.nass + '">USDA NASS, Poultry Production and Value 2024 Summary</a>.',
+            ops: ['\u00f7'],
+            terms: [
+              { name: F('Live Weight Produced', 'Year'), value: L(SRC.nass, '61.1 \\times 10^{9}\\ \\text{lb}') },
+              { name: F('Animals Produced', 'Year'), value: L(SRC.nass, '9.33 \\times 10^{9}') }
+            ] },
+          { id: 'dressing', name: T('Dressing'), value: L(SRC.umaine, tex(DRESSING, 2)),
+            note: 'The ready-to-cook carcass as a share of live weight; 70–78% is typical. Source: <a href="' + SRC.umaine + '">University of Maine Extension, Understanding Poultry Yields</a>.' },
+          { id: 'edible-share', name: T('Edible Share'), value: L(SRC.wisc, tex(EDIBLE_SHARE, 2)),
+            note: 'Boneless meat as a share of the carcass. Source: <a href="' + SRC.wisc + '">University of Wisconsin Extension, Bird Breakdown</a>. These yields are industry averages; individual birds and cuts vary by roughly &plusmn;10%.' }
         ]
-      },
-      {
-        id: 'harm-per-serving', name: F('Specific Harm', 'Serving'), value: hrs(HARM_TOTAL * lifetimes) + '\\ \\text{(all harms)}', open: true,
-        note: 'Your serving\'s share of each harm, for a ' + n(oz) + ' oz serving:',
-        rows: HARMS.map(function (h) {
-            return [F(h[0], 'Serving') + ' = ' + LF('lifetimes-per-serving', 'Animal Lifetime', 'Serving') + ' \\times ' + LF('harm-per-lifetime', h[0], 'Animal Lifetime'),
-                    '\\mathbf{' + hrs(h[1] * lifetimes) + '} = ' + L('#lifetimes-per-serving', lx) + ' \\times ' + L('#harm-per-lifetime', hrs(h[1]))];
-          }).concat(['hr',
-            [F('All Harms', 'Serving') + ' = ' + LF('lifetimes-per-serving', 'Animal Lifetime', 'Serving') + ' \\times ' + LF('harm-per-lifetime', 'All Harms', 'Animal Lifetime'),
-             '\\mathbf{' + hrs(HARM_TOTAL * lifetimes) + '} = ' + L('#lifetimes-per-serving', lx) + ' \\times ' + L('#harm-per-lifetime', hrs(HARM_TOTAL))]])
       }
     ]
   };
+
+  var harmPerLifetime = {
+    id: 'harm-per-lifetime', name: F('Specific Harm', 'Animal Lifetime'), value: hrs(HARM_TOTAL) + '\\ \\text{(all harms)}',
+    note: 'How many hours an average conventional meat chicken spends in each kind of pain over its whole life, from the ' +
+          '<a href="' + SRC.wfp + '">Welfare Footprint Project</a>. For each cause they combined how many birds are affected, how long it lasts and how intense it is, then summed over the bird\'s life. ' +
+          'That is why the lifetime is not a separate multiplier: it is the window over which the hours accumulate.',
+    ops: rep('+', HARMS.length - 1),
+    terms: HARMS.map(function (h) { return { name: F(h[0], 'Animal Lifetime'), value: L(SRC.track, hrs(h[1])) }; }),
+    result: { name: F('All Harms', 'Animal Lifetime'), value: hrs(HARM_TOTAL) },
+    extras: [
+      { name: T('Animal Lifetime'), value: L(SRC.ncc, LIFETIME_DAYS + '\\ \\text{days}') + ' = ' + tex(LIFETIME_DAYS * 24, 0) + '\\ \\text{h}' },
+      { name: F('Time in Pain', 'Animal Lifetime'), value: '\\frac{' + hrs(HARM_TOTAL) + '}{' + tex(LIFETIME_DAYS * 24, 0) + '\\ \\text{h}} = ' + tex(HARM_TOTAL / (LIFETIME_DAYS * 24) * 100, 0) + '\\%' }
+    ],
+    subs: [
+      { id: 'what-harms', name: T('What each harm is'), value: '',
+        note: '<ul>' + HARMS.map(function (h) { return '<li><b>' + esc(h[0]) + '</b>: ' + esc(h[4]) + '.</li>'; }).join('') + '</ul>' +
+              '<p>The project publishes a lower and upper bound for each cause as well; they are not yet loaded here (see the repository\'s TODO).</p>' },
+      { id: 'by-intensity', name: T('The same hours by intensity, with uncertainty'), value: hrs(im * lifetimes) + '\\ ' + range(ilo * lifetimes, ihi * lifetimes),
+        note: 'The project ran its estimate many times with every input varied over its plausible range and reports the <b>mean</b> and a <b>90% interval</b> ' +
+              '(the 5th to 95th percentile of those runs; no median or 95% interval is published). Mean, then interval in brackets, for your serving:',
+        ops: rep('+', INTENSITIES.length - 1),
+        terms: INTENSITIES.map(function (i) {
+          return { name: F(i[0], 'Serving'), value: hrs(i[1] * lifetimes) + '\\ ' + range(i[2] * lifetimes, i[3] * lifetimes),
+                   ops: ['\u00d7'],
+                   terms: [
+                     { name: L('#lifetimes-per-serving', F('Animal Lifetime', 'Serving')), value: L('#lifetimes-per-serving', lx) },
+                     { name: F(i[0], 'Animal Lifetime'), value: L(SRC.wfp, hrs(i[1])) + '\\ ' + range(i[2], i[3]) }
+                   ] };
+        }),
+        result: { name: F('All Intensities', 'Serving'), value: '\\mathbf{' + hrs(im * lifetimes) + '}\\ ' + range(ilo * lifetimes, ihi * lifetimes) },
+        subs: [
+          { id: 'intensity-defs', name: T('What the intensities mean'), value: '',
+            note: '<ul>' + INTENSITIES.map(function (i) { return '<li><b>' + i[0] + '</b>: ' + i[4] + '.</li>'; }).join('') + '</ul>' +
+                  '<p>Source: <a href="' + SRC.defs + '">Welfare Footprint Institute, pain intensity definitions</a>.</p>' },
+          { id: 'uncertainty-notes', name: T('Reading the uncertainty'), value: '',
+            note: '<p>Most of the uncertainty is in these pain estimates, not in the weights: the intervals are roughly &plusmn;40% around the mean. ' +
+                  'The by-cause figures rest on the same evidence, so treat them as carrying about the same uncertainty. ' +
+                  'The two breakdowns come from different releases of the same data and differ by about 4%, so read the by-cause numbers as proportions rather than exact hours. ' +
+                  'The bracket on the total adds the individual intervals, which slightly overstates its width.</p>' +
+                  '<p>Not included anywhere on this page: pain during transport and slaughter, breeder birds, and diseases the project did not model. The numbers are conservative.</p>' }
+        ]
+      }
+    ]
+  };
+
+  var harmPerServing = {
+    id: 'harm-per-serving', name: F('Specific Harm', 'Serving'), value: hrs(HARM_TOTAL * lifetimes) + '\\ \\text{(all harms)}', open: true,
+    note: 'Your serving\'s share of each harm, for a ' + n(oz) + ' oz serving. Open a harm to see its own multiplication.',
+    ops: rep('+', HARMS.length - 1),
+    terms: HARMS.map(function (h) {
+      return { name: F(h[0], 'Serving'), value: '\\mathbf{' + hrs(h[1] * lifetimes) + '}',
+               ops: ['\u00d7'],
+               terms: [
+                 { name: L('#lifetimes-per-serving', F('Animal Lifetime', 'Serving')), value: L('#lifetimes-per-serving', lx) },
+                 { name: L('#harm-per-lifetime', F(h[0], 'Animal Lifetime')), value: L('#harm-per-lifetime', hrs(h[1])) }
+               ] };
+    }),
+    result: { name: F('All Harms', 'Serving'), value: '\\mathbf{' + hrs(HARM_TOTAL * lifetimes) + '}' }
+  };
+
+  return { id: 'top', ops: ['\u00d7'], terms: [lifetimesPerServing, harmPerLifetime], result: harmPerServing };
 }
 
 // ---------------------------------------------------------------------------
-// Rendering: every row and every equation is a two-column table,
-// words on the left, numbers on the right.
+// Rendering: every row is a two-column table, words left, numbers right.
 // ---------------------------------------------------------------------------
-var openState = {};   // remembers which levels are open across re-renders
+var openState = {};   // which levels are open, kept across re-renders
 
-function eqCell(src, inline) {
-  return '<div class="eq"' + (inline ? ' data-inline="1"' : '') + ' data-tex="' + esc(src).replace(/"/g, '&quot;') + '"></div>';
+function eqCell(src) {
+  return '<div class="eq" data-tex="' + esc(src).replace(/"/g, '&quot;') + '"></div>';
 }
 function twoCol(left, right, big) {
   var wrap = function (s) { return big ? '<big><big>' + s + '</big></big>' : s; };
@@ -215,47 +223,56 @@ function twoCol(left, right, big) {
     '<td width="50%" align="center" valign="middle">' + wrap(left) + '</td>' +
     '<td width="50%" align="center" valign="middle">' + wrap(right) + '</td></tr></table>';
 }
+function titleRow(node, big) {
+  return twoCol(eqCell('\\displaystyle ' + node.name), node.value ? eqCell('\\displaystyle ' + node.value) : '', big);
+}
+function opRow(op, big) {
+  var s = big ? '<big><big>' + op + '</big></big>' : op;
+  return twoCol(s, s);
+}
+function expandable(node) { return !!(node.note || node.terms || node.subs || node.extras); }
 
-function rowTable(rows) {
-  return '<table width="100%">' + rows.map(function (r) {
-    if (r === 'hr') return '<tr><td colspan="2"><hr></td></tr>';
-    return '<tr><td width="50%" align="center">' + eqCell(r[0]) + '</td><td width="50%" align="center">' + eqCell(r[1]) + '</td></tr>';
-  }).join('') + '</table>';
+// One row. Expandable rows become <details> whose inside is the vertical equation.
+function renderRow(node, path, big) {
+  var id = node.id || path;
+  if (!expandable(node)) return titleRow(node, big);
+  var open = openState[id] === undefined ? !!node.open : openState[id];
+  return '<details id="' + id + '"' + (open ? ' open' : '') + '><summary>' + titleRow(node, big) + '</summary>' +
+         '<blockquote>' + renderInside(node, id) + '</blockquote></details>';
 }
 
-function renderNode(node) {
+// The inside of a node: note, then terms stacked with operators, "=", result, extras, subs.
+function renderInside(node, path, big) {
   var html = '';
   if (node.note) html += '<p>' + node.note + '</p>';
-  if (node.sym || node.num) html += twoCol(node.sym ? eqCell(node.sym) : '', node.num ? eqCell(node.num) : '');
-  if (node.rows) html += rowTable(node.rows);
-  if (node.children) {
-    var top = node.id === 'top';
-    html += node.children.map(function (c, i) {
-      var open = openState[c.id] === undefined ? !!c.open : openState[c.id];
-      var title = twoCol(eqCell('\\displaystyle ' + c.name, true), c.value ? eqCell('\\displaystyle ' + c.value, true) : '', top);
-      var sep = top && i > 0 ? twoCol('<big><big>' + node.ops[i - 1] + '</big></big>', '<big><big>' + node.ops[i - 1] + '</big></big>') : '';
-      return sep + '<details id="' + c.id + '"' + (open ? ' open' : '') + '><summary>' + title + '</summary>' +
-             '<blockquote>' + renderNode(c) + '</blockquote></details>';
-    }).join('');
+  if (node.terms) {
+    node.terms.forEach(function (t, i) {
+      if (i > 0) html += opRow(node.ops[i - 1], big);
+      html += renderRow(t, path + '-' + i, big);
+    });
+    html += opRow('=', big);
+    html += node.result ? renderRow(node.result, path + '-result', big) : titleRow(node, big);
   }
+  if (node.extras) node.extras.forEach(function (x, i) { html += renderRow(x, path + '-x' + i); });
+  if (node.subs) node.subs.forEach(function (s, i) { html += renderRow(s, path + '-s' + i); });
   return html;
 }
 
 function update() {
   var oz = parseFloat(document.getElementById('oz').value) || 0;
   var root = document.getElementById('tree');
-  root.innerHTML = renderNode(buildTree(oz));
+  root.innerHTML = renderInside(buildTree(oz), 'top', true);
   root.querySelectorAll('.eq').forEach(function (el) {
     var src = el.getAttribute('data-tex');
     if (typeof katex === 'undefined') { el.textContent = src; return; }
-    katex.render(src, el, { displayMode: !el.getAttribute('data-inline'), throwOnError: false, trust: function (c) { return c.command === '\\href'; } });
+    katex.render(src, el, { displayMode: false, throwOnError: false, trust: function (c) { return c.command === '\\href'; } });
   });
   root.querySelectorAll('details').forEach(function (d) {
     d.addEventListener('toggle', function () { openState[d.id] = d.open; });
   });
 }
 
-// Clicking a term opens its level (and every level above it) and scrolls there.
+// Clicking a linked term opens its level (and every level above it) and scrolls there.
 function openLevel(id) {
   var el = document.getElementById(id);
   while (el) { if (el.tagName === 'DETAILS') el.open = true; el = el.parentElement; }
@@ -263,7 +280,6 @@ function openLevel(id) {
 document.addEventListener('click', function (e) {
   var a = e.target.closest('a');
   if (!a && document.elementsFromPoint) {
-    // KaTeX stacks layout spans over parts of a fraction; look beneath them for the link.
     var stack = document.elementsFromPoint(e.clientX, e.clientY);
     for (var k = 0; k < stack.length && !a; k++) a = stack[k].closest('a[href^="#"]');
   }

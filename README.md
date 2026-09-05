@@ -5,9 +5,11 @@ in ounces of cooked chicken and see one equation:
 
     Specific Harm / Serving = Animal Lifetime / Serving × Specific Harm / Animal Lifetime
 
-Terms are written as word fractions so units cancel visibly. Clicking any term
-opens its own equation directly beneath it (a `<details>` block), whose terms
-can be clicked in turn, so the equation grows downward as a tree until it
+Terms are written as word fractions so units cancel visibly, with the equation
+in words on the left and the same equation in numbers on the right. Every row
+that has its own equation opens (a `<details>` block) into the same vertical
+form: its terms stacked with the operator between them, then "=" and the
+result, so the whole calculation is one equation growing downward until it
 reaches sourced constants that link out. Equations are typeset with
 KaTeX, vendored in `docs/katex/`. No CSS of our own, no build step.
 
