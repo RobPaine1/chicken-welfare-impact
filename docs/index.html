@@ -3,344 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chicken welfare calculator</title>
-<link rel="stylesheet" href="katex/katex.min.css">
-<script defer src="katex/katex.min.js"></script>
+<title>What did this chicken cost?</title>
 <style>
-  body { max-width: 1100px; margin: 1em auto; padding: 0 1em; }
-  /* The equation rows: capped in width so the words and their number stay close; each column centred. */
-  table.row { width: 100%; max-width: 820px; }
-  table.row td.words, table.row td.nums { text-align: center; }
-  table.row td.glyph { color: #555; }
-  table[data-toggle], tr[data-focus] { cursor: pointer; }
-  table[data-toggle]:hover, tr[data-focus]:hover { background: #f3f3f3; }
-  table[data-toggle].open { background: #f3f3f3; }
-  /* A term's worked steps, shown directly beneath its row. */
-  .panel { margin: 0.4em 0 1em 24px; }
-  table.steps { width: 100%; border-collapse: collapse; }
-  table.steps th { text-align: left; font-weight: normal; color: #666; font-size: 0.85em; padding: 0.3em 0.6em; border-bottom: 1px solid #bbb; }
-  table.steps td { padding: 0.45em 0.6em; border-bottom: 1px solid #e2e2e2; vertical-align: middle; }
-  table.steps td.n { width: 1.5em; color: #888; text-align: right; }
-  table.steps td.words { width: 55%; }
-  table.steps tr.result td { font-weight: bold; }
-  /* Each quantity that is produced on one line and used on another gets its own colour,
-     applied to both its words and its number. */
-  .k-cooked   { color: #a67c00; }
-  .k-rawserv  { color: #d35400; }
-  .k-live     { color: #1e6fb8; }
-  .k-rawlife  { color: #2e8b57; }
-  .k-lifeserv { color: #6a3fc9; }
-  .k-harmlife { color: #d81b60; }
-  .k-allharms { color: #00838f; }
-  .k-lifetime { color: #616161; }
-  .k-harmserv { color: #b71c1c; }
-  .k-allserv  { color: #8d6e63; }
+  body { max-width: 1000px; margin: 1em auto; padding: 0 1em; line-height: 1.45; }
   .nav { color: #666; }
-  #notes { margin-top: 2em; font-size: 0.95em; color: #333; }
-  #notes summary { cursor: pointer; }
+  h1 { margin-bottom: 0.2em; }
+  .cols { display: flex; gap: 2em; flex-wrap: wrap; align-items: flex-start; }
+  .cols > div { flex: 1 1 320px; }
+  input[type=number] { font-size: 1.2em; width: 6em; padding: 0.2em 0.4em; }
+  select { font-size: 1em; padding: 0.2em; }
+  .items button { display: block; width: 100%; text-align: left; font: inherit; padding: 0.4em 0.6em; margin: 0.25em 0; background: #f6f6f6; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; }
+  .items button:hover { background: #ececec; }
+  .items button.on { background: #e4ecf7; border-color: #9bb7dd; }
+  .items button small { color: #666; }
+  #headline { font-size: 1.35em; margin: 1.2em 0 0.4em; }
+  #headline small { font-size: 0.7em; color: #555; }
+  h2 { font-size: 1.1em; margin: 0.8em 0 0.4em; }
+  table { border-collapse: collapse; width: 100%; }
+  td { padding: 0.3em 0.5em; border-bottom: 1px solid #eee; vertical-align: top; }
+  td.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; width: 8em; }
+  td.range { color: #777; white-space: nowrap; width: 8em; font-size: 0.9em; }
+  td.def { color: #555; font-size: 0.92em; }
+  .muted { color: #666; font-size: 0.9em; }
+  #result[hidden] { display: none; }
+  details.harm { border-bottom: 1px solid #eee; }
+  details.harm summary { display: flex; gap: 0.5em; align-items: baseline; padding: 0.35em 0.5em; cursor: pointer; list-style: none; }
+  details.harm summary::-webkit-details-marker { display: none; }
+  details.harm summary .num { width: 8em; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: bold; }
+  details.harm summary .name { flex: 1; }
+  details.harm summary .name::before { content: '\25BE\00a0'; color: #888; }
+  details.harm[open] summary .name::before { content: '\25B4\00a0'; }
+  details.harm summary .range { color: #777; white-space: nowrap; font-size: 0.9em; }
+  details.harm .desc { margin: 0 0.5em 0.6em 8.5em; color: #444; font-size: 0.92em; }
+  .total { padding: 0.35em 0.5em; display: flex; gap: 0.5em; }
+  .total .num { width: 8em; text-align: right; font-weight: bold; }
 </style>
 </head>
 <body>
 
-<p class="nav"><b id="nav-eq"></b> &middot; <a href="plate.html" id="nav-plate"></a></p>
+<p class="nav"><b id="nav-calc"></b> &middot; <a href="equation.html" id="nav-eq"></a></p>
 <h1 id="title"></h1>
+<p class="muted"><span id="chicken-label"></span> <select id="system"></select></p>
 
-<p>
-  <span id="serving-before"></span> <input type="number" id="oz" value="6" min="0" step="0.5" size="4"> <span id="serving-after"></span>
-  &nbsp; <span id="chicken-label"></span> <select id="system"></select>
-  &nbsp; <span id="harm-label"></span> <select id="harm"></select>
-</p>
+<div class="cols">
+  <div>
+    <p><b id="type-heading"></b></p>
+    <p><input type="number" id="amount" min="0" step="0.5" placeholder="0"> <select id="unit"><option value="oz">oz</option><option value="g">grams</option></select></p>
+    <p class="muted" id="type-hint"></p>
+  </div>
+  <div>
+    <p><b id="pick-heading"></b></p>
+    <div class="items" id="items"></div>
+    <p class="muted" id="pick-hint"></p>
+  </div>
+</div>
 
-<p id="intro"></p>
-
-<div id="tree"></div>
-
-<details id="notes">
-<summary id="notes-summary"></summary>
-<div id="notes-body"></div>
-</details>
+<div id="result" hidden>
+  <p id="headline"></p>
+  <div class="cols">
+    <div>
+      <h2 id="causes-heading"></h2>
+      <div id="causes"></div>
+    </div>
+    <div>
+      <h2 id="levels-heading"></h2>
+      <table id="levels"></table>
+    </div>
+  </div>
+  <p class="muted" id="foot"></p>
+</div>
 
 <script src="text.js"></script>
 <script src="wfp.js"></script>
 <script src="chicken.js"></script>
 <script>
-// ---------------------------------------------------------------------------
-// Sources
-// ---------------------------------------------------------------------------
-var SRC = {
-  nass:    'https://www.nass.usda.gov/Publications/Todays_Reports/reports/plva0425.pdf',
-  umaine:  'https://extension.umaine.edu/publications/2223e/',
-  wisc:    'https://livestock.extension.wisc.edu/articles/bird-breakdown-exploring-yields-and-cuts-of-poultry/',
-  cooking: 'https://www.ars.usda.gov/ARSUserFiles/80400525/data/retn/usda_cookingyields_meatpoultry.pdf',
-  ncc:     'https://www.nationalchickencouncil.org/about-the-industry/statistics/u-s-broiler-performance/',
-  wfp:     'https://welfarefootprint.org/broilers/',
-  track:   'https://pain-track.org/broilers',
-  tableau: 'https://public.tableau.com/app/profile/cynthia.schuck/viz/BroilerChickens2021/Broilers',
-  defs:    'https://welfarefootprint.org/technical-definitions/pain-intensities/'
-};
+var ITEMS = TEXT.plate.items;
+var P = TEXT.plate;
 
-// ---------------------------------------------------------------------------
-// Formatting helpers
-// ---------------------------------------------------------------------------
 function n(x, d) { return Number(x.toFixed(d === undefined ? 1 : d)).toLocaleString('en-US'); }
-function tex(x, d) { return n(x, d).replace(/,/g, '{,}'); }
-function T(words) { return '\\text{' + words + '}'; }
-function F(top, bottom) { return '\\frac{' + T(top) + '}{' + T(bottom) + '}'; }          // word fraction
-function G(x) { return tex(x, 0) + '\\ \\text{g}'; }
-function H(x) { return x + '\\ \\text{h}'; }
-function hrs(h) {
-  if (h === 0) return '0\\ \\text{h}';
-  if (h < 1 / 60) return tex(h * 3600) + '\\ \\text{s}';
-  if (h < 1) return tex(h * 60) + '\\ \\text{min}';
-  return tex(h) + '\\ \\text{h}';
+function dur(h) {
+  if (h === 0) return '0 hours';
+  if (h < 1 / 60) return n(h * 3600, h * 3600 < 10 ? 1 : 0) + ' seconds';
+  if (h < 1) return n(h * 60, 0) + ' minutes';
+  if (h < 10) return n(h, 1) + ' hours';
+  return n(h, 0) + ' hours';
 }
-function range(lo, hi) {
+function durRange(lo, hi) {
   if (hi === 0) return '';
-  var unit = hi < 1 / 60 ? 's' : hi < 1 ? 'min' : 'h';
-  var k = unit === 's' ? 3600 : unit === 'min' ? 60 : 1;
-  return '[\\,' + tex(lo * k) + '\\text{–}' + tex(hi * k) + '\\ \\text{' + unit + '}\\,]';
+  var unit = hi < 1 / 60 ? 3600 : hi < 1 ? 60 : 1;
+  var d = hi * unit < 10 ? 1 : 0;
+  var u = unit === 3600 ? ' s' : unit === 60 ? ' min' : ' h';
+  return fmt(P.rangeLine, { lo: n(lo * unit, d), hi: n(hi * unit, d) + u });
 }
-function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
-var TIMES = ' \\times ', DIV = ' \\div ', EQ = ' = ', PLUS = ' + ';
-function K(key, body) { return '\\htmlClass{k-' + key + '}{' + body + '}'; }   // colour a term
-function smallRange(lo, hi) { var r = range(lo, hi); return r ? '\\ {\\small ' + r + '}' : ''; }
-function S(tag, body) { return body + '_{\\text{' + tag + '}}'; }                      // source tag as a subscript
+function frac(x) { return x > 0 && x < 0.67 ? 'about 1/' + Math.round(1 / x) : n(x, 2); }
 
-// ---------------------------------------------------------------------------
-// The equation: three rows, each with an optional table of worked steps.
-// A step is [words, numbers] (both LaTeX) or a heading string.
-// ---------------------------------------------------------------------------
-function buildEquation(oz, sysKey, hi) {     // hi = index into the system's causes, or -1 for all harms
-  var sys = SYSTEMS[sysKey];
-  var data = WFP.systems[sysKey];
-  var causes = data.causes;
-  var allTotal = causes.reduce(function (s, c) { return s + c.total; }, 0);
-  var pubAll = data.published;
-  var allSd = Math.sqrt(LEVELS.reduce(function (s, l) { var sd = (pubAll[l].hi - pubAll[l].lo) / 2 / 1.645; return s + sd * sd; }, 0));
-  var allLo = Math.max(0, allTotal - 1.645 * allSd), allHi = allTotal + 1.645 * allSd;
-  var cookedG = oz * OZ_TO_G;
-  var rawG = cookedG / COOKING_YIELD;
-  var rawPerBird = sys.liveG * DRESSING * EDIBLE_SHARE;
-  var lifetimes = rawG / rawPerBird;
-  var lx = tex(lifetimes, 3);
-  var approx = lifetimes > 0 && lifetimes < 0.67 ? ' \\approx \\tfrac{1}{' + Math.round(1 / lifetimes) + '}' : '';
-  var lifeH = sys.lifetimeDays * 24;
-
-  // Reused quantities, each with its words, its number, and a tint.
-  var cooked   = { w: K('cooked',   F('Cooked Meat', 'Serving')),         n: K('cooked',   G(cookedG)) };
-  var rawserv  = { w: K('rawserv',  F('Raw Meat', 'Serving')),            n: K('rawserv',  G(rawG)) };
-  var live     = { w: K('live',     F('Live Weight', 'Animal')),          n: K('live',     G(sys.liveG)) };
-  var rawlife  = { w: K('rawlife',  F('Raw Meat', 'Animal Lifetime')),    n: K('rawlife',  G(rawPerBird)) };
-  var lifeserv = { w: K('lifeserv', F('Animal Lifetime', 'Serving')),     n: K('lifeserv', lx + '\\ \\text{chickens}') };
-  var allharms = { w: K('allharms', F('All Harms', 'Animal Lifetime')),   n: K('allharms', hrs(allTotal)) };
-  var lifetime = { w: K('lifetime', T('Animal Lifetime')),                n: K('lifetime', H(tex(lifeH, 0))) };
-  var allserv  = { w: K('allserv',  F('All Harms', 'Serving')),           n: K('allserv',  hrs(allTotal * lifetimes)) };
-
-  var liveStep = sysKey === 'conventional'
-    ? [live.w + EQ + F('Live Weight Produced', 'Year') + DIV + F('Animals Produced', 'Year'),
-       live.n + EQ + S('NASS', '61.1 \\times 10^{9}\\ \\text{lb}') + DIV + S('NASS', '9.33 \\times 10^{9}')]
-    : [live.w + EQ + T('slower-growing breed at market age'), live.n + EQ + S('WFP', '2.5\\ \\text{kg}')];
-
-  var A = {
-    id: 'lifetimes-per-serving', name: F('Animal Lifetime', 'Serving'), value: lx + '\\ \\text{chickens}' + approx,
-    tip: 'How many chickens\u2019 worth of meat is on the plate.',
-    steps: [
-      [cooked.w + EQ + T('Ounces Eaten') + TIMES + T('Grams per Ounce'),
-       cooked.n + EQ + tex(oz) + '\\ \\text{oz}' + TIMES + '28.35\\ \\text{g/oz}'],
-      [rawserv.w + EQ + cooked.w + TIMES + F('Raw Meat', 'Cooked Meat'),
-       rawserv.n + EQ + cooked.n + TIMES + S('ARS', tex(1 / COOKING_YIELD, 2))],
-      liveStep,
-      [rawlife.w + EQ + live.w + TIMES + T('Dressing \\%') + TIMES + T('Edible Share \\%'),
-       rawlife.n + EQ + live.n + TIMES + S('UMaine', '75\\%') + TIMES + S('UWisc', '74\\%')],
-      [lifeserv.w + EQ + rawserv.w + DIV + rawlife.w,
-       lifeserv.n + EQ + rawserv.n + DIV + rawlife.n]
-    ]
-  };
-
-  var lifetimeStep = [lifetime.w + EQ + T('Days Alive') + TIMES + T('Hours per Day'),
-                      lifetime.n + EQ + S(sys.lifeTag, sys.lifetimeDays + '\\ \\text{days}') + TIMES + '24\\ \\text{h/day}'];
-  var pub = data.published;
-  var intensitySteps = [
-    TEXT.equation.intensityHeading
-  ].concat(LEVELS.map(function (l) {
-    return [F(LEVEL_NAMES[l], 'Animal Lifetime'), S('WFP', hrs(pub[l].mean)) + '\\ ' + range(pub[l].lo, pub[l].hi)];
-  })).concat([
-    [F('All Intensities', 'Animal Lifetime') + EQ + LEVELS.map(function (l) { return T(LEVEL_NAMES[l]); }).join(PLUS),
-     hrs(LEVELS.reduce(function (s, l) { return s + pub[l].mean; }, 0)) + '\\ ' + range(allLo, allHi)]
-  ]);
-
-  var B, C;
-  if (hi >= 0) {
-    var h = causes[hi];
-    var harmlife = { w: K('harmlife', F(h.name, 'Animal Lifetime')), n: K('harmlife', hrs(h.total)) };
-    var harmserv = { w: K('harmserv', F(h.name, 'Serving')),         n: K('harmserv', hrs(h.total * lifetimes)) };
-    B = {
-      id: 'harm-per-lifetime', name: F(h.name, 'Animal Lifetime'), value: S('WFP', hrs(h.total)) + smallRange(h.total_lo, h.total_hi),
-      tip: h.name + ': ' + harmWhat(h) + '. Hours an average bird spends in this pain over its life (Welfare Footprint Project).',
-      steps: [
-        [harmlife.w + EQ + LEVELS.map(function (l) { return T(LEVEL_NAMES[l]); }).join(PLUS),
-         harmlife.n + EQ + LEVELS.map(function (l) { return hrs(h.mean[l]); }).join(PLUS) + '_{\\text{WFP}}\\ ' + range(h.total_lo, h.total_hi)],
-        lifetimeStep,
-        [F('Time in ' + h.name, 'Animal Lifetime') + EQ + harmlife.w + DIV + lifetime.w,
-         tex(h.total / lifeH * 100, 0) + '\\%' + EQ + harmlife.n + DIV + lifetime.n]
-      ]
-    };
-    C = {
-      id: 'harm-per-serving', name: F(h.name, 'Serving'), value: '\\mathbf{' + hrs(h.total * lifetimes) + '}' + smallRange(h.total_lo * lifetimes, h.total_hi * lifetimes),
-      tip: 'Hours of ' + h.name.toLowerCase() + ' behind this serving.',
-      steps: [[harmserv.w + EQ + lifeserv.w + TIMES + harmlife.w,
-               harmserv.n + '\\ ' + range(h.total_lo * lifetimes, h.total_hi * lifetimes) + EQ + lifeserv.n + TIMES + harmlife.n + '\\ ' + range(h.total_lo, h.total_hi)]]
-    };
-  } else {
-    var sumW = causes.map(function (c) { return T(c.name); }).join(PLUS);
-    var sumN = causes.map(function (c) { return tex(c.total); }).join(PLUS) + '\\ \\text{h}_{\\text{WFP}}';
-    B = {
-      id: 'harm-per-lifetime', name: F('All Harms', 'Animal Lifetime'), value: hrs(allTotal) + smallRange(allLo, allHi),
-      tip: 'Hours an average bird spends in pain over its life, all causes added (Welfare Footprint Project).',
-      steps: [
-        [allharms.w + EQ + sumW, allharms.n + EQ + sumN],
-        lifetimeStep,
-        [F('Time in Pain', 'Animal Lifetime') + EQ + allharms.w + DIV + lifetime.w,
-         tex(allTotal / lifeH * 100, 0) + '\\%' + EQ + allharms.n + DIV + lifetime.n]
-      ].concat(intensitySteps)
-    };
-    C = {
-      id: 'harm-per-serving', name: F('All Harms', 'Serving'), value: '\\mathbf{' + hrs(allTotal * lifetimes) + '}' + smallRange(allLo * lifetimes, allHi * lifetimes),
-      tip: 'Hours of pain of all kinds behind this serving. Open to see it by cause.',
-      steps: [[allserv.w + EQ + lifeserv.w + TIMES + allharms.w,
-               allserv.n + '\\ ' + range(allLo * lifetimes, allHi * lifetimes) + EQ + lifeserv.n + TIMES + allharms.n + '\\ ' + range(allLo, allHi)],
-              TEXT.equation.byCauseHeading].concat(causes.map(function (c, i) {
-        return { focus: i, words: F(c.name, 'Serving') + EQ + lifeserv.w + TIMES + F(c.name, 'Animal Lifetime'),
-                 nums: hrs(c.total * lifetimes) + EQ + lifeserv.n + TIMES + hrs(c.total) + '\\ ' + range(c.total_lo, c.total_hi) };
-      }))
-    };
-  }
-  return { A: A, B: B, C: C };
+function currentGrams() {
+  var v = parseFloat(document.getElementById('amount').value);
+  if (!(v > 0)) return 0;
+  return document.getElementById('unit').value === 'oz' ? v * OZ_TO_G : v;
 }
 
-// ---------------------------------------------------------------------------
-// Rendering
-// ---------------------------------------------------------------------------
-var openState = {};
-
-function eqCell(src) { return '<span class="eq" data-tex="' + esc(src) + '"></span>'; }
-function big(s) { return '<big><big>' + s + '</big></big>'; }
-function rowTable(node) {
-  var open = !!openState[node.id];
-  return '<table width="100%" class="row' + (open ? ' open' : '') + '" data-toggle="' + node.id + '" title="' + esc(node.tip || '') + '"><tr>' +
-    '<td width="24" class="glyph" align="center">' + big('<span id="' + node.id + '-glyph">' + (open ? '&#9652;' : '&#9662;') + '</span>') + '</td>' +
-    '<td width="50%" class="words">' + big(eqCell('\\displaystyle ' + node.name)) + '</td>' +
-    '<td width="50%" class="nums">' + big(eqCell('\\displaystyle ' + node.value)) + '</td></tr></table>';
-}
-function opRow(op) {
-  return '<table width="100%" class="row"><tr><td width="24"></td>' +
-    '<td width="50%" class="words">' + big(op) + '</td><td width="50%" class="nums">' + big(op) + '</td></tr></table>';
-}
-function panel(node) {
-  var k = 0;
-  var rows = node.steps.map(function (st, i) {
-    if (typeof st === 'string') return '<tr><th colspan="3">' + st + '</th></tr>';
-    var words = st.words || st[0], nums = st.nums || st[1];
-    var last = i === node.steps.length - 1 && st.focus === undefined;
-    var attrs = st.focus !== undefined ? ' data-focus="' + st.focus + '"' : '';
-    k += 1;
-    return '<tr' + (last ? ' class="result"' : '') + attrs + '><td class="n">' + k + '</td>' +
-      '<td class="words">' + eqCell('\\displaystyle ' + words) + '</td><td class="nums">' + eqCell('\\displaystyle ' + nums) + '</td></tr>';
-  }).join('');
-  return '<div class="panel" id="' + node.id + '-panel"' + (openState[node.id] ? '' : ' hidden') + '>' +
-    '<table class="steps"><tr><th></th><th>' + TEXT.equation.inWords + '</th><th>' + TEXT.equation.withNumbers + '</th></tr>' + rows + '</table></div>';
-}
-
-function fillHarmOptions() {
-  var sel = document.getElementById('harm');
-  var keep = sel.value || '-1';
-  sel.innerHTML = '<option value="-1">' + TEXT.equation.allHarms + '</option>';
-  WFP.systems[document.getElementById('system').value].causes.forEach(function (c, i) {
-    var o = document.createElement('option'); o.value = i; o.textContent = c.name; sel.appendChild(o);
-  });
-  sel.value = keep;
-}
-
-function update() {
-  var oz = parseFloat(document.getElementById('oz').value) || 0;
+function render() {
+  var g = currentGrams();
+  var box = document.getElementById('result');
+  if (!(g > 0)) { box.hidden = true; return; }
   var sysKey = document.getElementById('system').value;
-  var hi = parseInt(document.getElementById('harm').value, 10);
-  var e = buildEquation(oz, sysKey, hi);
-  var html = rowTable(e.A) + panel(e.A) + opRow('\u00d7') + rowTable(e.B) + panel(e.B) + opRow('=') + rowTable(e.C) + panel(e.C);
-  var root = document.getElementById('tree');
-  root.innerHTML = html;
-  root.querySelectorAll('.eq').forEach(function (el) {
-    var src = el.getAttribute('data-tex');
-    if (typeof katex === 'undefined') { el.textContent = src; return; }
-    katex.render(src, el, { displayMode: false, throwOnError: false, strict: false, trust: function (c) { return c.command === '\\href' || c.command === '\\htmlClass'; } });
-  });
+  var st = servingStats(g, sysKey);
+  box.hidden = false;
+
+  var vars = { days: n(st.days, st.days < 10 ? 1 : 0), farm: TEXT.systems[sysKey].farm, fraction: frac(st.lifetimes), lifetime: st.lifetimeDays, grams: n(st.cookedG, 0) };
+  document.getElementById('headline').innerHTML = fmt(P.headline, vars) + '<br><small>' + fmt(P.headlineSmall, vars) + '</small>';
+
+  var openHarms = {};
+  document.querySelectorAll('#causes details[open]').forEach(function (d) { openHarms[d.getAttribute('data-name')] = true; });
+  document.getElementById('causes').innerHTML = st.causes.slice().sort(function (a, b) { return b.hours - a.hours; }).map(function (c) {
+    var what = c.what.charAt(0).toUpperCase() + c.what.slice(1);
+    return '<details class="harm" data-name="' + c.name + '"' + (openHarms[c.name] ? ' open' : '') + '><summary>' +
+      '<span class="num">' + dur(c.hours) + '</span><span class="name">' + fmt(P.causeLine, { harm: c.name.toLowerCase() }) + '</span><span class="range">' + durRange(c.lo, c.hi) + '</span></summary>' +
+      '<div class="desc">' + fmt(P.causeDetail, { what: what, perBird: dur(c.perBird), fraction: frac(st.lifetimes) }) + '</div></details>';
+  }).join('') + '<div class="total"><span class="num">' + dur(st.allHours) + '</span><span>' + P.totalLine + '</span></div>';
+
+  document.getElementById('levels').innerHTML = st.levels.slice().reverse().map(function (l) {
+    return '<tr><td class="num"><b>' + dur(l.hours) + '</b></td><td>' + fmt(P.levelLine, { level: l.name.toLowerCase(), definition: l.def }) + '</td><td class="range">' + durRange(l.lo, l.hi) + '</td></tr>';
+  }).join('');
+
+  document.getElementById('foot').innerHTML = P.footnote;
 }
 
-function toggle(id) {
-  var p = document.getElementById(id + '-panel');
-  if (!p) return;
-  openState[id] = p.hidden;
-  p.hidden = !p.hidden;
-  document.getElementById(id + '-glyph').innerHTML = p.hidden ? '&#9662;' : '&#9652;';
-  document.querySelector('table[data-toggle="' + id + '"]').classList.toggle('open', !p.hidden);
-}
-
-document.addEventListener('click', function (e) {
-  var a = e.target.closest('a');
-  if (a) return;
-  var t = e.target.closest('table[data-toggle]');
-  if (t) { toggle(t.getAttribute('data-toggle')); return; }
-  var f = e.target.closest('tr[data-focus]');
-  if (f) { document.getElementById('harm').value = f.getAttribute('data-focus'); update(); window.scrollTo(0, 0); }
-});
-
-function renderNotes() {
-  var li = function (x) { return '<li>' + x + '</li>'; };
-  var E = TEXT.equation;
-  var causes = WFP.systems.conventional.causes;
-  return '<p><b>The harms.</b> ' + fmt(E.notesHarms, { retrieved: WFP.retrieved }) + '</p>' +
-    '<ul>' + causes.map(function (c) { return li('<b>' + c.name + '</b>: ' + harmWhat(c) + '.'); }).join('') + '</ul>' +
-    '<p>' + E.notesBreeders + '</p>' +
-    '<p><b>' + E.notesIntensities + '</b> (<a href="' + SRC.defs + '">project definitions</a>):</p>' +
-    '<ul>' + LEVELS.map(function (l) { return li('<b>' + LEVEL_NAMES[l] + '</b>: ' + LEVEL_DEFS[l] + '.'); }).join('') + '</ul>' +
-    '<p><b>Uncertainty.</b> ' + E.notesUncertainty + '</p>' +
-    '<p><b>' + TEXT.systems.reformed.label + '</b> ' + E.notesReformed + '</p>' +
-    '<p><b>Not included:</b> ' + E.notesExcluded + '</p>' +
-    '<p><b>Sources</b>, ' + E.notesSources + '</p><ul>' +
-    li('<b>NASS</b>: <a href="' + SRC.nass + '">USDA NASS, Poultry Production and Value 2024 Summary</a> (9.33 billion broilers, 61.1 billion lb live weight).') +
-    li('<b>ARS</b>: <a href="' + SRC.cooking + '">USDA ARS, Table of Cooking Yields for Meat and Poultry</a> (cooking yield 0.75, so 1.33 g raw per cooked gram).') +
-    li('<b>UMaine</b>: <a href="' + SRC.umaine + '">University of Maine Extension, Understanding Poultry Yields</a> (dressing percentage 75%).') +
-    li('<b>UWisc</b>: <a href="' + SRC.wisc + '">University of Wisconsin Extension, Bird Breakdown</a> (edible share percentage 74%).') +
-    li('<b>NCC</b>: <a href="' + SRC.ncc + '">National Chicken Council, U.S. Broiler Performance</a> (47-day lifetime for conventional birds).') +
-    li('<b>WFP</b>: Welfare Footprint Institute, <a href="' + SRC.track + '">Pain-Track for broilers</a> (hours by cause and intensity), <a href="' + SRC.tableau + '">Broiler Chickens 2021 workbook</a> (totals with 90% intervals) and <a href="' + SRC.wfp + '">Broilers overview</a> (scenario definitions; \u201conly hours awake are considered\u201d).') +
-    '</ul>';
-}
-
-function fillStaticText() {
-  var E = TEXT.equation;
-  document.getElementById('nav-eq').textContent = TEXT.nav.equation;
-  document.getElementById('nav-plate').textContent = TEXT.nav.plate;
-  document.getElementById('title').textContent = E.title;
-  document.title = E.title;
-  document.getElementById('serving-before').textContent = E.servingBefore;
-  document.getElementById('serving-after').textContent = E.servingAfter;
-  document.getElementById('chicken-label').textContent = E.chickenLabel;
-  document.getElementById('harm-label').textContent = E.harmLabel;
-  document.getElementById('intro').innerHTML = E.intro;
-  document.getElementById('notes-summary').textContent = E.notesSummary;
-  var sys = document.getElementById('system');
-  Object.keys(SYSTEMS).forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = SYSTEMS[k].label; sys.appendChild(o); });
+function pick(i) {
+  var it = ITEMS[i];
+  var unit = document.getElementById('unit').value;
+  document.getElementById('amount').value = unit === 'oz' ? Math.round(it[1] / OZ_TO_G * 10) / 10 : it[1];
+  document.querySelectorAll('.items button').forEach(function (b, j) { b.classList.toggle('on', j === i); });
+  render();
 }
 
 window.addEventListener('DOMContentLoaded', function () {
-  fillStaticText();
-  fillHarmOptions();
-  document.getElementById('harm').value = '0';   // default to the largest single harm, lameness
-  document.getElementById('oz').addEventListener('input', update);
-  document.getElementById('system').addEventListener('change', function () { fillHarmOptions(); update(); });
-  document.getElementById('harm').addEventListener('change', update);
-  document.getElementById('notes-body').innerHTML = renderNotes();
-  update();
+  document.title = P.title;
+  [['nav-calc', TEXT.nav.calculator], ['nav-eq', TEXT.nav.equation], ['title', P.title], ['chicken-label', P.chickenLabel],
+   ['type-heading', P.typeHeading], ['type-hint', P.typeHint], ['pick-heading', P.pickHeading], ['pick-hint', P.pickHint],
+   ['causes-heading', P.causesHeading], ['levels-heading', P.levelsHeading]].forEach(function (x) { document.getElementById(x[0]).innerHTML = x[1]; });
+  var sys = document.getElementById('system');
+  Object.keys(SYSTEMS).forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = SYSTEMS[k].label; sys.appendChild(o); });
+  var items = document.getElementById('items');
+  ITEMS.forEach(function (it, i) {
+    var b = document.createElement('button');
+    b.innerHTML = it[0] + ' <small>' + n(it[1] / OZ_TO_G, 1) + ' oz' + (it[2] ? ', ' + it[2] : '') + '</small>';
+    b.addEventListener('click', function () { pick(i); });
+    items.appendChild(b);
+  });
+  document.getElementById('amount').addEventListener('input', function () {
+    document.querySelectorAll('.items button').forEach(function (b) { b.classList.remove('on'); });
+    render();
+  });
+  document.getElementById('unit').addEventListener('change', function () {
+    var a = document.getElementById('amount'); var v = parseFloat(a.value);
+    if (v > 0) a.value = document.getElementById('unit').value === 'oz' ? Math.round(v / OZ_TO_G * 10) / 10 : Math.round(v * OZ_TO_G);
+    render();
+  });
+  sys.addEventListener('change', render);
+  render();
 });
 </script>
 

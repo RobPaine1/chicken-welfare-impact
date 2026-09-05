@@ -5,7 +5,7 @@
 var TEXT = {
 
   // ---- Shared -------------------------------------------------------------
-  nav: { equation: 'Equation', plate: 'Plate' },
+  nav: { calculator: 'Calculator', equation: 'Equation' },
 
   // What each harm is. Keys must match the names produced by scripts/fetch_paintrack.py.
   harms: {
@@ -34,13 +34,12 @@ var TEXT = {
     reformed:     { label: 'Higher-welfare (slower-growing)', farm: 'on a higher-welfare farm' }
   },
 
-  // ---- Plate page ---------------------------------------------------------
+  // ---- Calculator page ----------------------------------------------------
   plate: {
     title: 'Whats the welfare footprint of chicken?',
-    subtitle: 'Cooked meat only, not counting bone, breading or sauce.',
     chickenLabel: 'Chicken:',
     typeHeading: 'Type an amount',
-    typeHint: 'A restaurant chicken breast is about 6 oz. A deck-of-cards portion is about 3 oz.',
+    typeHint: 'Count the chicken meat only, not the bun, breading or bones. A restaurant chicken breast is about 6 oz; a deck-of-cards portion is about 3 oz.',
     pickHeading: 'Or pick a common item',
     pickHint: 'Approximate cooked-meat weights.',
     // {days} {farm} {fraction} {lifetime} {grams}

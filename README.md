@@ -2,12 +2,12 @@
 
 Two pages in `docs/`, served by GitHub Pages, with a toggle between them.
 
-`docs/plate.html` is the plain-language view: type an amount or pick a common
+`docs/index.html` is the calculator, the default page: type an amount or pick a common
 item (a Chick-fil-A sandwich, a Chipotle bowl) and read how many days a chicken
 had to live on a farm for it, the hours of each harm, and the hours at each pain
 intensity with its definition.
 
-`docs/index.html` is the equation view. You type in ounces of cooked chicken
+`docs/equation.html` is the equation view. You type in ounces of cooked chicken
 and see one equation:
 
     Specific Harm / Serving = Animal Lifetime / Serving × Specific Harm / Animal Lifetime
