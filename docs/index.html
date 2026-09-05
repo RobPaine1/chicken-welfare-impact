@@ -191,28 +191,24 @@ function buildEquation(oz, hi) {     // hi = index into HARMS, or -1 for all har
   var B, C;
   if (hi >= 0) {
     var h = HARMS[hi];
-    var share = HARM_TOTAL > 0 ? h[1] / HARM_TOTAL : 0;
     var harmlife = { w: K('harmlife', F(h[0], 'Animal Lifetime')), n: K('harmlife', hrs(h[1])) };
     var harmserv = { w: K('harmserv', F(h[0], 'Serving')),         n: K('harmserv', hrs(h[1] * lifetimes)) };
-    var sumWords = HARMS.map(function (x, i) { return i === hi ? K('harmlife', T(x[0])) : T(x[0]); }).join(PLUS);
-    var sumNums = HARMS.map(function (x, i) { var v = tex(x[1]); return i === hi ? K('harmlife', v) : v; }).join(PLUS) + '\\ \\text{h}_{\\text{WFP}}';
     B = {
       id: 'harm-per-lifetime', name: F(h[0], 'Animal Lifetime'), value: S('WFP', hrs(h[1])),
       tip: h[0] + ': ' + h[4] + '. Hours an average conventional chicken spends in this pain over its life (Welfare Footprint Project).',
       steps: [
         [harmlife.w + EQ + T('Welfare Footprint Project estimate'), K('harmlife', S('WFP', hrs(h[1])))],
-        [allharms.w + EQ + sumWords, allharms.n + EQ + sumNums],
-        [F(h[0], 'All Harms') + EQ + harmlife.w + DIV + allharms.w,
-         tex(share * 100, 0) + '\\%' + EQ + harmlife.n + DIV + allharms.n]
-      ].concat(lifetimeSteps).concat(intensitySteps)
+        [lifetime.w + EQ + T('Days Alive') + TIMES + T('Hours per Day'),
+         lifetime.n + EQ + S('NCC', LIFETIME_DAYS + '\\ \\text{days}') + TIMES + '24\\ \\text{h/day}'],
+        [F('Time in ' + h[0], 'Animal Lifetime') + EQ + harmlife.w + DIV + lifetime.w,
+         tex(h[1] / lifeH * 100, 0) + '\\%' + EQ + harmlife.n + DIV + lifetime.n]
+      ]
     };
     C = {
       id: 'harm-per-serving', name: F(h[0], 'Serving'), value: '\\mathbf{' + hrs(h[1] * lifetimes) + '}',
       tip: 'Hours of ' + h[0].toLowerCase() + ' behind this serving.',
       steps: [
-        [harmserv.w + EQ + lifeserv.w + TIMES + harmlife.w, harmserv.n + EQ + lifeserv.n + TIMES + harmlife.n],
-        [allserv.w + EQ + lifeserv.w + TIMES + allharms.w, allserv.n + EQ + lifeserv.n + TIMES + allharms.n],
-        [F(h[0], 'All Harms') + EQ + harmserv.w + DIV + allserv.w, tex(share * 100, 0) + '\\%' + EQ + harmserv.n + DIV + allserv.n]
+        [harmserv.w + EQ + lifeserv.w + TIMES + harmlife.w, harmserv.n + EQ + lifeserv.n + TIMES + harmlife.n]
       ]
     };
   } else {
