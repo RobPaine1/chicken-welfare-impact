@@ -36,7 +36,7 @@ var TEXT = {
 
   // ---- Plate page ---------------------------------------------------------
   plate: {
-    title: 'Select an amount of chicken',
+    title: 'Whats the welfare footprint of chicken?',
     subtitle: 'Cooked meat only, not counting bone, breading or sauce.',
     chickenLabel: 'Chicken:',
     typeHeading: 'Type an amount',
