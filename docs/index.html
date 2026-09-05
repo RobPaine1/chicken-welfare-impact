@@ -2,66 +2,181 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meat Welfare Calculator</title>
-<meta name="description" content="Enter what was on your plate and see how many animals it used and, for chicken, how many hours of pain it involved.">
-<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chicken welfare calculator</title>
 </head>
 <body>
-<header class="topbar"><div class="topbar-inner">
-  <a class="brand" href="index.html">Meat Welfare Calculator</a>
-  <nav><a href="index.html" class="active" aria-current="page">Calculator</a><a href="method.html">How it's calculated</a></nav>
-</div></header>
 
-<main>
-  <h1>What did this meal cost the animals?</h1>
-  <p class="lead">Enter what was on your plate. See the animals used and, for chicken, the hours of pain behind it.</p>
+<h1>Chicken welfare calculator</h1>
 
-  <section class="card">
-    <div class="controls">
-      <span class="seg" role="radiogroup" aria-label="Mode">
-        <input type="radio" name="mode" id="mode-meal" value="meal" checked><label for="mode-meal">One meal</label>
-        <input type="radio" name="mode" id="mode-week" value="week"><label for="mode-week">Typical week</label>
-      </span>
-      <span class="spacer"></span>
-      <span class="seg" role="radiogroup" aria-label="Units">
-        <input type="radio" name="unit" id="unit-oz" value="oz" checked><label for="unit-oz">oz</label>
-        <input type="radio" name="unit" id="unit-g" value="g"><label for="unit-g">g</label>
-      </span>
-      <span class="seg" role="radiogroup" aria-label="Period" id="period-control">
-        <input type="radio" name="period" id="period-week" value="week"><label for="period-week">per week</label>
-        <input type="radio" name="period" id="period-year" value="year" checked><label for="period-year">per year</label>
-      </span>
-    </div>
-    <div class="subcontrols" id="meal-input-control">
-      <span class="seg" role="radiogroup" aria-label="How to enter the meal">
-        <input type="radio" name="mealInput" id="mealInput-preset" value="preset" checked><label for="mealInput-preset">Pick a meal</label>
-        <input type="radio" name="mealInput" id="mealInput-weight" value="weight"><label for="mealInput-weight">Enter weight</label>
-      </span>
-    </div>
-    <div id="preset-panel">
-      <select id="preset" aria-label="Meal"></select>
-      <p class="muted" id="preset-note"></p>
-    </div>
-    <div id="weight-panel">
-    <div class="intake" id="intake"></div>
-    <p class="chips">Chicken portions:
-      <button type="button" class="chip" data-fill="chicken" data-oz="3">3 oz, deck of cards</button>
-      <button type="button" class="chip" data-fill="chicken" data-oz="6">6 oz breast</button>
-      <button type="button" class="chip" data-fill="chicken" data-oz="10">10 oz, half a rotisserie</button>
-    </p>
-    </div>
-  </section>
+<p>
+  I ate <input type="number" id="oz" value="6" min="0" step="0.5" size="4"> oz of cooked chicken.
+</p>
 
-  <section aria-live="polite">
-    <p class="headline" id="headline"></p>
-    <div id="cards"></div>
-  </section>
+<h2>Step 1. How much of a chicken is that?</h2>
 
-  <footer>Numbers come from USDA production data and the Welfare Footprint Project. <a href="method.html">See the formula and sources.</a></footer>
-</main>
+<table border="1" cellpadding="6">
+  <tr>
+    <td>cooked chicken eaten</td>
+    <td><span id="s1-oz"></span> oz</td>
+    <td>= <span id="s1-g"></span> g</td>
+  </tr>
+  <tr>
+    <td>&divide; cooking yield (meat loses about a quarter of its weight when cooked)</td>
+    <td>&divide; 0.75</td>
+    <td>= <span id="s1-raw"></span> g of raw meat</td>
+  </tr>
+  <tr>
+    <td>&divide; raw meat from one chicken</td>
+    <td>&divide; <span id="meat-per-bird"></span> g</td>
+    <td>= <b><span id="s1-birds"></span> of a chicken</b> (<span id="s1-frac"></span>)</td>
+  </tr>
+</table>
 
-<script src="calc.js"></script>
-<script src="app.js"></script>
+<p>Where "raw meat from one chicken" comes from:</p>
+
+<table border="1" cellpadding="6">
+  <tr>
+    <td>live weight of a U.S. meat chicken</td>
+    <td>61.1 billion lb &divide; 9.33 billion birds</td>
+    <td>= 6.55 lb = <span id="live-g"></span> g</td>
+  </tr>
+  <tr>
+    <td>&times; dressing (carcass as a share of live weight)</td>
+    <td>&times; 0.75</td>
+    <td>= <span id="carcass-g"></span> g carcass</td>
+  </tr>
+  <tr>
+    <td>&times; edible meat as a share of the carcass</td>
+    <td>&times; 0.74</td>
+    <td>= <b><span id="meat-per-bird-2"></span> g of raw meat</b></td>
+  </tr>
+</table>
+
+<h2>Step 2. How much did that chicken suffer?</h2>
+
+<p>
+  The Welfare Footprint Project estimated how many hours an average conventional meat chicken spends
+  in pain over its life (about 47 days), cause by cause.
+  Your meal's share is that number multiplied by the fraction of a chicken from step 1.
+</p>
+
+<table border="1" cellpadding="6">
+  <tr>
+    <th>cause of pain</th>
+    <th>hours per chicken</th>
+    <th>&times; your fraction</th>
+    <th>= hours behind your meal</th>
+  </tr>
+  <tbody id="harms"></tbody>
+</table>
+
+<p>The same hours, split by how bad the pain is instead of what caused it:</p>
+
+<table border="1" cellpadding="6">
+  <tr>
+    <th>intensity</th>
+    <th>per chicken</th>
+    <th>&times; your fraction</th>
+    <th>= behind your meal</th>
+  </tr>
+  <tbody id="intensities"></tbody>
+</table>
+
+<p>
+  The two tables come from different releases of the same data and differ by about 4%.
+  Treat the by-cause numbers as proportions rather than exact hours.
+</p>
+
+<h2>Sources</h2>
+
+<ol>
+  <li>Live weight: <a href="https://www.nass.usda.gov/Publications/Todays_Reports/reports/plva0425.pdf">USDA NASS, Poultry Production and Value 2024 Summary</a> (9.33 billion broilers, 61.1 billion lb).</li>
+  <li>Dressing 0.75: <a href="https://extension.umaine.edu/publications/2223e/">University of Maine Extension, Understanding Poultry Yields</a>.</li>
+  <li>Edible share 0.74: <a href="https://livestock.extension.wisc.edu/articles/bird-breakdown-exploring-yields-and-cuts-of-poultry/">University of Wisconsin Extension, Bird Breakdown</a>.</li>
+  <li>Cooking yield 0.75: <a href="https://www.ars.usda.gov/ARSUserFiles/80400525/data/retn/usda_cookingyields_meatpoultry.pdf">USDA Table of Cooking Yields for Meat and Poultry</a>.</li>
+  <li>Life of 47 days: <a href="https://www.nationalchickencouncil.org/about-the-industry/statistics/u-s-broiler-performance/">National Chicken Council, U.S. Broiler Performance</a>.</li>
+  <li>Hours of pain by intensity: <a href="https://welfarefootprint.org/broilers/">Welfare Footprint Institute, Broilers</a>, conventional scenario. Consistent with their finding that the Better Chicken Commitment prevents 33 h of Disabling (66%), 79 h of Hurtful (24%) and 25 s of Excruciating (78%) pain per bird.</li>
+  <li>Hours of pain by cause: <a href="https://pain-track.org/broilers">Welfare Footprint Institute, Pain-Track for broilers</a>, "time in pain per harm" for the average bird.</li>
+  <li>Pain intensity definitions: <a href="https://welfarefootprint.org/technical-definitions/pain-intensities/">Welfare Footprint Institute</a>.</li>
+</ol>
+
+<p>Not included: pain during transport and slaughter, breeder birds, and diseases the project did not model. The numbers are conservative.</p>
+
+<script>
+// Constants (see Sources above)
+var OZ_TO_G = 28.35;
+var COOKING_YIELD = 0.75;
+var LIVE_LB = 61.1e9 / 9.33e9;      // 6.55 lb
+var LIVE_G = LIVE_LB * 453.6;
+var CARCASS_G = LIVE_G * 0.75;
+var MEAT_G = CARCASS_G * 0.74;      // raw edible meat per bird
+
+// Hours of pain per conventional broiler, Welfare Footprint Project
+var HARMS = [
+  ['Lameness (leg disorders from fast growth)', 457.9],
+  ['No foraging or exploring', 76.7],
+  ['No dustbathing', 70.0],
+  ['No perching', 63.0],
+  ['Heat stress', 38.9],
+  ['Ascites (heart and lung failure)', 28.3],
+  ['Sudden death syndrome', 0.0]
+];
+var INTENSITIES = [
+  ['Annoying', 324.7],
+  ['Hurtful', 333.6],
+  ['Disabling', 50.3],
+  ['Excruciating', 30.2 / 3600]   // 30 seconds
+];
+
+function n(x, d) { return Number(x.toFixed(d === undefined ? 1 : d)).toLocaleString(); }
+function hrs(h) {
+  if (h === 0) return '0 h';
+  if (h < 1 / 60) return n(h * 3600) + ' s';
+  if (h < 1) return n(h * 60) + ' min';
+  return n(h) + ' h';
+}
+function set(id, text) { document.getElementById(id).textContent = text; }
+
+set('live-g', n(LIVE_G, 0));
+set('carcass-g', n(CARCASS_G, 0));
+set('meat-per-bird', n(MEAT_G, 0));
+set('meat-per-bird-2', n(MEAT_G, 0));
+
+function update() {
+  var oz = parseFloat(document.getElementById('oz').value) || 0;
+  var g = oz * OZ_TO_G;
+  var raw = g / COOKING_YIELD;
+  var birds = raw / MEAT_G;
+
+  set('s1-oz', n(oz));
+  set('s1-g', n(g, 0));
+  set('s1-raw', n(raw, 0));
+  set('s1-birds', n(birds, 3));
+  set('s1-frac', birds > 0 && birds < 0.67 ? 'about 1/' + Math.round(1 / birds) : n(birds, 2) + ' chickens');
+
+  var rows = '';
+  var total = 0;
+  HARMS.forEach(function (h) {
+    total += h[1];
+    rows += '<tr><td>' + h[0] + '</td><td>' + hrs(h[1]) + '</td><td>&times; ' + n(birds, 3) + '</td><td><b>' + hrs(h[1] * birds) + '</b></td></tr>';
+  });
+  rows += '<tr><td><b>Total</b></td><td>' + hrs(total) + '</td><td></td><td><b>' + hrs(total * birds) + '</b></td></tr>';
+  document.getElementById('harms').innerHTML = rows;
+
+  rows = '';
+  total = 0;
+  INTENSITIES.forEach(function (i) {
+    total += i[1];
+    rows += '<tr><td>' + i[0] + '</td><td>' + hrs(i[1]) + '</td><td>&times; ' + n(birds, 3) + '</td><td><b>' + hrs(i[1] * birds) + '</b></td></tr>';
+  });
+  rows += '<tr><td><b>Total</b></td><td>' + hrs(total) + '</td><td></td><td><b>' + hrs(total * birds) + '</b></td></tr>';
+  document.getElementById('intensities').innerHTML = rows;
+}
+
+document.getElementById('oz').addEventListener('input', update);
+update();
+</script>
+
 </body>
 </html>

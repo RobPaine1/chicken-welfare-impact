@@ -4,7 +4,7 @@
   "private": true,
   "description": "Meat welfare calculator: turns weekly meat intake into animals used and hours of pain (chicken), with sourced constants.",
   "scripts": {
-    "test": "node --test tests/calc.test.js",
+    "test": "node --test archive/site-v2/tests/calc.test.js",
     "serve": "python3 -m http.server 8000 --directory docs"
   },
   "license": "MIT"

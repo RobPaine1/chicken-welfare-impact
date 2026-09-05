@@ -1,73 +1,34 @@
-# Meat Welfare Calculator
+# Chicken welfare calculator
 
-A one-page calculator: enter how much chicken, turkey, pork and beef you eat in a
-typical week and see how many animals that uses, how many days of animal life it
-represents and, for chicken, how many hours of pain it involves.
+`docs/index.html` is a single plain HTML page, served by GitHub Pages, that
+shows the equation behind the chicken welfare numbers. You type in ounces of
+cooked chicken and every step of the calculation updates in place:
 
-Live site: the `docs/` folder is served by GitHub Pages.
+1. cooked weight → raw weight → fraction of a chicken (USDA production data,
+   yield percentages)
+2. that fraction × hours of pain per chicken, by cause and by intensity
+   (Welfare Footprint Project, conventional broilers)
 
-## How the numbers work
+No CSS, no build step, no dependencies. The constants and their sources are
+listed on the page and in the page's script.
 
-Everything is one chain of multiplications, with every constant sourced:
+## Archive
 
-```
-animals used  = cooked meat eaten ÷ cooking yield ÷ raw edible meat per animal
-days of life  = animals used × days each animal lives
-hours of pain = animals used × hours of pain per animal      (chicken only)
-```
-
-Raw edible meat per animal comes from USDA 2024 production totals (pounds ÷ head),
-a dressing percentage (live → carcass, poultry only; USDA reports pork and beef
-on a carcass basis) and an edible-meat share of the carcass.
-
-Hours of pain per chicken come from the Welfare Footprint Project's cumulative
-pain estimates for a conventional fast-growing broiler, both by intensity
-(Annoying, Hurtful, Disabling, Excruciating) and by cause (lameness, behavioural
-deprivation, heat stress, ascites, sudden death).
-
-The explanation page renders the worked example, constant table, limitations and
-source list from the same constants the calculator uses, so they cannot drift
-apart.
-
-## Files
-
-- `docs/index.html` + `docs/app.js` – the calculator page.
-- `docs/method.html` + `docs/method.js` – the explanation page (formula, worked
-  example, constants table, limitations, sources), rendered from the same
-  constants the calculator uses.
-- `docs/style.css` – shared styles.
-- `docs/calc.js` – every constant, its source, and the pure formulas. Start here
-  if you want to change or audit a number.
-- `tests/calc.test.js` – unit tests for the formulas and sanity checks against
-  published figures. Run with `npm test` (Node 18+).
-- `scripts/` – the original R pipeline that estimated chicken content of specific
-  FNDDS foods and joined it to the Welfare Footprint per-harm dataset. Kept for
-  reference; the site no longer depends on it. Two issues were found in it while
-  rebooting: seconds were converted to hours by dividing by 60 (now fixed to
-  3600), and the "Conventional" filter also picked up broiler-breeder harms
-  (hunger, peritonitis) as if every meat bird endured them. The raw data files it
-  reads are not in the repo.
-- `output/chicken_food_impacts.json` – last output of that pipeline (per-food
-  chicken grams and pain hours). Unused by the site.
-
-## Running locally
-
-```
-npm test          # run the formula tests
-npm run serve     # serve docs/ at http://localhost:8000
-```
-
-The page also works when opened directly as a file; it has no build step and no
-network dependencies.
+- `archive/site-v2/` – the earlier two-page calculator (meal presets, weekly
+  view, turkey/pork/beef, explanation page). `calc.js` there holds every
+  constant with its source; `npm test` runs its unit tests.
+- `scripts/` – the original R pipeline that estimated chicken content of
+  specific FNDDS foods and joined it to the Welfare Footprint per-harm
+  dataset. Its raw data files are not in the repo. Two bugs were found and
+  noted while rebooting: seconds were divided by 60 instead of 3600 (fixed),
+  and the "Conventional" filter also picked up broiler-breeder harms.
+- `output/chicken_food_impacts.json` – last output of that pipeline.
 
 ## Main sources
 
-- USDA NASS, Poultry – Production and Value 2024 Summary
-- USDA NASS, Livestock Slaughter 2024 Summary
-- Welfare Footprint Institute, Broilers (cumulative time in pain) and Pain-Track data
-- Schuck-Paim & Alonso (2022), Quantifying Pain in Broiler Chickens
-- University extension yield guides (Maine, Wisconsin, South Dakota State) and the
-  USDA Table of Cooking Yields for Meat and Poultry
-
-See the "Sources" list at the bottom of the page for links and the note attached
-to each constant.
+- USDA NASS, Poultry Production and Value 2024 Summary
+- University of Maine and University of Wisconsin extension poultry yield guides
+- USDA Table of Cooking Yields for Meat and Poultry
+- National Chicken Council, U.S. Broiler Performance
+- Welfare Footprint Institute, Broilers and Pain-Track data;
+  Schuck-Paim & Alonso (2022), Quantifying Pain in Broiler Chickens
