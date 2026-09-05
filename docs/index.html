@@ -35,12 +35,14 @@
   .k-lifetime { color: #616161; }
   .k-harmserv { color: #b71c1c; }
   .k-allserv  { color: #8d6e63; }
+  .nav { color: #666; }
   #notes { margin-top: 2em; font-size: 0.95em; color: #333; }
   #notes summary { cursor: pointer; }
 </style>
 </head>
 <body>
 
+<p class="nav"><b>Equation</b> &middot; <a href="plate.html">Plate</a></p>
 <h1>Chicken welfare calculator</h1>
 
 <p>
@@ -59,6 +61,7 @@
 </details>
 
 <script src="wfp.js"></script>
+<script src="chicken.js"></script>
 <script>
 // ---------------------------------------------------------------------------
 // Sources
@@ -74,33 +77,6 @@ var SRC = {
   tableau: 'https://public.tableau.com/app/profile/cynthia.schuck/viz/BroilerChickens2021/Broilers',
   defs:    'https://welfarefootprint.org/technical-definitions/pain-intensities/'
 };
-
-// ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
-var OZ_TO_G = 28.35;
-var COOKING_YIELD = 0.75;
-var LIVE_LB_PER_YEAR = 61.1e9;      // lb of live chickens produced in the U.S., 2024
-var BIRDS_PER_YEAR = 9.33e9;        // chickens produced, 2024
-var LIVE_LB = LIVE_LB_PER_YEAR / BIRDS_PER_YEAR;   // 6.55 lb per bird
-var DRESSING = 0.75;
-var EDIBLE_SHARE = 0.74;
-
-// The two production systems the Welfare Footprint Project modelled.
-var SYSTEMS = {
-  conventional: { liveG: LIVE_LB * 453.6, liveTag: 'NASS', lifetimeDays: 47, lifeTag: 'NCC',
-                  liveNote: 'U.S. average for 2024: all live weight produced in the year divided by the number of birds.' },
-  reformed:     { liveG: 2500, liveTag: 'WFP', lifetimeDays: 56, lifeTag: 'WFP',
-                  liveNote: 'The project\u2019s reformed scenario: a slower-growing breed reaching 2.5 kg at 56 days, under Better Chicken Commitment conditions.' }
-};
-var LEVELS = ['annoying', 'hurtful', 'disabling', 'excruciating'];
-var LEVEL_NAMES = { annoying: 'Annoying', hurtful: 'Hurtful', disabling: 'Disabling', excruciating: 'Excruciating' };
-var LEVEL_DEFS = [
-  ['Annoying', 'unpleasant, but does not disrupt normal activity'],
-  ['Hurtful', 'hard to ignore; the bird is aware of it most of the time'],
-  ['Disabling', 'continuously distressing; no enjoyment is possible'],
-  ['Excruciating', 'intolerable even for seconds']
-];
 
 // ---------------------------------------------------------------------------
 // Formatting helpers
@@ -326,7 +302,7 @@ function renderNotes() {
     '<ul>' + causes.map(function (c) { return li('<b>' + c.name + '</b>: ' + c.what + '.'); }).join('') + '</ul>' +
     '<p>The two breeder-hen lines are part of the project\u2019s own total: the parent hens\u2019 pain is spread over the chicks each produces, so a broiler carries a small share of it.</p>' +
     '<p><b>The intensities</b> (<a href="' + SRC.defs + '">project definitions</a>):</p>' +
-    '<ul>' + LEVEL_DEFS.map(function (d) { return li('<b>' + d[0] + '</b>: ' + d[1] + '.'); }).join('') + '</ul>' +
+    '<ul>' + LEVELS.map(function (l) { return li('<b>' + LEVEL_NAMES[l] + '</b>: ' + LEVEL_DEFS[l] + '.'); }).join('') + '</ul>' +
     '<p><b>Uncertainty.</b> The project varies every input over its plausible range and reports a mean and a 90% interval (5th to 95th percentile); no median or 95% interval is published. ' +
     'The intervals on the by-intensity totals are the project\u2019s own, from its Tableau workbook. The intervals on individual causes are derived: each cause\u2019s standard deviation from the project\u2019s per-harm figures, scaled so the same rule reproduces the published interval for the total. Treat those as approximate. ' +
     'The interval on the all-harms total combines the four intensity intervals in quadrature. ' +

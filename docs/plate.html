@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What did this chicken cost?</title>
+<style>
+  body { max-width: 1000px; margin: 1em auto; padding: 0 1em; line-height: 1.45; }
+  .nav { color: #666; }
+  h1 { margin-bottom: 0.2em; }
+  .cols { display: flex; gap: 2em; flex-wrap: wrap; align-items: flex-start; }
+  .cols > div { flex: 1 1 320px; }
+  input[type=number] { font-size: 1.2em; width: 6em; padding: 0.2em 0.4em; }
+  select { font-size: 1em; padding: 0.2em; }
+  .items button { display: block; width: 100%; text-align: left; font: inherit; padding: 0.4em 0.6em; margin: 0.25em 0; background: #f6f6f6; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; }
+  .items button:hover { background: #ececec; }
+  .items button.on { background: #e4ecf7; border-color: #9bb7dd; }
+  .items button small { color: #666; }
+  #headline { font-size: 1.35em; margin: 1.2em 0 0.4em; }
+  #headline small { font-size: 0.7em; color: #555; }
+  h2 { font-size: 1.1em; margin: 0.8em 0 0.4em; }
+  table { border-collapse: collapse; width: 100%; }
+  td { padding: 0.3em 0.5em; border-bottom: 1px solid #eee; vertical-align: top; }
+  td.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; width: 8em; }
+  td.range { color: #777; white-space: nowrap; width: 8em; font-size: 0.9em; }
+  td.def { color: #555; font-size: 0.92em; }
+  .muted { color: #666; font-size: 0.9em; }
+  #result[hidden] { display: none; }
+</style>
+</head>
+<body>
+
+<p class="nav"><a href="index.html">Equation</a> &middot; <b>Plate</b></p>
+<h1>Select an amount of chicken</h1>
+<p class="muted">Cooked meat only, not counting bone, breading or sauce. Chicken: <select id="system"></select></p>
+
+<div class="cols">
+  <div>
+    <p><b>Type an amount</b></p>
+    <p><input type="number" id="amount" min="0" step="0.5" placeholder="0"> <select id="unit"><option value="oz">oz</option><option value="g">grams</option></select></p>
+    <p class="muted">A restaurant chicken breast is about 6 oz. A deck-of-cards portion is about 3 oz.</p>
+  </div>
+  <div>
+    <p><b>Or pick a common item</b></p>
+    <div class="items" id="items"></div>
+    <p class="muted">Approximate cooked-meat weights.</p>
+  </div>
+</div>
+
+<div id="result" hidden>
+  <p id="headline"></p>
+  <div class="cols">
+    <div>
+      <h2>This resulted in:</h2>
+      <table id="causes"></table>
+    </div>
+    <div>
+      <h2>Researchers think this resulted in the chicken feeling:</h2>
+      <table id="levels"></table>
+    </div>
+  </div>
+  <p class="muted" id="foot"></p>
+</div>
+
+<script src="wfp.js"></script>
+<script src="chicken.js"></script>
+<script>
+// Common items, as grams of cooked chicken meat (approximate; bone, breading and sauce excluded).
+var ITEMS = [
+  ['Chick-fil-A Chicken Sandwich', 100, 'one breaded breast filet'],
+  ['Chick-fil-A Nuggets, 8 count', 95, ''],
+  ['McDonald’s McNuggets, 10 piece', 80, 'about half of a nugget is chicken'],
+  ['Popeyes Chicken Sandwich', 110, ''],
+  ['KFC 2-piece, thigh and drumstick', 140, 'meat only'],
+  ['Chipotle chicken bowl or burrito', 113, 'a 4 oz scoop'],
+  ['Grilled chicken breast, restaurant', 170, '6 oz'],
+  ['Half a rotisserie chicken', 280, 'meat only'],
+  ['6 buffalo wings', 90, 'meat only'],
+  ['Chicken Caesar salad', 85, ''],
+  ['Bowl of chicken noodle soup', 25, '']
+];
+
+function n(x, d) { return Number(x.toFixed(d === undefined ? 1 : d)).toLocaleString('en-US'); }
+function dur(h) {
+  if (h === 0) return '0 hours';
+  if (h < 1 / 60) return n(h * 3600, h * 3600 < 10 ? 1 : 0) + ' seconds';
+  if (h < 1) return n(h * 60, 0) + ' minutes';
+  if (h < 10) return n(h, 1) + ' hours';
+  return n(h, 0) + ' hours';
+}
+function durRange(lo, hi) {
+  if (hi === 0) return '';
+  var unit = hi < 1 / 60 ? 3600 : hi < 1 ? 60 : 1;
+  var d = hi * unit < 10 ? 1 : 0;
+  return 'likely ' + n(lo * unit, d) + ' to ' + n(hi * unit, d) + (unit === 3600 ? ' s' : unit === 60 ? ' min' : ' h');
+}
+function frac(x) { return x > 0 && x < 0.67 ? 'about 1/' + Math.round(1 / x) : n(x, 2); }
+
+function currentGrams() {
+  var v = parseFloat(document.getElementById('amount').value);
+  if (!(v > 0)) return 0;
+  return document.getElementById('unit').value === 'oz' ? v * OZ_TO_G : v;
+}
+
+function render() {
+  var g = currentGrams();
+  var box = document.getElementById('result');
+  if (!(g > 0)) { box.hidden = true; return; }
+  var sysKey = document.getElementById('system').value;
+  var st = servingStats(g, sysKey);
+  box.hidden = false;
+
+  var farm = sysKey === 'conventional' ? 'on a factory farm' : 'on a higher-welfare farm';
+  document.getElementById('headline').innerHTML =
+    'A chicken had to live <b>' + n(st.days, st.days < 10 ? 1 : 0) + ' days</b> ' + farm + ' to create this chicken.' +
+    '<br><small>That is ' + frac(st.lifetimes) + ' of one bird’s ' + st.lifetimeDays + '-day life, from ' + n(st.cookedG, 0) + ' g of cooked meat.</small>';
+
+  document.getElementById('causes').innerHTML = st.causes.slice().sort(function (a, b) { return b.hours - a.hours; }).map(function (c) {
+    return '<tr title="' + c.what.replace(/"/g, '&quot;') + '"><td class="num"><b>' + dur(c.hours) + '</b></td><td>of ' + c.name.toLowerCase() + '</td><td class="range">' + durRange(c.lo, c.hi) + '</td></tr>';
+  }).join('') + '<tr><td class="num"><b>' + dur(st.allHours) + '</b></td><td>of pain in total</td><td class="range"></td></tr>';
+
+  document.getElementById('levels').innerHTML = st.levels.slice().reverse().map(function (l) {
+    return '<tr><td class="num"><b>' + dur(l.hours) + '</b></td><td>of <b>' + l.name.toLowerCase() + '</b> pain, which is “' + l.def + '”</td><td class="range">' + durRange(l.lo, l.hi) + '</td></tr>';
+  }).join('');
+
+  document.getElementById('foot').textContent =
+    'Hours are an average bird’s time in pain over its life (Welfare Footprint Project, waking hours only), scaled to this serving. ' +
+    'The grey figures are 90% ranges. The causes and the intensities are the same hours split two ways. Sources and the full working are on the Equation page.';
+}
+
+function pick(i) {
+  var it = ITEMS[i];
+  var unit = document.getElementById('unit').value;
+  document.getElementById('amount').value = unit === 'oz' ? Math.round(it[1] / OZ_TO_G * 10) / 10 : it[1];
+  document.querySelectorAll('.items button').forEach(function (b, j) { b.classList.toggle('on', j === i); });
+  render();
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  var sys = document.getElementById('system');
+  Object.keys(SYSTEMS).forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = SYSTEMS[k].label; sys.appendChild(o); });
+  var items = document.getElementById('items');
+  ITEMS.forEach(function (it, i) {
+    var b = document.createElement('button');
+    b.innerHTML = it[0] + ' <small>' + n(it[1] / OZ_TO_G, 1) + ' oz' + (it[2] ? ', ' + it[2] : '') + '</small>';
+    b.addEventListener('click', function () { pick(i); });
+    items.appendChild(b);
+  });
+  document.getElementById('amount').addEventListener('input', function () {
+    document.querySelectorAll('.items button').forEach(function (b) { b.classList.remove('on'); });
+    render();
+  });
+  document.getElementById('unit').addEventListener('change', function () {
+    var a = document.getElementById('amount'); var v = parseFloat(a.value);
+    if (v > 0) a.value = document.getElementById('unit').value === 'oz' ? Math.round(v / OZ_TO_G * 10) / 10 : Math.round(v * OZ_TO_G);
+    render();
+  });
+  sys.addEventListener('change', render);
+  render();
+});
+</script>
+
+</body>
+</html>
