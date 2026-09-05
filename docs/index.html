@@ -111,15 +111,37 @@ function buildTree(oz, hi) {     // hi = index into HARMS, or -1 for all harms
   var approx = lifetimes > 0 && lifetimes < 0.67 ? ' \\approx \\tfrac{1}{' + Math.round(1 / lifetimes) + '}' : '';
   var im = 0, ilo = 0, ihi = 0; INTENSITIES.forEach(function (i) { im += i[1]; ilo += i[2]; ihi += i[3]; });
 
+  var cookingYield = { id: 'cooking-yield', name: T('Cooking Yield'), value: L(SRC.cooking, tex(COOKING_YIELD, 2)),
+    note: 'Share of raw weight left after cooking. Most roasted, grilled or fried cuts keep 70–80%. Source: <a href="' + SRC.cooking + '">USDA Table of Cooking Yields for Meat and Poultry</a>.' };
+
+  var rawPerLifetime = {
+    id: 'raw-per-lifetime', name: F('Raw Meat', 'Animal Lifetime'), value: G(RAW_MEAT_PER_BIRD),
+    note: 'What one chicken yields: its live weight, times the share that is carcass, times the share of the carcass that is boneless meat.',
+    ops: ['\u00d7', '\u00d7'],
+    terms: [
+      { id: 'live-weight', name: F('Live Weight', 'Animal'), value: G(LIVE_G) + '\\ (' + tex(LIVE_LB, 2) + '\\ \\text{lb})',
+        note: 'U.S. average for 2024: all the live weight produced in the year divided by the number of birds. Source: <a href="' + SRC.nass + '">USDA NASS, Poultry Production and Value 2024 Summary</a>.',
+        ops: ['\u00f7'],
+        terms: [
+          { name: F('Live Weight Produced', 'Year'), value: L(SRC.nass, '61.1 \\times 10^{9}\\ \\text{lb}') },
+          { name: F('Animals Produced', 'Year'), value: L(SRC.nass, '9.33 \\times 10^{9}') }
+        ] },
+      { id: 'dressing', name: T('Dressing'), value: L(SRC.umaine, tex(DRESSING, 2)),
+        note: 'The ready-to-cook carcass as a share of live weight; 70–78% is typical. Source: <a href="' + SRC.umaine + '">University of Maine Extension, Understanding Poultry Yields</a>.' },
+      { id: 'edible-share', name: T('Edible Share'), value: L(SRC.wisc, tex(EDIBLE_SHARE, 2)),
+        note: 'Boneless meat as a share of the carcass. Source: <a href="' + SRC.wisc + '">University of Wisconsin Extension, Bird Breakdown</a>. These yields are industry averages; individual birds and cuts vary by roughly &plusmn;10%.' }
+    ]
+  };
+
   var lifetimesPerServing = {
     id: 'lifetimes-per-serving', name: F('Animal Lifetime', 'Serving'), value: lx + '\\ \\text{chickens}' + approx,
-    note: 'How many chickens\' worth of meat is on the plate: the raw meat in the serving divided by the raw meat one chicken yields in its lifetime.',
-    ops: ['\u00f7'],
+    note: 'How many chickens\' worth of meat is on the plate: the raw meat in the serving times the chickens it takes to produce each gram of raw meat.',
+    ops: ['\u00d7'],
     terms: [
       {
         id: 'raw-per-serving', name: F('Raw Meat', 'Serving'), value: G(rawG),
-        note: 'Meat loses about a quarter of its weight in cooking, so divide the cooked weight by the cooking yield to get back to raw.',
-        ops: ['\u00f7'],
+        note: 'The cooked weight times how much raw meat each gram of cooked meat started as.',
+        ops: ['\u00d7'],
         terms: [
           { id: 'cooked-per-serving', name: F('Cooked Meat', 'Serving'), value: G(cookedG),
             note: 'The ounces are the number you typed at the top.',
@@ -128,28 +150,14 @@ function buildTree(oz, hi) {     // hi = index into HARMS, or -1 for all harms
               { name: T('Ounces Eaten'), value: tex(oz) + '\\ \\text{oz}' },
               { name: T('Grams per Ounce'), value: '28.35\\ \\text{g/oz}' }
             ] },
-          { id: 'cooking-yield', name: T('Cooking Yield'), value: L(SRC.cooking, tex(COOKING_YIELD, 2)),
-            note: 'Share of raw weight left after cooking. Most roasted, grilled or fried cuts keep 70–80%. Source: <a href="' + SRC.cooking + '">USDA Table of Cooking Yields for Meat and Poultry</a>.' }
+          { id: 'raw-per-cooked', name: F('Raw Meat', 'Cooked Meat'), value: tex(1 / COOKING_YIELD, 2),
+            note: 'Meat loses about a quarter of its weight in cooking, so each gram of cooked meat began as about 1.33 g of raw meat: one divided by the cooking yield.',
+            pre: '1\\ \\div', terms: [cookingYield] }
         ]
       },
-      {
-        id: 'raw-per-lifetime', name: F('Raw Meat', 'Animal Lifetime'), value: G(RAW_MEAT_PER_BIRD),
-        note: 'What one chicken yields: its live weight, times the share that is carcass, times the share of the carcass that is boneless meat.',
-        ops: ['\u00d7', '\u00d7'],
-        terms: [
-          { id: 'live-weight', name: F('Live Weight', 'Animal'), value: G(LIVE_G) + '\\ (' + tex(LIVE_LB, 2) + '\\ \\text{lb})',
-            note: 'U.S. average for 2024: all the live weight produced in the year divided by the number of birds. Source: <a href="' + SRC.nass + '">USDA NASS, Poultry Production and Value 2024 Summary</a>.',
-            ops: ['\u00f7'],
-            terms: [
-              { name: F('Live Weight Produced', 'Year'), value: L(SRC.nass, '61.1 \\times 10^{9}\\ \\text{lb}') },
-              { name: F('Animals Produced', 'Year'), value: L(SRC.nass, '9.33 \\times 10^{9}') }
-            ] },
-          { id: 'dressing', name: T('Dressing'), value: L(SRC.umaine, tex(DRESSING, 2)),
-            note: 'The ready-to-cook carcass as a share of live weight; 70–78% is typical. Source: <a href="' + SRC.umaine + '">University of Maine Extension, Understanding Poultry Yields</a>.' },
-          { id: 'edible-share', name: T('Edible Share'), value: L(SRC.wisc, tex(EDIBLE_SHARE, 2)),
-            note: 'Boneless meat as a share of the carcass. Source: <a href="' + SRC.wisc + '">University of Wisconsin Extension, Bird Breakdown</a>. These yields are industry averages; individual birds and cuts vary by roughly &plusmn;10%.' }
-        ]
-      }
+      { id: 'lifetimes-per-raw', name: F('Animal Lifetime', 'Raw Meat'), value: '\\frac{1}{' + G(RAW_MEAT_PER_BIRD) + '}',
+        note: 'One chicken for every ' + n(RAW_MEAT_PER_BIRD, 0) + ' g of raw meat: one divided by the raw meat one chicken yields.',
+        pre: '1\\ \\div', terms: [rawPerLifetime] }
     ]
   };
 
@@ -261,6 +269,7 @@ function renderInside(node, path, big) {
   if (node.extras) node.extras.forEach(function (x, i) { html += renderRow(x, path + '-x' + i); });
   if (node.subs) node.subs.forEach(function (s, i) { html += renderRow(s, path + '-s' + i); });
   if (node.terms) {
+    if (node.pre) html += opRow(eqCell(node.pre), big);
     node.terms.forEach(function (t, i) {
       if (i > 0) html += opRow(node.ops[i - 1], big);
       html += renderRow(t, path + '-' + i, big);
