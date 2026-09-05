@@ -24,6 +24,19 @@
   table.steps td.n { width: 1.5em; color: #888; text-align: right; }
   table.steps td.words { width: 55%; }
   table.steps tr.result td { font-weight: bold; }
+  /* Each quantity that is produced on one line and used on another gets its own light tint,
+     applied to both its words and its number. */
+  .k { border-radius: 4px; padding: 0.05em 0.25em; }
+  .k-cooked   { background: #fff1a8; }
+  .k-rawserv  { background: #ffd6a5; }
+  .k-live     { background: #cfe8ff; }
+  .k-rawlife  { background: #c8f0d0; }
+  .k-lifeserv { background: #e4d4ff; }
+  .k-harmlife { background: #ffc9d6; }
+  .k-allharms { background: #b8ecdf; }
+  .k-lifetime { background: #e5e7eb; }
+  .k-harmserv { background: #f9c8ee; }
+  .k-allserv  { background: #f6d5b8; }
   #notes { margin-top: 2em; font-size: 0.95em; color: #333; }
   #notes summary { cursor: pointer; }
 </style>
@@ -117,6 +130,7 @@ function range(lo, hi) {
 }
 function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
 var TIMES = ' \\times ', DIV = ' \\div ', EQ = ' = ', PLUS = ' + ';
+function K(key, body) { return '\\htmlClass{k k-' + key + '}{' + body + '}'; }   // tint a term
 
 // ---------------------------------------------------------------------------
 // The equation: three rows, each with an optional table of worked steps.
@@ -131,25 +145,33 @@ function buildEquation(oz, hi) {     // hi = index into HARMS, or -1 for all har
   var im = 0, ilo = 0, ihi = 0; INTENSITIES.forEach(function (i) { im += i[1]; ilo += i[2]; ihi += i[3]; });
   var lifeH = LIFETIME_DAYS * 24;
 
+  // Reused quantities, each with its words, its number, and a tint.
+  var cooked   = { w: K('cooked',   F('Cooked Meat', 'Serving')),         n: K('cooked',   G(cookedG)) };
+  var rawserv  = { w: K('rawserv',  F('Raw Meat', 'Serving')),            n: K('rawserv',  G(rawG)) };
+  var live     = { w: K('live',     F('Live Weight', 'Animal')),          n: K('live',     G(LIVE_G)) };
+  var rawlife  = { w: K('rawlife',  F('Raw Meat', 'Animal Lifetime')),    n: K('rawlife',  G(RAW_MEAT_PER_BIRD)) };
+  var lifeserv = { w: K('lifeserv', F('Animal Lifetime', 'Serving')),     n: K('lifeserv', lx + '\\ \\text{chickens}') };
+  var allharms = { w: K('allharms', F('All Harms', 'Animal Lifetime')),   n: K('allharms', hrs(HARM_TOTAL)) };
+  var lifetime = { w: K('lifetime', T('Animal Lifetime')),                n: K('lifetime', H(tex(lifeH, 0))) };
+  var allserv  = { w: K('allserv',  F('All Harms', 'Serving')),           n: K('allserv',  hrs(HARM_TOTAL * lifetimes)) };
+
   var A = {
-    id: 'lifetimes-per-serving', name: F('Animal Lifetime', 'Serving'), value: lx + '\\ \\text{chickens}' + approx,
+    id: 'lifetimes-per-serving', name: lifeserv.w, value: K('lifeserv', lx + '\\ \\text{chickens}' + approx),
     tip: 'How many chickens\u2019 worth of meat is on the plate.',
     steps: [
-      [F('Cooked Meat', 'Serving') + EQ + T('Ounces Eaten') + TIMES + T('Grams per Ounce'),
-       G(cookedG) + EQ + tex(oz) + '\\ \\text{oz}' + TIMES + '28.35\\ \\text{g/oz}'],
-      [F('Raw Meat', 'Serving') + EQ + F('Cooked Meat', 'Serving') + TIMES + F('Raw Meat', 'Cooked Meat'),
-       G(rawG) + EQ + G(cookedG) + TIMES + L(SRC.cooking, tex(1 / COOKING_YIELD, 2))],
-      [F('Live Weight', 'Animal') + EQ + F('Live Weight Produced', 'Year') + DIV + F('Animals Produced', 'Year'),
-       G(LIVE_G) + EQ + L(SRC.nass, '61.1 \\times 10^{9}\\ \\text{lb}') + DIV + L(SRC.nass, '9.33 \\times 10^{9}')],
-      [F('Raw Meat', 'Animal Lifetime') + EQ + F('Live Weight', 'Animal') + TIMES + T('Dressing \\%') + TIMES + T('Edible Share \\%'),
-       G(RAW_MEAT_PER_BIRD) + EQ + G(LIVE_G) + TIMES + L(SRC.umaine, '75\\%') + TIMES + L(SRC.wisc, '74\\%')],
-      [F('Animal Lifetime', 'Serving') + EQ + F('Raw Meat', 'Serving') + DIV + F('Raw Meat', 'Animal Lifetime'),
-       lx + '\\ \\text{chickens}' + EQ + G(rawG) + DIV + G(RAW_MEAT_PER_BIRD)]
+      [cooked.w + EQ + T('Ounces Eaten') + TIMES + T('Grams per Ounce'),
+       cooked.n + EQ + tex(oz) + '\\ \\text{oz}' + TIMES + '28.35\\ \\text{g/oz}'],
+      [rawserv.w + EQ + cooked.w + TIMES + F('Raw Meat', 'Cooked Meat'),
+       rawserv.n + EQ + cooked.n + TIMES + L(SRC.cooking, tex(1 / COOKING_YIELD, 2))],
+      [live.w + EQ + F('Live Weight Produced', 'Year') + DIV + F('Animals Produced', 'Year'),
+       live.n + EQ + L(SRC.nass, '61.1 \\times 10^{9}\\ \\text{lb}') + DIV + L(SRC.nass, '9.33 \\times 10^{9}')],
+      [rawlife.w + EQ + live.w + TIMES + T('Dressing \\%') + TIMES + T('Edible Share \\%'),
+       rawlife.n + EQ + live.n + TIMES + L(SRC.umaine, '75\\%') + TIMES + L(SRC.wisc, '74\\%')],
+      [lifeserv.w + EQ + rawserv.w + DIV + rawlife.w,
+       lifeserv.n + EQ + rawserv.n + DIV + rawlife.n]
     ]
   };
 
-  var sumWords = HARMS.map(function (x) { return T(x[0]); }).join(PLUS);
-  var sumNums = HARMS.map(function (x) { return L(SRC.track, tex(x[1])); }).join(PLUS) + '\\ \\text{h}';
   var intensitySteps = [
     'The same hours by intensity, all harms: mean, then the 90% interval in brackets'
   ].concat(INTENSITIES.map(function (i) {
@@ -158,54 +180,54 @@ function buildEquation(oz, hi) {     // hi = index into HARMS, or -1 for all har
     [F('All Intensities', 'Animal Lifetime') + EQ + INTENSITIES.map(function (i) { return T(i[0]); }).join(PLUS),
      hrs(im) + '\\ ' + range(ilo, ihi)]
   ]);
+  var lifetimeSteps = [
+    [lifetime.w + EQ + T('Days Alive') + TIMES + T('Hours per Day'),
+     lifetime.n + EQ + L(SRC.ncc, LIFETIME_DAYS + '\\ \\text{days}') + TIMES + '24\\ \\text{h/day}'],
+    [F('Time in Pain', 'Animal Lifetime') + EQ + allharms.w + DIV + lifetime.w,
+     tex(HARM_TOTAL / lifeH * 100, 0) + '\\%' + EQ + allharms.n + DIV + lifetime.n]
+  ];
 
-  var B, C, breakdown = null;
+  var B, C;
   if (hi >= 0) {
     var h = HARMS[hi];
     var share = HARM_TOTAL > 0 ? h[1] / HARM_TOTAL : 0;
+    var harmlife = { w: K('harmlife', F(h[0], 'Animal Lifetime')), n: K('harmlife', hrs(h[1])) };
+    var harmserv = { w: K('harmserv', F(h[0], 'Serving')),         n: K('harmserv', hrs(h[1] * lifetimes)) };
+    var sumWords = HARMS.map(function (x, i) { return i === hi ? K('harmlife', T(x[0])) : T(x[0]); }).join(PLUS);
+    var sumNums = HARMS.map(function (x, i) { var v = L(SRC.track, tex(x[1])); return i === hi ? K('harmlife', v) : v; }).join(PLUS) + '\\ \\text{h}';
     B = {
-      id: 'harm-per-lifetime', name: F(h[0], 'Animal Lifetime'), value: L(SRC.track, hrs(h[1])),
+      id: 'harm-per-lifetime', name: harmlife.w, value: K('harmlife', L(SRC.track, hrs(h[1]))),
       tip: h[0] + ': ' + h[4] + '. Hours an average conventional chicken spends in this pain over its life (Welfare Footprint Project).',
       steps: [
-        [F(h[0], 'Animal Lifetime') + EQ + T('Welfare Footprint Project estimate'), L(SRC.track, hrs(h[1]))],
-        [F('All Harms', 'Animal Lifetime') + EQ + sumWords, hrs(HARM_TOTAL) + EQ + sumNums],
-        [F(h[0], 'All Harms') + EQ + F(h[0], 'Animal Lifetime') + DIV + F('All Harms', 'Animal Lifetime'),
-         tex(share * 100, 0) + '\\%' + EQ + hrs(h[1]) + DIV + hrs(HARM_TOTAL)],
-        [T('Animal Lifetime') + EQ + T('Days Alive') + TIMES + T('Hours per Day'),
-         H(tex(lifeH, 0)) + EQ + L(SRC.ncc, LIFETIME_DAYS + '\\ \\text{days}') + TIMES + '24\\ \\text{h/day}'],
-        [F('Time in Pain', 'Animal Lifetime') + EQ + F('All Harms', 'Animal Lifetime') + DIV + T('Animal Lifetime'),
-         tex(HARM_TOTAL / lifeH * 100, 0) + '\\%' + EQ + hrs(HARM_TOTAL) + DIV + H(tex(lifeH, 0))]
-      ].concat(intensitySteps)
+        [harmlife.w + EQ + T('Welfare Footprint Project estimate'), K('harmlife', L(SRC.track, hrs(h[1])))],
+        [allharms.w + EQ + sumWords, allharms.n + EQ + sumNums],
+        [F(h[0], 'All Harms') + EQ + harmlife.w + DIV + allharms.w,
+         tex(share * 100, 0) + '\\%' + EQ + harmlife.n + DIV + allharms.n]
+      ].concat(lifetimeSteps).concat(intensitySteps)
     };
     C = {
-      id: 'harm-per-serving', name: F(h[0], 'Serving'), value: '\\mathbf{' + hrs(h[1] * lifetimes) + '}',
+      id: 'harm-per-serving', name: harmserv.w, value: K('harmserv', '\\mathbf{' + hrs(h[1] * lifetimes) + '}'),
       tip: 'Hours of ' + h[0].toLowerCase() + ' behind this serving.',
       steps: [
-        [F(h[0], 'Serving') + EQ + F('Animal Lifetime', 'Serving') + TIMES + F(h[0], 'Animal Lifetime'),
-         hrs(h[1] * lifetimes) + EQ + lx + TIMES + hrs(h[1])],
-        [F('All Harms', 'Serving') + EQ + F('Animal Lifetime', 'Serving') + TIMES + F('All Harms', 'Animal Lifetime'),
-         hrs(HARM_TOTAL * lifetimes) + EQ + lx + TIMES + hrs(HARM_TOTAL)],
-        [F(h[0], 'All Harms'), tex(share * 100, 0) + '\\%']
+        [harmserv.w + EQ + lifeserv.w + TIMES + harmlife.w, harmserv.n + EQ + lifeserv.n + TIMES + harmlife.n],
+        [allserv.w + EQ + lifeserv.w + TIMES + allharms.w, allserv.n + EQ + lifeserv.n + TIMES + allharms.n],
+        [F(h[0], 'All Harms') + EQ + harmserv.w + DIV + allserv.w, tex(share * 100, 0) + '\\%' + EQ + harmserv.n + DIV + allserv.n]
       ]
     };
   } else {
+    var sumW = HARMS.map(function (x) { return T(x[0]); }).join(PLUS);
+    var sumN = HARMS.map(function (x) { return L(SRC.track, tex(x[1])); }).join(PLUS) + '\\ \\text{h}';
     B = {
-      id: 'harm-per-lifetime', name: F('All Harms', 'Animal Lifetime'), value: hrs(HARM_TOTAL),
+      id: 'harm-per-lifetime', name: allharms.w, value: allharms.n,
       tip: 'Hours an average conventional chicken spends in pain over its life, all causes added (Welfare Footprint Project).',
-      steps: [
-        [F('All Harms', 'Animal Lifetime') + EQ + sumWords, hrs(HARM_TOTAL) + EQ + sumNums],
-        [T('Animal Lifetime') + EQ + T('Days Alive') + TIMES + T('Hours per Day'),
-         H(tex(lifeH, 0)) + EQ + L(SRC.ncc, LIFETIME_DAYS + '\\ \\text{days}') + TIMES + '24\\ \\text{h/day}'],
-        [F('Time in Pain', 'Animal Lifetime') + EQ + F('All Harms', 'Animal Lifetime') + DIV + T('Animal Lifetime'),
-         tex(HARM_TOTAL / lifeH * 100, 0) + '\\%' + EQ + hrs(HARM_TOTAL) + DIV + H(tex(lifeH, 0))]
-      ].concat(intensitySteps)
+      steps: [[allharms.w + EQ + sumW, allharms.n + EQ + sumN]].concat(lifetimeSteps).concat(intensitySteps)
     };
     C = {
-      id: 'harm-per-serving', name: F('All Harms', 'Serving'), value: '\\mathbf{' + hrs(HARM_TOTAL * lifetimes) + '}',
+      id: 'harm-per-serving', name: allserv.w, value: K('allserv', '\\mathbf{' + hrs(HARM_TOTAL * lifetimes) + '}'),
       tip: 'Hours of pain of all kinds behind this serving. Open to see it by cause.',
       steps: ['By cause. Click one to focus the equation on it.'].concat(HARMS.map(function (x, i) {
-        return { focus: i, words: F(x[0], 'Serving') + EQ + F('Animal Lifetime', 'Serving') + TIMES + F(x[0], 'Animal Lifetime'),
-                 nums: hrs(x[1] * lifetimes) + EQ + lx + TIMES + hrs(x[1]) };
+        return { focus: i, words: F(x[0], 'Serving') + EQ + lifeserv.w + TIMES + F(x[0], 'Animal Lifetime'),
+                 nums: hrs(x[1] * lifetimes) + EQ + lifeserv.n + TIMES + hrs(x[1]) };
       }))
     };
   }
@@ -255,7 +277,7 @@ function update() {
   root.querySelectorAll('.eq').forEach(function (el) {
     var src = el.getAttribute('data-tex');
     if (typeof katex === 'undefined') { el.textContent = src; return; }
-    katex.render(src, el, { displayMode: false, throwOnError: false, trust: function (c) { return c.command === '\\href'; } });
+    katex.render(src, el, { displayMode: false, throwOnError: false, strict: false, trust: function (c) { return c.command === '\\href' || c.command === '\\htmlClass'; } });
   });
 }
 
