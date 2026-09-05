@@ -1,0 +1,7 @@
+Housing,Measure Names,Measure Values,Pain-Mean Pop Bird,Population Lower  90%,Population Upper 90%
+Conventional,Population Lower  90%,195.08,333.6,195.08,472.12
+Conventional,Population Upper 90%,472.12,333.6,195.08,472.12
+Reformed,Population Lower  90%,125.46,255.7,125.46,385.94
+Reformed,Population Upper 90%,385.94,255.7,125.46,385.94
+Conventional,Pain-Mean Pop Bird,,333.6,195.08,472.12
+Reformed,Pain-Mean Pop Bird,,255.7,125.46,385.94

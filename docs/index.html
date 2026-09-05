@@ -17,7 +17,6 @@
   table[data-toggle].open { background: #f3f3f3; }
   /* A term's worked steps, shown directly beneath its row. */
   .panel { margin: 0.4em 0 1em 24px; }
-  .panel h3 { font-size: 1em; font-weight: normal; color: #444; margin: 0.6em 0 0.3em; }
   table.steps { width: 100%; border-collapse: collapse; }
   table.steps th { text-align: left; font-weight: normal; color: #666; font-size: 0.85em; padding: 0.3em 0.6em; border-bottom: 1px solid #bbb; }
   table.steps td { padding: 0.45em 0.6em; border-bottom: 1px solid #e2e2e2; vertical-align: middle; }
@@ -47,6 +46,7 @@
 
 <p>
   One serving is <input type="number" id="oz" value="6" min="0" step="0.5" size="4"> oz of cooked chicken.
+  &nbsp; Chicken: <select id="system"><option value="conventional">Conventional (fast-growing)</option><option value="reformed">Higher-welfare (slower-growing)</option></select>
   &nbsp; Harm: <select id="harm"><option value="-1">All harms</option></select>
 </p>
 
@@ -59,6 +59,7 @@
 <div id="notes-body"></div>
 </details>
 
+<script src="wfp.js"></script>
 <script>
 // ---------------------------------------------------------------------------
 // Sources
@@ -71,6 +72,7 @@ var SRC = {
   ncc:     'https://www.nationalchickencouncil.org/about-the-industry/statistics/u-s-broiler-performance/',
   wfp:     'https://welfarefootprint.org/broilers/',
   track:   'https://pain-track.org/broilers',
+  tableau: 'https://public.tableau.com/app/profile/cynthia.schuck/viz/BroilerChickens2021/Broilers',
   defs:    'https://welfarefootprint.org/technical-definitions/pain-intensities/'
 };
 
@@ -82,30 +84,24 @@ var COOKING_YIELD = 0.75;
 var LIVE_LB_PER_YEAR = 61.1e9;      // lb of live chickens produced in the U.S., 2024
 var BIRDS_PER_YEAR = 9.33e9;        // chickens produced, 2024
 var LIVE_LB = LIVE_LB_PER_YEAR / BIRDS_PER_YEAR;   // 6.55 lb per bird
-var LIVE_G = LIVE_LB * 453.6;
 var DRESSING = 0.75;
 var EDIBLE_SHARE = 0.74;
-var RAW_MEAT_PER_BIRD = LIVE_G * DRESSING * EDIBLE_SHARE;   // g
-var LIFETIME_DAYS = 47;
 
-// Hours of pain over one conventional chicken's lifetime, Welfare Footprint Project.
-// [name, mean, lower, upper, what it is]. Per-cause bounds not yet loaded (see TODO.md).
-var HARMS = [
-  ['Lameness', 457.9, null, null, 'leg and joint disorders from growing too fast; walking hurts or becomes impossible'],
-  ['No foraging or exploring', 76.7, null, null, 'barren sheds with nothing to scratch, peck or investigate'],
-  ['No dustbathing', 70.0, null, null, 'no loose, dry substrate for the bathing behaviour that keeps feathers healthy'],
-  ['No perching', 63.0, null, null, 'no raised places to rest, which chickens seek out for safety'],
-  ['Heat stress', 38.9, null, null, 'heavy birds in crowded sheds cannot shed heat; they pant and become lethargic'],
-  ['Ascites', 28.3, null, null, 'fluid builds up in the abdomen when the heart cannot keep up with rapid growth'],
-  ['Sudden death syndrome', 0.0, null, null, 'acute heart failure; brief but intense, so it adds almost no hours']
+// The two production systems the Welfare Footprint Project modelled.
+var SYSTEMS = {
+  conventional: { liveG: LIVE_LB * 453.6, liveTag: 'NASS', lifetimeDays: 47, lifeTag: 'NCC',
+                  liveNote: 'U.S. average for 2024: all live weight produced in the year divided by the number of birds.' },
+  reformed:     { liveG: 2500, liveTag: 'WFP', lifetimeDays: 56, lifeTag: 'WFP',
+                  liveNote: 'The project\u2019s reformed scenario: a slower-growing breed reaching 2.5 kg at 56 days, under Better Chicken Commitment conditions.' }
+};
+var LEVELS = ['annoying', 'hurtful', 'disabling', 'excruciating'];
+var LEVEL_NAMES = { annoying: 'Annoying', hurtful: 'Hurtful', disabling: 'Disabling', excruciating: 'Excruciating' };
+var LEVEL_DEFS = [
+  ['Annoying', 'unpleasant, but does not disrupt normal activity'],
+  ['Hurtful', 'hard to ignore; the bird is aware of it most of the time'],
+  ['Disabling', 'continuously distressing; no enjoyment is possible'],
+  ['Excruciating', 'intolerable even for seconds']
 ];
-var INTENSITIES = [
-  ['Annoying',     324.7, 212.8, 436.5, 'unpleasant, but does not disrupt normal activity'],
-  ['Hurtful',      333.6, 195.1, 472.1, 'hard to ignore; the bird is aware of it most of the time'],
-  ['Disabling',     50.3,  33.0,  67.5, 'continuously distressing; no enjoyment is possible'],
-  ['Excruciating', 30.2 / 3600, 8.8 / 3600, 51.6 / 3600, 'intolerable even for seconds']
-];
-var HARM_TOTAL = HARMS.reduce(function (s, h) { return s + h[1]; }, 0);
 
 // ---------------------------------------------------------------------------
 // Formatting helpers
@@ -114,7 +110,6 @@ function n(x, d) { return Number(x.toFixed(d === undefined ? 1 : d)).toLocaleStr
 function tex(x, d) { return n(x, d).replace(/,/g, '{,}'); }
 function T(words) { return '\\text{' + words + '}'; }
 function F(top, bottom) { return '\\frac{' + T(top) + '}{' + T(bottom) + '}'; }          // word fraction
-function L(url, body) { return '\\href{' + url + '}{' + body + '}'; }                   // link
 function G(x) { return tex(x, 0) + '\\ \\text{g}'; }
 function H(x) { return x + '\\ \\text{h}'; }
 function hrs(h) {
@@ -124,6 +119,7 @@ function hrs(h) {
   return tex(h) + '\\ \\text{h}';
 }
 function range(lo, hi) {
+  if (hi === 0) return '';
   var unit = hi < 1 / 60 ? 's' : hi < 1 ? 'min' : 'h';
   var k = unit === 's' ? 3600 : unit === 'min' ? 60 : 1;
   return '[\\,' + tex(lo * k) + '\\text{–}' + tex(hi * k) + '\\ \\text{' + unit + '}\\,]';
@@ -137,24 +133,33 @@ function S(tag, body) { return body + '_{\\text{' + tag + '}}'; }               
 // The equation: three rows, each with an optional table of worked steps.
 // A step is [words, numbers] (both LaTeX) or a heading string.
 // ---------------------------------------------------------------------------
-function buildEquation(oz, hi) {     // hi = index into HARMS, or -1 for all harms
+function buildEquation(oz, sysKey, hi) {     // hi = index into the system's causes, or -1 for all harms
+  var sys = SYSTEMS[sysKey];
+  var data = WFP.systems[sysKey];
+  var causes = data.causes;
+  var allTotal = causes.reduce(function (s, c) { return s + c.total; }, 0);
   var cookedG = oz * OZ_TO_G;
   var rawG = cookedG / COOKING_YIELD;
-  var lifetimes = rawG / RAW_MEAT_PER_BIRD;
+  var rawPerBird = sys.liveG * DRESSING * EDIBLE_SHARE;
+  var lifetimes = rawG / rawPerBird;
   var lx = tex(lifetimes, 3);
   var approx = lifetimes > 0 && lifetimes < 0.67 ? ' \\approx \\tfrac{1}{' + Math.round(1 / lifetimes) + '}' : '';
-  var im = 0, ilo = 0, ihi = 0; INTENSITIES.forEach(function (i) { im += i[1]; ilo += i[2]; ihi += i[3]; });
-  var lifeH = LIFETIME_DAYS * 24;
+  var lifeH = sys.lifetimeDays * 24;
 
   // Reused quantities, each with its words, its number, and a tint.
   var cooked   = { w: K('cooked',   F('Cooked Meat', 'Serving')),         n: K('cooked',   G(cookedG)) };
   var rawserv  = { w: K('rawserv',  F('Raw Meat', 'Serving')),            n: K('rawserv',  G(rawG)) };
-  var live     = { w: K('live',     F('Live Weight', 'Animal')),          n: K('live',     G(LIVE_G)) };
-  var rawlife  = { w: K('rawlife',  F('Raw Meat', 'Animal Lifetime')),    n: K('rawlife',  G(RAW_MEAT_PER_BIRD)) };
+  var live     = { w: K('live',     F('Live Weight', 'Animal')),          n: K('live',     G(sys.liveG)) };
+  var rawlife  = { w: K('rawlife',  F('Raw Meat', 'Animal Lifetime')),    n: K('rawlife',  G(rawPerBird)) };
   var lifeserv = { w: K('lifeserv', F('Animal Lifetime', 'Serving')),     n: K('lifeserv', lx + '\\ \\text{chickens}') };
-  var allharms = { w: K('allharms', F('All Harms', 'Animal Lifetime')),   n: K('allharms', hrs(HARM_TOTAL)) };
+  var allharms = { w: K('allharms', F('All Harms', 'Animal Lifetime')),   n: K('allharms', hrs(allTotal)) };
   var lifetime = { w: K('lifetime', T('Animal Lifetime')),                n: K('lifetime', H(tex(lifeH, 0))) };
-  var allserv  = { w: K('allserv',  F('All Harms', 'Serving')),           n: K('allserv',  hrs(HARM_TOTAL * lifetimes)) };
+  var allserv  = { w: K('allserv',  F('All Harms', 'Serving')),           n: K('allserv',  hrs(allTotal * lifetimes)) };
+
+  var liveStep = sysKey === 'conventional'
+    ? [live.w + EQ + F('Live Weight Produced', 'Year') + DIV + F('Animals Produced', 'Year'),
+       live.n + EQ + S('NASS', '61.1 \\times 10^{9}\\ \\text{lb}') + DIV + S('NASS', '9.33 \\times 10^{9}')]
+    : [live.w + EQ + T('slower-growing breed at market age'), live.n + EQ + S('WFP', '2.5\\ \\text{kg}')];
 
   var A = {
     id: 'lifetimes-per-serving', name: F('Animal Lifetime', 'Serving'), value: lx + '\\ \\text{chickens}' + approx,
@@ -164,8 +169,7 @@ function buildEquation(oz, hi) {     // hi = index into HARMS, or -1 for all har
        cooked.n + EQ + tex(oz) + '\\ \\text{oz}' + TIMES + '28.35\\ \\text{g/oz}'],
       [rawserv.w + EQ + cooked.w + TIMES + F('Raw Meat', 'Cooked Meat'),
        rawserv.n + EQ + cooked.n + TIMES + S('ARS', tex(1 / COOKING_YIELD, 2))],
-      [live.w + EQ + F('Live Weight Produced', 'Year') + DIV + F('Animals Produced', 'Year'),
-       live.n + EQ + S('NASS', '61.1 \\times 10^{9}\\ \\text{lb}') + DIV + S('NASS', '9.33 \\times 10^{9}')],
+      liveStep,
       [rawlife.w + EQ + live.w + TIMES + T('Dressing \\%') + TIMES + T('Edible Share \\%'),
        rawlife.n + EQ + live.n + TIMES + S('UMaine', '75\\%') + TIMES + S('UWisc', '74\\%')],
       [lifeserv.w + EQ + rawserv.w + DIV + rawlife.w,
@@ -173,58 +177,58 @@ function buildEquation(oz, hi) {     // hi = index into HARMS, or -1 for all har
     ]
   };
 
+  var lifetimeStep = [lifetime.w + EQ + T('Days Alive') + TIMES + T('Hours per Day'),
+                      lifetime.n + EQ + S(sys.lifeTag, sys.lifetimeDays + '\\ \\text{days}') + TIMES + '24\\ \\text{h/day}'];
+  var pub = data.published;
   var intensitySteps = [
-    'The same hours by intensity, all harms: mean, then the 90% interval in brackets'
-  ].concat(INTENSITIES.map(function (i) {
-    return [F(i[0], 'Animal Lifetime'), S('WFP', hrs(i[1])) + '\\ ' + range(i[2], i[3])];
+    'The same hours by intensity, all harms: mean, then the project\u2019s 90% interval in brackets'
+  ].concat(LEVELS.map(function (l) {
+    return [F(LEVEL_NAMES[l], 'Animal Lifetime'), S('WFP', hrs(pub[l].mean)) + '\\ ' + range(pub[l].lo, pub[l].hi)];
   })).concat([
-    [F('All Intensities', 'Animal Lifetime') + EQ + INTENSITIES.map(function (i) { return T(i[0]); }).join(PLUS),
-     hrs(im) + '\\ ' + range(ilo, ihi)]
+    [F('All Intensities', 'Animal Lifetime') + EQ + LEVELS.map(function (l) { return T(LEVEL_NAMES[l]); }).join(PLUS),
+     hrs(LEVELS.reduce(function (s, l) { return s + pub[l].mean; }, 0))]
   ]);
-  var lifetimeSteps = [
-    [lifetime.w + EQ + T('Days Alive') + TIMES + T('Hours per Day'),
-     lifetime.n + EQ + S('NCC', LIFETIME_DAYS + '\\ \\text{days}') + TIMES + '24\\ \\text{h/day}'],
-    [F('Time in Pain', 'Animal Lifetime') + EQ + allharms.w + DIV + lifetime.w,
-     tex(HARM_TOTAL / lifeH * 100, 0) + '\\%' + EQ + allharms.n + DIV + lifetime.n]
-  ];
 
   var B, C;
   if (hi >= 0) {
-    var h = HARMS[hi];
-    var harmlife = { w: K('harmlife', F(h[0], 'Animal Lifetime')), n: K('harmlife', hrs(h[1])) };
-    var harmserv = { w: K('harmserv', F(h[0], 'Serving')),         n: K('harmserv', hrs(h[1] * lifetimes)) };
+    var h = causes[hi];
+    var harmlife = { w: K('harmlife', F(h.name, 'Animal Lifetime')), n: K('harmlife', hrs(h.total)) };
+    var harmserv = { w: K('harmserv', F(h.name, 'Serving')),         n: K('harmserv', hrs(h.total * lifetimes)) };
     B = {
-      id: 'harm-per-lifetime', name: F(h[0], 'Animal Lifetime'), value: S('WFP', hrs(h[1])),
-      tip: h[0] + ': ' + h[4] + '. Hours an average conventional chicken spends in this pain over its life (Welfare Footprint Project).',
+      id: 'harm-per-lifetime', name: F(h.name, 'Animal Lifetime'), value: S('WFP', hrs(h.total)),
+      tip: h.name + ': ' + h.what + '. Hours an average bird spends in this pain over its life (Welfare Footprint Project).',
       steps: [
-        [harmlife.w + EQ + T('Welfare Footprint Project estimate'), K('harmlife', S('WFP', hrs(h[1])))],
-        [lifetime.w + EQ + T('Days Alive') + TIMES + T('Hours per Day'),
-         lifetime.n + EQ + S('NCC', LIFETIME_DAYS + '\\ \\text{days}') + TIMES + '24\\ \\text{h/day}'],
-        [F('Time in ' + h[0], 'Animal Lifetime') + EQ + harmlife.w + DIV + lifetime.w,
-         tex(h[1] / lifeH * 100, 0) + '\\%' + EQ + harmlife.n + DIV + lifetime.n]
+        [harmlife.w + EQ + LEVELS.map(function (l) { return T(LEVEL_NAMES[l]); }).join(PLUS),
+         harmlife.n + EQ + LEVELS.map(function (l) { return hrs(h.mean[l]); }).join(PLUS) + '_{\\text{WFP}}\\ ' + range(h.total_lo, h.total_hi)],
+        lifetimeStep,
+        [F('Time in ' + h.name, 'Animal Lifetime') + EQ + harmlife.w + DIV + lifetime.w,
+         tex(h.total / lifeH * 100, 0) + '\\%' + EQ + harmlife.n + DIV + lifetime.n]
       ]
     };
     C = {
-      id: 'harm-per-serving', name: F(h[0], 'Serving'), value: '\\mathbf{' + hrs(h[1] * lifetimes) + '}',
-      tip: 'Hours of ' + h[0].toLowerCase() + ' behind this serving.',
-      steps: [
-        [harmserv.w + EQ + lifeserv.w + TIMES + harmlife.w, harmserv.n + EQ + lifeserv.n + TIMES + harmlife.n]
-      ]
+      id: 'harm-per-serving', name: F(h.name, 'Serving'), value: '\\mathbf{' + hrs(h.total * lifetimes) + '}',
+      tip: 'Hours of ' + h.name.toLowerCase() + ' behind this serving.',
+      steps: [[harmserv.w + EQ + lifeserv.w + TIMES + harmlife.w, harmserv.n + EQ + lifeserv.n + TIMES + harmlife.n]]
     };
   } else {
-    var sumW = HARMS.map(function (x) { return T(x[0]); }).join(PLUS);
-    var sumN = HARMS.map(function (x) { return tex(x[1]); }).join(PLUS) + '\\ \\text{h}_{\\text{WFP}}';
+    var sumW = causes.map(function (c) { return T(c.name); }).join(PLUS);
+    var sumN = causes.map(function (c) { return tex(c.total); }).join(PLUS) + '\\ \\text{h}_{\\text{WFP}}';
     B = {
-      id: 'harm-per-lifetime', name: F('All Harms', 'Animal Lifetime'), value: hrs(HARM_TOTAL),
-      tip: 'Hours an average conventional chicken spends in pain over its life, all causes added (Welfare Footprint Project).',
-      steps: [[allharms.w + EQ + sumW, allharms.n + EQ + sumN]].concat(lifetimeSteps).concat(intensitySteps)
+      id: 'harm-per-lifetime', name: F('All Harms', 'Animal Lifetime'), value: hrs(allTotal),
+      tip: 'Hours an average bird spends in pain over its life, all causes added (Welfare Footprint Project).',
+      steps: [
+        [allharms.w + EQ + sumW, allharms.n + EQ + sumN],
+        lifetimeStep,
+        [F('Time in Pain', 'Animal Lifetime') + EQ + allharms.w + DIV + lifetime.w,
+         tex(allTotal / lifeH * 100, 0) + '\\%' + EQ + allharms.n + DIV + lifetime.n]
+      ].concat(intensitySteps)
     };
     C = {
-      id: 'harm-per-serving', name: F('All Harms', 'Serving'), value: '\\mathbf{' + hrs(HARM_TOTAL * lifetimes) + '}',
+      id: 'harm-per-serving', name: F('All Harms', 'Serving'), value: '\\mathbf{' + hrs(allTotal * lifetimes) + '}',
       tip: 'Hours of pain of all kinds behind this serving. Open to see it by cause.',
-      steps: ['By cause. Click one to focus the equation on it.'].concat(HARMS.map(function (x, i) {
-        return { focus: i, words: F(x[0], 'Serving') + EQ + lifeserv.w + TIMES + F(x[0], 'Animal Lifetime'),
-                 nums: hrs(x[1] * lifetimes) + EQ + lifeserv.n + TIMES + hrs(x[1]) };
+      steps: ['By cause. Click one to focus the equation on it.'].concat(causes.map(function (c, i) {
+        return { focus: i, words: F(c.name, 'Serving') + EQ + lifeserv.w + TIMES + F(c.name, 'Animal Lifetime'),
+                 nums: hrs(c.total * lifetimes) + EQ + lifeserv.n + TIMES + hrs(c.total) + '\\ ' + range(c.total_lo, c.total_hi) };
       }))
     };
   }
@@ -264,10 +268,21 @@ function panel(node) {
     '<table class="steps"><tr><th></th><th>In words</th><th>With numbers</th></tr>' + rows + '</table></div>';
 }
 
+function fillHarmOptions() {
+  var sel = document.getElementById('harm');
+  var keep = sel.value || '-1';
+  sel.innerHTML = '<option value="-1">All harms</option>';
+  WFP.systems[document.getElementById('system').value].causes.forEach(function (c, i) {
+    var o = document.createElement('option'); o.value = i; o.textContent = c.name; sel.appendChild(o);
+  });
+  sel.value = keep;
+}
+
 function update() {
   var oz = parseFloat(document.getElementById('oz').value) || 0;
+  var sysKey = document.getElementById('system').value;
   var hi = parseInt(document.getElementById('harm').value, 10);
-  var e = buildEquation(oz, hi);
+  var e = buildEquation(oz, sysKey, hi);
   var html = rowTable(e.A) + panel(e.A) + opRow('\u00d7') + rowTable(e.B) + panel(e.B) + opRow('=') + rowTable(e.C) + panel(e.C);
   var root = document.getElementById('tree');
   root.innerHTML = html;
@@ -289,7 +304,7 @@ function toggle(id) {
 
 document.addEventListener('click', function (e) {
   var a = e.target.closest('a');
-  if (a) return;                                        // a source link: let it open
+  if (a) return;
   var t = e.target.closest('table[data-toggle]');
   if (t) { toggle(t.getAttribute('data-toggle')); return; }
   var f = e.target.closest('tr[data-focus]');
@@ -298,30 +313,35 @@ document.addEventListener('click', function (e) {
 
 function renderNotes() {
   var li = function (s) { return '<li>' + s + '</li>'; };
-  return '<p><b>The harms</b> (Welfare Footprint Project, conventional fast-growing broilers). For each cause they combined how many birds are affected, how long it lasts and how intense it is, then summed over the bird\u2019s life of about 47 days. Lifetime is therefore not a separate multiplier: it is the window over which the hours accumulate.</p>' +
-    '<ul>' + HARMS.map(function (h) { return li('<b>' + h[0] + '</b>: ' + h[4] + '.'); }).join('') + '</ul>' +
+  var causes = WFP.systems.conventional.causes;
+  return '<p><b>The harms.</b> Hours of pain per bird come from the Welfare Footprint Project\u2019s Pain-Track for broilers, retrieved ' + WFP.retrieved + '. ' +
+    'For each cause the project combined how many birds are affected, how long it lasts and how intense it is, then summed over the bird\u2019s life. ' +
+    'Only hours awake are counted, so no separate allowance for sleep is needed. Lifetime is not a separate multiplier: it is the window over which the hours accumulate.</p>' +
+    '<ul>' + causes.map(function (c) { return li('<b>' + c.name + '</b>: ' + c.what + '.'); }).join('') + '</ul>' +
+    '<p>The two breeder-hen lines are part of the project\u2019s own total: the parent hens\u2019 pain is spread over the chicks each produces, so a broiler carries a small share of it.</p>' +
     '<p><b>The intensities</b> (<a href="' + SRC.defs + '">project definitions</a>):</p>' +
-    '<ul>' + INTENSITIES.map(function (i) { return li('<b>' + i[0] + '</b>: ' + i[4] + '.'); }).join('') + '</ul>' +
-    '<p><b>Uncertainty.</b> The project reports a mean and a 90% interval (5th to 95th percentile of many runs with every input varied over its plausible range); no median or 95% interval is published. The intervals are roughly \u00b140% around the mean and dominate the overall uncertainty; the weights and yields are industry averages good to about \u00b110%. Per-cause bounds exist in the project\u2019s dataset but are not loaded here yet. The by-cause and by-intensity totals differ by about 4% because they come from different releases of the same data.</p>' +
-    '<p><b>Not included:</b> pain during transport and slaughter, breeder birds, and diseases the project did not model. The numbers are conservative.</p>' +
+    '<ul>' + LEVEL_DEFS.map(function (d) { return li('<b>' + d[0] + '</b>: ' + d[1] + '.'); }).join('') + '</ul>' +
+    '<p><b>Uncertainty.</b> The project varies every input over its plausible range and reports a mean and a 90% interval (5th to 95th percentile); no median or 95% interval is published. ' +
+    'The intervals on the by-intensity totals are the project\u2019s own, from its Tableau workbook. The intervals on individual causes are derived: each cause\u2019s standard deviation from the project\u2019s per-harm figures, scaled so the same rule reproduces the published interval for the total. Treat those as approximate. ' +
+    'Yields and weights are industry averages good to about \u00b110%.</p>' +
+    '<p><b>Higher-welfare chicken</b> is the project\u2019s reformed scenario: a slower-growing breed reaching 2.5 kg at 56 days under Better Chicken Commitment conditions. The dressing and edible-share percentages are assumed unchanged.</p>' +
+    '<p><b>Not included:</b> pain during transport and slaughter, and diseases the project did not model. The numbers are conservative.</p>' +
     '<p><b>Sources</b>, by the tag shown as a subscript in the equations.</p><ul>' +
     li('<b>NASS</b>: <a href="' + SRC.nass + '">USDA NASS, Poultry Production and Value 2024 Summary</a> (9.33 billion broilers, 61.1 billion lb live weight).') +
     li('<b>ARS</b>: <a href="' + SRC.cooking + '">USDA ARS, Table of Cooking Yields for Meat and Poultry</a> (cooking yield 0.75, so 1.33 g raw per cooked gram).') +
     li('<b>UMaine</b>: <a href="' + SRC.umaine + '">University of Maine Extension, Understanding Poultry Yields</a> (dressing percentage 75%).') +
     li('<b>UWisc</b>: <a href="' + SRC.wisc + '">University of Wisconsin Extension, Bird Breakdown</a> (edible share percentage 74%).') +
-    li('<b>NCC</b>: <a href="' + SRC.ncc + '">National Chicken Council, U.S. Broiler Performance</a> (47-day lifetime).') +
-    li('<b>WFP</b>: <a href="' + SRC.wfp + '">Welfare Footprint Institute, Broilers</a> (hours by intensity, mean and 90% interval) and <a href="' + SRC.track + '">Pain-Track for broilers</a> (hours by cause), conventional scenario.') +
+    li('<b>NCC</b>: <a href="' + SRC.ncc + '">National Chicken Council, U.S. Broiler Performance</a> (47-day lifetime for conventional birds).') +
+    li('<b>WFP</b>: Welfare Footprint Institute, <a href="' + SRC.track + '">Pain-Track for broilers</a> (hours by cause and intensity), <a href="' + SRC.tableau + '">Broiler Chickens 2021 workbook</a> (totals with 90% intervals) and <a href="' + SRC.wfp + '">Broilers overview</a> (scenario definitions; \u201conly hours awake are considered\u201d).') +
     '</ul>';
 }
 
 window.addEventListener('DOMContentLoaded', function () {
-  var sel = document.getElementById('harm');
-  HARMS.forEach(function (h, i) {
-    var o = document.createElement('option'); o.value = i; o.textContent = h[0]; sel.appendChild(o);
-  });
-  sel.value = '0';   // default to lameness, the largest single harm
+  fillHarmOptions();
+  document.getElementById('harm').value = '0';   // default to the largest single harm, lameness
   document.getElementById('oz').addEventListener('input', update);
-  sel.addEventListener('change', update);
+  document.getElementById('system').addEventListener('change', function () { fillHarmOptions(); update(); });
+  document.getElementById('harm').addEventListener('change', update);
   document.getElementById('notes-body').innerHTML = renderNotes();
   update();
 });
