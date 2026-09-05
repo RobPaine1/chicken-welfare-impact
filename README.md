@@ -12,6 +12,8 @@ cooked chicken and every step of the calculation updates in place:
 No CSS, no build step, no dependencies. The constants and their sources are
 listed on the page and in the page's script.
 
+Open items are tracked in `TODO.md`.
+
 ## Archive
 
 - `archive/site-v2/` – the earlier two-page calculator (meal presets, weekly

@@ -15,9 +15,14 @@
   I ate <input type="number" id="oz" value="6" min="0" step="0.5" size="4"> oz of cooked chicken.
 </p>
 
+<h2>The idea</h2>
+<p>Work out what fraction of a chicken was on your plate, then take that fraction of the pain one chicken lives through:</p>
+<div id="top-words"></div>
+<p>In symbols, with the numbers for the amount above:</p>
+<div id="top-symbols"></div>
 <p>
-  Each step is shown twice: first with variables, then with the numbers filled in.
-  Numbers that are underlined link to their source.
+  Everything below is just filling in those three quantities. Each step is shown twice: first with
+  variables, then with the numbers. Numbers that are underlined link to their source.
 </p>
 
 <h2>Step 1. How much of a chicken is that?</h2>
@@ -179,6 +184,14 @@ function update() {
   var f = raw / M;
   var fx = tex(f, 3);
   var approx = f > 0 && f < 0.67 ? ' \\approx \\tfrac{1}{' + Math.round(1 / f) + '}' : '';
+
+  // top-level idea
+  show('top-words',
+    '\\text{hours of pain behind your meal} = ' +
+    '\\underbrace{\\frac{\\text{meat you ate}}{\\text{meat one chicken gives}}}_{\\text{fraction of a chicken}}' +
+    ' \\times \\underbrace{\\text{hours one chicken spends in pain}}_{\\text{Welfare Footprint Project}}');
+  show('top-symbols',
+    'h = \\frac{W_{\\text{raw}}}{M} \\times H = \\frac{' + tex(raw, 0) + '\\ \\text{g}}{' + tex(M, 0) + '\\ \\text{g}} \\times H = \\mathbf{' + fx + '} \\times H');
 
   // 1a
   show('sym-raw', 'W_{\\text{raw}} = \\frac{W_{\\text{cooked}}}{y}');
