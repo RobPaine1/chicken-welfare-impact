@@ -120,8 +120,8 @@ function rep(x, k) { var a = []; for (var i = 0; i < k; i++) a.push(x); return a
 // Every node is one row: words on the left (name), the number on the right (value),
 // and a one-line `tip` shown on hover. A node with `terms` is computed from them:
 // when opened, the terms unfold ABOVE the row, stacked with `ops` between them
-// (`pre` is an operator written before the first term), then a line, then the row
-// itself as their result. `extras` and `subs` are context rows shown above the terms.
+// then a line, then the row itself as their result. `flipOf` is the same quantity
+// the other way up, shown between the line and the row. `extras` and `subs` are context rows shown above the terms.
 // ---------------------------------------------------------------------------
 function buildTree(oz, hi) {     // hi = index into HARMS, or -1 for all harms
   var cookedG = oz * OZ_TO_G;
@@ -132,7 +132,7 @@ function buildTree(oz, hi) {     // hi = index into HARMS, or -1 for all harms
   var im = 0, ilo = 0, ihi = 0; INTENSITIES.forEach(function (i) { im += i[1]; ilo += i[2]; ihi += i[3]; });
 
   var rawPerLifetime = {
-    id: 'raw-per-lifetime', name: F('Raw Meat', 'Animal Lifetime'), value: G(RAW_MEAT_PER_BIRD),
+    id: 'raw-per-lifetime', name: F('Raw Meat', 'Animal Lifetime'), value: '\\frac{' + G(RAW_MEAT_PER_BIRD) + '}{\\text{chicken}}',
     tip: 'Raw boneless meat from one chicken: live weight, times the percentage that is carcass, times the percentage of the carcass that is meat.',
     ops: ['\u00d7', '\u00d7'],
     terms: [
@@ -167,16 +167,14 @@ function buildTree(oz, hi) {     // hi = index into HARMS, or -1 for all harms
               { name: T('Ounces Eaten'), value: tex(oz) + '\\ \\text{oz}', tip: 'Your input.' },
               { name: T('Grams per Ounce'), value: '28.35\\ \\text{g/oz}', tip: 'Unit conversion.' }
             ] },
-          { id: 'raw-per-cooked', name: F('Raw Meat', 'Cooked Meat'), value: tex(1 / COOKING_YIELD, 2),
-            tip: 'Meat loses about a quarter of its weight in cooking, so each cooked gram began as about 1.33 g raw.',
-            pre: '1\\ \\div',
-            terms: [ { name: T('Cooking Yield'), value: L(SRC.cooking, tex(COOKING_YIELD, 2)),
-                       tip: 'Share of raw weight left after cooking (USDA). Click the number for the source.' } ] }
+          { name: F('Raw Meat', 'Cooked Meat'), value: L(SRC.cooking, tex(1 / COOKING_YIELD, 2)),
+            tip: 'Meat loses about a quarter of its weight in cooking (USDA cooking yield 0.75), so each cooked gram began as about 1.33 g raw. Click the number for the source.' }
         ]
       },
-      { id: 'lifetimes-per-raw', name: F('Animal Lifetime', 'Raw Meat'), value: '\\frac{1}{' + G(RAW_MEAT_PER_BIRD) + '}',
-        tip: 'One chicken for every ' + n(RAW_MEAT_PER_BIRD, 0) + ' g of raw meat.',
-        pre: '1\\ \\div', terms: [rawPerLifetime] }
+      { id: 'lifetimes-per-raw', name: F('Animal Lifetime', 'Raw Meat'), value: '\\frac{1\\ \\text{chicken}}{' + G(RAW_MEAT_PER_BIRD) + '}',
+        tip: 'One chicken for every ' + n(RAW_MEAT_PER_BIRD, 0) + ' g of raw meat: the row above it, read the other way up.',
+        ops: rawPerLifetime.ops, terms: rawPerLifetime.terms,
+        flipOf: { name: rawPerLifetime.name, value: rawPerLifetime.value, tip: rawPerLifetime.tip } }
     ]
   };
 
@@ -275,13 +273,13 @@ function renderInside(node, path, big) {
   if (node.extras) node.extras.forEach(function (x, i) { html += renderRow(x, path + '-x' + i); });
   if (node.subs) node.subs.forEach(function (s, i) { html += renderRow(s, path + '-s' + i); });
   if (node.terms) {
-    if (node.pre) html += opRow(eqCell(node.pre), big);
     node.terms.forEach(function (t, i) {
       if (i > 0) html += opRow(node.ops[i - 1], big);
       html += renderRow(t, path + '-' + i, big);
     });
     html += '<hr>';
   }
+  if (node.flipOf) html += rowTable(node.flipOf, null, big);   // the same quantity before flipping it
   return html;
 }
 
