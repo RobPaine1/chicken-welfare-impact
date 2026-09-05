@@ -6,11 +6,12 @@ in ounces of cooked chicken and see one equation:
     Specific Harm / Serving = Animal Lifetime / Serving × Specific Harm / Animal Lifetime
 
 Terms are written as word fractions so units cancel visibly, with the equation
-in words on the left and the same equation in numbers on the right. Every row
-that has its own equation opens (a `<details>` block) into the same vertical
-form: its terms stacked with the operator between them, then "=" and the
-result, so the whole calculation is one equation growing downward until it
-reaches sourced constants that link out. Equations are typeset with
+in words on the left and the same equation in numbers on the right. A row that
+is computed from other rows unfolds *upward*: click it and its terms appear
+above it with the operator between them and a line under them, so the row is
+their result and stays in place in the larger equation. Fully unfolded, the page
+reads top to bottom from the raw inputs (ounces eaten, USDA production figures,
+yield percentages) to the hours of harm behind the serving. Equations are typeset with
 KaTeX, vendored in `docs/katex/`. No CSS of our own, no build step.
 
 Open items are tracked in `TODO.md`.

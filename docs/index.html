@@ -16,7 +16,10 @@
   &nbsp; Harm: <select id="harm"><option value="-1">All harms</option></select>
 </p>
 
-<p>Left: the equation in words. Right: the same equation with the numbers plugged in. Rows with a triangle open into their own equation, laid out the same way.</p>
+<p>
+  Left: the equation in words. Right: the same equation with the numbers plugged in.
+  A row marked &#9650; is computed from other rows: click it and they unfold <i>above</i> it, with a line between them and the row, so the row is their result and the equation reads top to bottom.
+</p>
 
 <div id="tree"></div>
 
@@ -95,10 +98,10 @@ function rep(x, k) { var a = []; for (var i = 0; i < k; i++) a.push(x); return a
 // The equation tree.
 //
 // Every node is one row: words on the left (name), the number on the right (value).
-// A node with `terms` opens into a vertical equation: its terms stacked with `ops`
-// between them, then "=" and a result row (the node itself, or `result`).
-// `note` is an explanation shown first; `extras` are plain rows shown after the
-// result; `subs` are further dropdowns shown last.
+// A node with `terms` is computed from them: when opened, the terms unfold ABOVE
+// the row, stacked with `ops` between them, then a line, then the row itself as
+// their result. `note` (HTML), `extras` (plain rows) and `subs` (further rows)
+// are explanatory and sit at the top of the unfolded block.
 // ---------------------------------------------------------------------------
 function buildTree(oz, hi) {     // hi = index into HARMS, or -1 for all harms
   var cookedG = oz * OZ_TO_G;
@@ -109,7 +112,7 @@ function buildTree(oz, hi) {     // hi = index into HARMS, or -1 for all harms
   var im = 0, ilo = 0, ihi = 0; INTENSITIES.forEach(function (i) { im += i[1]; ilo += i[2]; ihi += i[3]; });
 
   var lifetimesPerServing = {
-    id: 'lifetimes-per-serving', name: F('Animal Lifetime', 'Serving'), value: lx + approx,
+    id: 'lifetimes-per-serving', name: F('Animal Lifetime', 'Serving'), value: lx + '\\ \\text{chickens}' + approx,
     note: 'How many chickens\' worth of meat is on the plate: the raw meat in the serving divided by the raw meat one chicken yields in its lifetime.',
     ops: ['\u00f7'],
     terms: [
@@ -150,170 +153,194 @@ function buildTree(oz, hi) {     // hi = index into HARMS, or -1 for all harms
     ]
   };
 
-  var harmPerLifetime = {
-    id: 'harm-per-lifetime', name: F('Specific Harm', 'Animal Lifetime'), value: hrs(HARM_TOTAL) + '\\ \\text{(all harms)}',
-    note: 'How many hours an average conventional meat chicken spends in each kind of pain over its whole life, from the ' +
-          '<a href="' + SRC.wfp + '">Welfare Footprint Project</a>. For each cause they combined how many birds are affected, how long it lasts and how intense it is, then summed over the bird\'s life. ' +
-          'That is why the lifetime is not a separate multiplier: it is the window over which the hours accumulate.',
-    ops: rep('+', HARMS.length - 1),
-    terms: HARMS.map(function (h) { return { name: F(h[0], 'Animal Lifetime'), value: L(SRC.track, hrs(h[1])) }; }),
-    result: { name: F('All Harms', 'Animal Lifetime'), value: hrs(HARM_TOTAL) },
-    extras: [
-      { name: T('Animal Lifetime'), value: L(SRC.ncc, LIFETIME_DAYS + '\\ \\text{days}') + ' = ' + tex(LIFETIME_DAYS * 24, 0) + '\\ \\text{h}' },
-      { name: F('Time in Pain', 'Animal Lifetime'), value: '\\frac{' + hrs(HARM_TOTAL) + '}{' + tex(LIFETIME_DAYS * 24, 0) + '\\ \\text{h}} = ' + tex(HARM_TOTAL / (LIFETIME_DAYS * 24) * 100, 0) + '\\%' }
-    ],
-    subs: [
-      { id: 'what-harms', name: T('What each harm is'), value: '',
-        note: '<ul>' + HARMS.map(function (h) { return '<li><b>' + esc(h[0]) + '</b>: ' + esc(h[4]) + '.</li>'; }).join('') + '</ul>' +
-              '<p>The project publishes a lower and upper bound for each cause as well; they are not yet loaded here (see the repository\'s TODO).</p>' },
-      { id: 'by-intensity', name: T('The same hours by intensity, with uncertainty'), value: hrs(im * lifetimes) + '\\ ' + range(ilo * lifetimes, ihi * lifetimes),
-        note: 'The project ran its estimate many times with every input varied over its plausible range and reports the <b>mean</b> and a <b>90% interval</b> ' +
-              '(the 5th to 95th percentile of those runs; no median or 95% interval is published). Mean, then interval in brackets, for your serving:',
-        ops: rep('+', INTENSITIES.length - 1),
-        terms: INTENSITIES.map(function (i) {
-          return { name: F(i[0], 'Serving'), value: hrs(i[1] * lifetimes) + '\\ ' + range(i[2] * lifetimes, i[3] * lifetimes),
-                   ops: ['\u00d7'],
-                   terms: [
-                     { name: L('#lifetimes-per-serving', F('Animal Lifetime', 'Serving')), value: L('#lifetimes-per-serving', lx) },
-                     { name: F(i[0], 'Animal Lifetime'), value: L(SRC.wfp, hrs(i[1])) + '\\ ' + range(i[2], i[3]) }
-                   ] };
-        }),
-        result: { name: F('All Intensities', 'Serving'), value: '\\mathbf{' + hrs(im * lifetimes) + '}\\ ' + range(ilo * lifetimes, ihi * lifetimes) },
-        subs: [
-          { id: 'intensity-defs', name: T('What the intensities mean'), value: '',
-            note: '<ul>' + INTENSITIES.map(function (i) { return '<li><b>' + i[0] + '</b>: ' + i[4] + '.</li>'; }).join('') + '</ul>' +
-                  '<p>Source: <a href="' + SRC.defs + '">Welfare Footprint Institute, pain intensity definitions</a>.</p>' },
-          { id: 'uncertainty-notes', name: T('Reading the uncertainty'), value: '',
-            note: '<p>Most of the uncertainty is in these pain estimates, not in the weights: the intervals are roughly &plusmn;40% around the mean. ' +
-                  'The by-cause figures rest on the same evidence, so treat them as carrying about the same uncertainty. ' +
-                  'The two breakdowns come from different releases of the same data and differ by about 4%, so read the by-cause numbers as proportions rather than exact hours. ' +
-                  'The bracket on the total adds the individual intervals, which slightly overstates its width.</p>' +
-                  '<p>Not included anywhere on this page: pain during transport and slaughter, breeder birds, and diseases the project did not model. The numbers are conservative.</p>' }
-        ]
-      }
-    ]
-  };
+  var wfpNote = 'from the <a href="' + SRC.wfp + '">Welfare Footprint Project</a>, who for each cause combined how many birds are affected, how long it lasts and how intense it is, then summed over the bird\'s life. ' +
+                'That is why the lifetime is not a separate multiplier: it is the window over which the hours accumulate.';
+  var lifetimeRows = [
+    { name: T('Animal Lifetime'), value: L(SRC.ncc, LIFETIME_DAYS + '\\ \\text{days}') + ' = ' + tex(LIFETIME_DAYS * 24, 0) + '\\ \\text{h}' },
+    { name: F('Time in Pain', 'Animal Lifetime'), value: '\\frac{' + hrs(HARM_TOTAL) + '}{' + tex(LIFETIME_DAYS * 24, 0) + '\\ \\text{h}} = ' + tex(HARM_TOTAL / (LIFETIME_DAYS * 24) * 100, 0) + '\\%' }
+  ];
+  var subs = [
+    { id: 'what-harms', name: T('What each harm is'), value: '',
+      note: '<ul>' + HARMS.map(function (h) { return '<li><b>' + esc(h[0]) + '</b>: ' + esc(h[4]) + '.</li>'; }).join('') + '</ul>' +
+            '<p>The project publishes a lower and upper bound for each cause as well; they are not yet loaded here (see the repository\'s TODO).</p>' },
+    { id: 'by-intensity', name: T('All harms by intensity, with uncertainty'), value: hrs(im * lifetimes) + '\\ ' + range(ilo * lifetimes, ihi * lifetimes),
+      note: 'The project ran its estimate many times with every input varied over its plausible range and reports the <b>mean</b> and a <b>90% interval</b> ' +
+            '(the 5th to 95th percentile of those runs; no median or 95% interval is published). Mean, then interval in brackets, for your serving:',
+      ops: rep('+', INTENSITIES.length - 1),
+      terms: INTENSITIES.map(function (i) {
+        return { name: F(i[0], 'Serving'), value: hrs(i[1] * lifetimes) + '\\ ' + range(i[2] * lifetimes, i[3] * lifetimes),
+                 ops: ['\u00d7'],
+                 terms: [
+                   { name: L('#lifetimes-per-serving', F('Animal Lifetime', 'Serving')), value: L('#lifetimes-per-serving', lx) },
+                   { name: F(i[0], 'Animal Lifetime'), value: L(SRC.wfp, hrs(i[1])) + '\\ ' + range(i[2], i[3]) }
+                 ] };
+      }),
+      subs: [
+        { id: 'intensity-defs', name: T('What the intensities mean'), value: '',
+          note: '<ul>' + INTENSITIES.map(function (i) { return '<li><b>' + i[0] + '</b>: ' + i[4] + '.</li>'; }).join('') + '</ul>' +
+                '<p>Source: <a href="' + SRC.defs + '">Welfare Footprint Institute, pain intensity definitions</a>.</p>' },
+        { id: 'uncertainty-notes', name: T('Reading the uncertainty'), value: '',
+          note: '<p>Most of the uncertainty is in these pain estimates, not in the weights: the intervals are roughly &plusmn;40% around the mean. ' +
+                'The by-cause figures rest on the same evidence, so treat them as carrying about the same uncertainty. ' +
+                'The two breakdowns come from different releases of the same data and differ by about 4%, so read the by-cause numbers as proportions rather than exact hours. ' +
+                'The bracket on the total adds the individual intervals, which slightly overstates its width.</p>' +
+                '<p>Not included anywhere on this page: pain during transport and slaughter, breeder birds, and diseases the project did not model. The numbers are conservative.</p>' }
+      ]
+    }
+  ];
 
-  var harmPerServing = {
-    id: 'harm-per-serving', name: F('Specific Harm', 'Serving'), value: hrs(HARM_TOTAL * lifetimes) + '\\ \\text{(all harms)}', open: true,
-    note: 'Your serving\'s share of each harm, for a ' + n(oz) + ' oz serving. Open a harm to see its own multiplication.',
-    ops: rep('+', HARMS.length - 1),
-    terms: HARMS.map(function (h) {
-      return { name: F(h[0], 'Serving'), value: '\\mathbf{' + hrs(h[1] * lifetimes) + '}',
-               ops: ['\u00d7'],
-               terms: [
-                 { name: L('#lifetimes-per-serving', F('Animal Lifetime', 'Serving')), value: L('#lifetimes-per-serving', lx) },
-                 { name: L('#harm-per-lifetime', F(h[0], 'Animal Lifetime')), value: L('#harm-per-lifetime', hrs(h[1])) }
-               ] };
-    }),
-    result: { name: F('All Harms', 'Serving'), value: '\\mathbf{' + hrs(HARM_TOTAL * lifetimes) + '}' }
-  };
-
+  var harmPerLifetime, harmPerServing, breakdown = null;
   if (hi >= 0) {
     var h = HARMS[hi];
     var share = HARM_TOTAL > 0 ? h[1] / HARM_TOTAL * 100 : 0;
     harmPerLifetime = {
       id: 'harm-per-lifetime', name: F(h[0], 'Animal Lifetime'), value: L(SRC.track, hrs(h[1])),
-      note: '<b>' + esc(h[0]) + '</b>: ' + esc(h[4]) + '. The hours are how long an average conventional meat chicken spends in this pain over its whole life, from the ' +
-            '<a href="' + SRC.wfp + '">Welfare Footprint Project</a>, who combined how many birds are affected, how long it lasts and how intense it is, then summed over the bird\'s life. ' +
-            'That is why the lifetime is not a separate multiplier: it is the window over which the hours accumulate.',
+      note: '<b>' + esc(h[0]) + '</b>: ' + esc(h[4]) + '. The hours are how long an average conventional meat chicken spends in this pain over its whole life, ' + wfpNote,
       extras: [
         { name: F('All Harms', 'Animal Lifetime'), value: hrs(HARM_TOTAL) },
-        { name: F(h[0], 'All Harms'), value: tex(share, 0) + '\\%' },
-        { name: T('Animal Lifetime'), value: L(SRC.ncc, LIFETIME_DAYS + '\\ \\text{days}') + ' = ' + tex(LIFETIME_DAYS * 24, 0) + '\\ \\text{h}' }
-      ],
-      subs: harmPerLifetime.subs
+        { name: F(h[0], 'All Harms'), value: tex(share, 0) + '\\%' }
+      ].concat(lifetimeRows),
+      subs: subs
     };
     harmPerServing = {
-      id: 'harm-per-serving', name: F(h[0], 'Serving'), value: '\\mathbf{' + hrs(h[1] * lifetimes) + '}', open: true,
-      note: 'For a ' + n(oz) + ' oz serving. This is ' + tex(share, 0) + '% of the ' + n(HARM_TOTAL * lifetimes) + ' h of pain of all kinds behind the serving. ' +
-            'Choose "All harms" at the top to see every cause side by side.'
+      id: 'harm-per-serving', name: F(h[0], 'Serving'), value: '\\mathbf{' + hrs(h[1] * lifetimes) + '}',
+      note: 'Hours of ' + esc(h[0].toLowerCase()) + ' behind a ' + n(oz) + ' oz serving: ' + tex(share, 0) + '% of the ' + n(HARM_TOTAL * lifetimes) + ' h of pain of all kinds behind it.'
     };
+  } else {
+    harmPerLifetime = {
+      id: 'harm-per-lifetime', name: F('All Harms', 'Animal Lifetime'), value: hrs(HARM_TOTAL),
+      note: 'How many hours an average conventional meat chicken spends in each kind of pain over its whole life, ' + wfpNote,
+      extras: lifetimeRows, subs: subs,
+      ops: rep('+', HARMS.length - 1),
+      terms: HARMS.map(function (x, i) { return { name: F(x[0], 'Animal Lifetime'), value: L(SRC.track, hrs(x[1])), focus: i }; })
+    };
+    harmPerServing = {
+      id: 'harm-per-serving', name: F('All Harms', 'Serving'), value: '\\mathbf{' + hrs(HARM_TOTAL * lifetimes) + '}',
+      note: 'Hours of pain of all kinds behind a ' + n(oz) + ' oz serving.'
+    };
+    breakdown = HARMS.map(function (x, i) { return { name: F(x[0], 'Serving'), value: hrs(x[1] * lifetimes), focus: i }; });
   }
-  return { id: 'top', ops: ['\u00d7'], terms: [lifetimesPerServing, harmPerLifetime], result: harmPerServing };
+
+  return { terms: [lifetimesPerServing, harmPerLifetime], ops: ['\u00d7'], result: harmPerServing, breakdown: breakdown };
 }
 
 // ---------------------------------------------------------------------------
-// Rendering: every row is a two-column table, words left, numbers right.
+// Rendering. Every row is a table: [toggle] [words] [numbers].
+// An expandable row is preceded by its (hidden) derivation block.
 // ---------------------------------------------------------------------------
-var openState = {};   // which levels are open, kept across re-renders
+var openState = {};   // which rows are unfolded, kept across re-renders
 
-function eqCell(src) {
-  return '<div class="eq" data-tex="' + esc(src).replace(/"/g, '&quot;') + '"></div>';
-}
-function twoCol(left, right, big) {
-  var wrap = function (s) { return big ? '<big><big>' + s + '</big></big>' : s; };
-  return '<table width="100%"><tr>' +
-    '<td width="50%" align="center" valign="middle">' + wrap(left) + '</td>' +
-    '<td width="50%" align="center" valign="middle">' + wrap(right) + '</td></tr></table>';
-}
-function titleRow(node, big) {
-  return twoCol(eqCell('\\displaystyle ' + node.name), node.value ? eqCell('\\displaystyle ' + node.value) : '', big);
+function eqCell(src) { return '<div class="eq" data-tex="' + esc(src).replace(/"/g, '&quot;') + '"></div>'; }
+function bigIf(big, s) { return big ? '<big><big>' + s + '</big></big>' : s; }
+function rowTable(node, id, big, glyph) {
+  var attrs = id ? ' data-toggle="' + id + '"' : (node.focus !== undefined ? ' data-focus="' + node.focus + '"' : '');
+  return '<table width="100%"' + attrs + '><tr>' +
+    '<td width="24" align="center">' + bigIf(big, glyph || '') + '</td>' +
+    '<td width="50%" align="center" valign="middle">' + bigIf(big, eqCell('\\displaystyle ' + node.name)) + '</td>' +
+    '<td width="50%" align="center" valign="middle">' + bigIf(big, node.value ? eqCell('\\displaystyle ' + node.value) : '') + '</td></tr></table>';
 }
 function opRow(op, big) {
-  var s = big ? '<big><big>' + op + '</big></big>' : op;
-  return twoCol(s, s);
+  return '<table width="100%"><tr><td width="24"></td>' +
+    '<td width="50%" align="center">' + bigIf(big, op) + '</td><td width="50%" align="center">' + bigIf(big, op) + '</td></tr></table>';
 }
 function expandable(node) { return !!(node.note || node.terms || node.subs || node.extras); }
+function glyphFor(open) { return open ? '&#9661;' : '&#9650;'; }   // ▽ open, ▲ closed
 
-// One row. Expandable rows become <details> whose inside is the vertical equation.
+// One row. Expandable rows get their derivation block placed ABOVE them.
 function renderRow(node, path, big) {
+  if (!expandable(node)) return rowTable(node, null, big);
   var id = node.id || path;
-  if (!expandable(node)) return titleRow(node, big);
   var open = openState[id] === undefined ? !!node.open : openState[id];
-  return '<details id="' + id + '"' + (open ? ' open' : '') + '><summary>' + titleRow(node, big) + '</summary>' +
-         '<blockquote>' + renderInside(node, id) + '</blockquote></details>';
+  return '<blockquote id="' + id + '-block" data-block' + (open ? '' : ' hidden') + '>' + renderInside(node, id) + '</blockquote>' +
+         '<div id="' + id + '-row">' + rowTable(node, id, big, '<span id="' + id + '-glyph">' + glyphFor(open) + '</span>') + '</div>';
 }
 
-// The inside of a node: note, then terms stacked with operators, "=", result, extras, subs.
+// The derivation block: extras and subs first, then the terms with operators, the line, then the note.
 function renderInside(node, path, big) {
   var html = '';
-  if (node.note) html += '<p>' + node.note + '</p>';
+  if (node.extras) node.extras.forEach(function (x, i) { html += renderRow(x, path + '-x' + i); });
+  if (node.subs) node.subs.forEach(function (s, i) { html += renderRow(s, path + '-s' + i); });
   if (node.terms) {
     node.terms.forEach(function (t, i) {
       if (i > 0) html += opRow(node.ops[i - 1], big);
       html += renderRow(t, path + '-' + i, big);
     });
-    html += opRow('=', big);
-    html += node.result ? renderRow(node.result, path + '-result', big) : titleRow(node, big);
+    html += '<hr>';
   }
-  if (node.extras) node.extras.forEach(function (x, i) { html += renderRow(x, path + '-x' + i); });
-  if (node.subs) node.subs.forEach(function (s, i) { html += renderRow(s, path + '-s' + i); });
+  if (node.note) html += '<p>' + node.note + '</p>';   // explanation sits directly above the row it describes
   return html;
 }
 
 function update() {
   var oz = parseFloat(document.getElementById('oz').value) || 0;
   var hi = parseInt(document.getElementById('harm').value, 10);
+  var tree = buildTree(oz, hi);
+  var html = '';
+  tree.terms.forEach(function (t, i) {
+    if (i > 0) html += opRow(tree.ops[i - 1], true);
+    html += renderRow(t, 'top-' + i, true);
+  });
+  html += opRow('=', true);
+  html += renderRow(tree.result, 'top-result', true);
+  if (tree.breakdown) {
+    html += '<p>By cause, for this serving. Click one to focus the equation on it:</p>';
+    tree.breakdown.forEach(function (b, i) { html += renderRow(b, 'bd-' + i); });
+  }
   var root = document.getElementById('tree');
-  root.innerHTML = renderInside(buildTree(oz, hi), 'top', true);
+  root.innerHTML = html;
   root.querySelectorAll('.eq').forEach(function (el) {
     var src = el.getAttribute('data-tex');
     if (typeof katex === 'undefined') { el.textContent = src; return; }
     katex.render(src, el, { displayMode: false, throwOnError: false, trust: function (c) { return c.command === '\\href'; } });
   });
-  root.querySelectorAll('details').forEach(function (d) {
-    d.addEventListener('toggle', function () { openState[d.id] = d.open; });
-  });
 }
 
-// Clicking a linked term opens its level (and every level above it) and scrolls there.
-function openLevel(id) {
-  var el = document.getElementById(id);
-  while (el) { if (el.tagName === 'DETAILS') el.open = true; el = el.parentElement; }
+// Toggle a row's derivation, keeping the row where it is on screen.
+function setOpen(id, open) {
+  var block = document.getElementById(id + '-block');
+  var row = document.getElementById(id + '-row');
+  if (!block || !row) return;
+  var before = row.getBoundingClientRect().top;
+  block.hidden = !open;
+  openState[id] = open;
+  var g = document.getElementById(id + '-glyph');
+  if (g) g.innerHTML = glyphFor(open);
+  window.scrollBy(0, row.getBoundingClientRect().top - before);
 }
+function toggle(id) {
+  var block = document.getElementById(id + '-block');
+  if (block) setOpen(id, block.hidden);
+}
+// Open a row's derivation and every enclosing one, then scroll to the row.
+function openLevel(id) {
+  var el = document.getElementById(id + '-block');
+  if (!el) return;
+  var ids = [];
+  while (el) {
+    if (el.hasAttribute && el.hasAttribute('data-block')) ids.push(el.id.replace(/-block$/, ''));
+    el = el.parentElement;
+  }
+  ids.forEach(function (x) { setOpen(x, true); });
+  document.getElementById(id + '-row').scrollIntoView({ block: 'center' });
+}
+
 document.addEventListener('click', function (e) {
   var a = e.target.closest('a');
   if (!a && document.elementsFromPoint) {
     var stack = document.elementsFromPoint(e.clientX, e.clientY);
     for (var k = 0; k < stack.length && !a; k++) a = stack[k].closest('a[href^="#"]');
   }
-  if (!a) return;
-  var href = a.getAttribute('href') || '';
-  if (href.charAt(0) !== '#') return;
-  e.preventDefault();
-  openLevel(href.slice(1));
-  document.getElementById(href.slice(1)).scrollIntoView({ block: 'start' });
+  if (a) {
+    var href = a.getAttribute('href') || '';
+    if (href.charAt(0) !== '#') return;          // external source: let it open
+    e.preventDefault();
+    openLevel(href.slice(1));
+    return;
+  }
+  var t = e.target.closest('table[data-toggle]');
+  if (t) { toggle(t.getAttribute('data-toggle')); return; }
+  var f = e.target.closest('table[data-focus]');
+  if (f) { document.getElementById('harm').value = f.getAttribute('data-focus'); update(); window.scrollTo(0, 0); }
 });
 
 window.addEventListener('DOMContentLoaded', function () {
