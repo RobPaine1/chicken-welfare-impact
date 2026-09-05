@@ -5,7 +5,7 @@
 var TEXT = {
 
   // ---- Shared -------------------------------------------------------------
-  nav: { calculator: 'Calculator', equation: 'Equation' },
+  nav: { calculator: 'Calculator', equation: 'Equation', harms: 'Harms' },
 
   // What each harm is. Keys must match the names produced by scripts/fetch_paintrack.py.
   harms: {
@@ -59,6 +59,8 @@ var TEXT = {
     causeLine: 'of {harm}',                         // after the hours, e.g. "52 hours of lameness"
     rangeLine: 'likely {lo} to {hi}',               // the grey 90% range
     // {what} {perBird} {fraction}
+    // Link at the end of each harm's description, to that harm's page.
+    causeLink: 'Read what the report says about it.',
     causeDetail: '{what}. An average bird in this system spends <b>{perBird}</b> in this pain over its life; this serving is {fraction} of a bird, so it carries that share.',
     totalLine: 'of harm in total, counting each harm separately',
     levelsHeading: 'Researchers think this resulted in the chicken feeling:',
@@ -82,6 +84,66 @@ var TEXT = {
       ['Chicken Caesar salad', 85, '', 'img/chicken-caesar-salad.webp'],
       ['Bowl of chicken noodle soup', 25, '', 'img/chicken-noodle-soup.webp']
     ]
+  },
+
+  // ---- Harms page ---------------------------------------------------------
+  harmsPage: {
+    title: 'Harms',
+    // {book} becomes the report's citation with a link.
+    intro: 'The harms counted by the calculator, as the Welfare Footprint Project describes them in {book}. ' +
+           'Each quote is from the report; each link opens every page of the report that mentions that harm.',
+    pagesLink: 'See the {n} pages of the report that mention {name}',
+    // Shown at the top of each harm's own page. {name} is the harm, {book} the citation.
+    pageIntro: 'Pages of {book} that mention {name}.',
+    chapterLabel: 'Chapter {n}. {title}',
+    pageLabel: 'Chapter {n}, page {p}',
+    // Short notes shown under a harm's name on the Harms page.
+    notes: {
+      'Breeder hen hunger': 'The parent hens of meat chickens. The calculator spreads each hen’s pain over the chicks she produces.',
+      'Breeder hen peritonitis': 'The parent hens of meat chickens. The calculator spreads each hen’s pain over the chicks she produces.',
+      'Stunning and slaughter': 'Not counted by the calculator, which covers life on the farm; the report treats slaughter in its own chapter.'
+    },
+    // Quotes from the report that define each harm. Order here is the order on the page.
+    definitions: {
+      'Lameness': [
+        { quote: 'Lameness, a clinical indicator of a collection of disorders that affect the ability of an individual to walk, is widely considered a major problem in the broiler industry and the primary welfare concern for broilers. It is defined as an impairment in the ability to walk normally as a result of injury, infection or deformity in one or more weight-bearing structures (e.g., skeleton, muscle, tendons, skin or nervous system in the legs and feet), and conformation.', cite: 'Chapter 2, page 1' },
+        { quote: 'Lameness is a multifactorial condition heavily associated with fast growth rates. […] Because bone development is not as rapid as the rate of muscle deposition, disproportionate stress is placed on relatively immature bones and joints.', cite: 'Chapter 2, page 1' }
+      ],
+      'Ascites': [
+        { quote: 'Ascites (the term used for the abnormal accumulation of fluid in the abdominal cavity) can cause prolonged suffering before becoming severe enough to result in death, which will often happen due to a combination of hypoxemia, congestive heart failure, starvation and respiratory distress caused by pulmonary edema and compression of the air sacs in the abdomen by the accumulation of fluid in the abdominal cavity. Live birds experiencing ascites present with visibly swollen abdomens and apparent respiratory distress.', cite: 'Chapter 3, page 2' },
+        { quote: 'Two conditions commonly present in commercial flocks, pulmonary hypertension (leading to ascites) and sudden death syndrome (SDS), are a result of cardiorespiratory insufficiency from intense selection for rapid growth.', cite: 'Chapter 3, page 1' }
+      ],
+      'Sudden death syndrome': [
+        { quote: 'Different from pulmonary hypertension and ascites, sudden death syndrome (SDS) seems to occur without warning, with seemingly healthy birds suddenly flipping over and dying. This condition is believed to be caused by a lack of oxygen to the myocardium, leading to acute heart failure. […] Prior to death, birds are observed violently flapping their wings, extending their neck, emitting a vocalization (“squawk”), and collapsing.', cite: 'Chapter 3, page 2' }
+      ],
+      'Heat stress': [
+        { quote: 'Heat stress occurs when the amount of heat produced by an animal surpasses its capacity to dissipate it to the environment, as a result of both environmental factors (e.g. high temperatures, humidity, poor ventilation, stocking density) and the animal’s traits (e.g. body size, body surfaces’ sizes, their thermal resistance, metabolic rate, coping mechanisms).', cite: 'Chapter 4, page 2' },
+        { quote: 'One of the first visible signs of heat stress is panting. […] Other behavioral changes commonly associated with heat stress include wing spreading, squatting close to the ground, drinking, sleeping, dozing, and sitting. Birds will also reduce the amount of time spent eating, standing, and walking.', cite: 'Chapter 4, page 2' }
+      ],
+      'No foraging or exploring': [
+        { quote: 'In chickens, foraging encompasses two distinct behaviors, often performed in an alternating sequence: ground pecking (rapid, downward movements of the beak towards the litter or other substrates) and ground scratching (backward kicks at the substrate using one leg).', cite: 'Chapter 5, page 3' },
+        { quote: 'Despite over 8,000 years of domestication, modern chickens still retain a similar behavioral repertoire as that of their wild ancestors, the red junglefowl. Given the opportunity, they will still spend a substantial fraction of their behavioral time budget foraging and exploring the environment, as well as perching and dustbathing. Still, in modern commercial broiler production the expression of many of these drives is greatly constrained.', cite: 'Chapter 5, page 1' },
+        { quote: 'In this Chapter, we assume that the frustration of motivated behaviors may trigger affective (emotional) experiences of a negative valence, which we refer to as ‘psychological pain’.', cite: 'Chapter 5, page 2' }
+      ],
+      'No perching': [
+        { quote: 'Although perches and raised platforms are not typically available in conventional broiler farms, when available, broilers will use them. […] Given the adaptive antipredatory function of perching, as well as evidence to suggest that broilers raised without the opportunity to perch are more fearful, stressed and aggressive, we tentatively hypothesize that the inability to perch or roost is aversive for broilers.', cite: 'Chapter 5, page 9' },
+        { quote: 'We tentatively assume that psychological pain associated with the inability to perch and roost will be most prominent: 1) when searching for a safe, elevated site, which we estimate to last approximately 30-60 minutes and 2) during dark hours.', cite: 'Chapter 5, page 10' }
+      ],
+      'No dustbathing': [
+        { quote: 'Dustbathing is common in poultry and other bird species, consisting of a sequence of coordinated movements. Initially, the bird squats in the substrate and uses the wings to throw dust through the feathers, next rising and shaking off the dust. […] Typically, chickens will dustbathe about once every other day, often for 20 to 35 minutes at a time. From a functional perspective, dustbathing has been associated with the removal of surplus stale lipids from the feathers (improving the insulation capacity of the feathers), dandruff and possibly ectoparasites.', cite: 'Chapter 5, page 12' },
+        { quote: 'Low levels of dustbathing in broilers may also reflect a lack of a suitable substrate. Under commercial conditions, litter tends to become very wet and compact across the production cycle, limiting its attractiveness for dustbathing.', cite: 'Chapter 5, page 13' }
+      ],
+      'Breeder hen hunger': [
+        { quote: 'While obviously sharing the same genetics for fast-growth and high feed conversion, breeders must live long enough to reach adulthood and reproduce. Yet, the odds that a modern breeder becomes obese, severely ill or dies is very high over this longer lifespan. […] The traditional workaround chosen by the industry to improve the reproductive performance of breeders and increase their survival odds has been the adoption of severe levels of feed restriction to slow down growth and prevent obesity.', cite: 'Chapter 6, pages 1–2' },
+        { quote: 'We refer to this motivation as ‘hunger’, an aversive (negatively valenced) state that signals the need for food. Like with other forms of pain, hunger signaling must be loud enough to drive attention away from other tasks and stimuli, imposing a new action priority to prevent survival from being compromised.', cite: 'Chapter 6, pages 6–7' }
+      ],
+      'Breeder hen peritonitis': [
+        { quote: 'Egg peritonitis syndrome (EGS, a painful and often fatal reproductive condition) is the main production disease and leading cause of mortality in egg-laying hens. EGS is a disease characterized by the inflammation of the oviduct and abdominal cavity, often triggered by the presence of yolk. […] In chronic cases, the yolk form clumps in the abdominal cavity, leading to a life of discomfort.', cite: 'Chapter 6, page 12' }
+      ],
+      'Stunning and slaughter': [
+        { quote: 'Recognition that the pain endured during slaughter should be alleviated has become the main driver for the implementation of slaughter methods that include an initial stunning stage to render the animal unconscious and insensible to pain — ideally in an immediate and painless way — until the time of death. […] In this chapter we quantify the welfare impacts of existing and potential policies on the stunning of poultry prior to slaughter.', cite: 'Chapter 8, page 2' }
+      ]
+    }
   },
 
   // ---- Equation page ------------------------------------------------------

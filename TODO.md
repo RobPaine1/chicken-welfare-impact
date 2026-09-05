@@ -50,7 +50,9 @@
 - [ ] Weekly intake: enter the chicken you eat in a week and see what that
       adds up to over months and years.
 - [ ] Fuller descriptions of the harms (currently one line each in
-      `docs/text.js`).
+      `docs/text.js`). The Harms page now carries the report's own definitions
+      and every page of the report per harm; the calculator's one-liners are
+      unchanged.
 - [ ] Fix the equation colours.
 - [ ] Add an About page.
 - [ ] Add more text to the methodology page (the Equation page's Notes).

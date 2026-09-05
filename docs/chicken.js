@@ -16,6 +16,8 @@ var SYSTEMS = {
 var LEVELS = ['annoying', 'hurtful', 'disabling', 'excruciating'];
 var LEVEL_NAMES = { annoying: 'Annoying', hurtful: 'Hurtful', disabling: 'Disabling', excruciating: 'Excruciating' };
 var LEVEL_DEFS = TEXT.intensities;
+// URL-safe name of a harm, used for docs/harms/<slug>.html.
+function harmSlug(name) { return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
 function harmWhat(c) { return TEXT.harms[c.name] || c.what; }   // description from text.js, else from the data file
 function fmt(template, vars) { return template.replace(/\{(\w+)\}/g, function (m, k) { return vars[k] !== undefined ? vars[k] : m; }); }
 

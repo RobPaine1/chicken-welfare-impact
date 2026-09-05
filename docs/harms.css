@@ -1,0 +1,13 @@
+body { max-width: 1000px; margin: 1em auto; padding: 0 1em; line-height: 1.45; }
+.nav { color: #666; }
+h1 { margin-bottom: 0.2em; }
+h2 { font-size: 1.15em; margin: 1.4em 0 0.3em; }
+.muted { color: #666; font-size: 0.9em; }
+blockquote { margin: 0.4em 0 0.4em 1em; padding-left: 0.8em; border-left: 3px solid #ddd; color: #333; }
+blockquote cite { display: block; color: #777; font-size: 0.85em; font-style: normal; margin-top: 0.2em; }
+.pages a { font-size: 0.95em; }
+.chapter { margin-top: 1.6em; }
+.chapter h2 { position: sticky; top: 0; background: #fff; padding: 0.4em 0; margin: 0; border-bottom: 1px solid #ddd; }
+.page { margin: 0.8em 0 1.4em; }
+.page img { display: block; width: 100%; max-width: 860px; border: 1px solid #ddd; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.page .num { color: #777; font-size: 0.85em; margin: 0.2em 0 0; }

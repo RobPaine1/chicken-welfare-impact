@@ -42,7 +42,7 @@
 </head>
 <body>
 
-<p class="nav"><a href="index.html" id="nav-calc"></a> &middot; <b id="nav-eq"></b></p>
+<p class="nav"><a href="index.html" id="nav-calc"></a> &middot; <b id="nav-eq"></b> &middot; <a href="harms.html" id="nav-harms"></a></p>
 <h1 id="title"></h1>
 
 <p>
@@ -321,6 +321,7 @@ function fillStaticText() {
   var E = TEXT.equation;
   document.getElementById('nav-eq').textContent = TEXT.nav.equation;
   document.getElementById('nav-calc').textContent = TEXT.nav.calculator;
+  document.getElementById('nav-harms').textContent = TEXT.nav.harms;
   document.getElementById('title').textContent = E.title;
   document.title = E.title;
   document.getElementById('serving-before').textContent = E.servingBefore;

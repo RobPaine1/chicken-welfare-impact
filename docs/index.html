@@ -51,7 +51,7 @@
 </head>
 <body>
 
-<p class="nav"><b id="nav-calc"></b> &middot; <a href="equation.html" id="nav-eq"></a></p>
+<p class="nav"><b id="nav-calc"></b> &middot; <a href="equation.html" id="nav-eq"></a> &middot; <a href="harms.html" id="nav-harms"></a></p>
 <h1 id="title"></h1>
 
 <div class="cols">
@@ -135,7 +135,8 @@ function render() {
     var what = c.what.charAt(0).toUpperCase() + c.what.slice(1);
     return '<details class="harm" data-name="' + c.name + '"' + (openHarms[c.name] ? ' open' : '') + '><summary>' +
       '<span class="num">' + dur(c.hours) + '</span><span class="name">' + fmt(P.causeLine, { harm: c.name.toLowerCase() }) + '</span><span class="range">' + durRange(c.lo, c.hi) + '</span></summary>' +
-      '<div class="desc">' + fmt(P.causeDetail, { what: what, perBird: dur(c.perBird), fraction: frac(st.lifetimes) }) + '</div></details>';
+      '<div class="desc">' + fmt(P.causeDetail, { what: what, perBird: dur(c.perBird), fraction: frac(st.lifetimes) }) +
+      ' <a href="harms/' + harmSlug(c.name) + '.html">' + P.causeLink + '</a></div></details>';
   }).join('') + '<div class="total"><span class="num">' + dur(st.allHours) + '</span><span>' + P.totalLine + '</span></div>';
 
   document.getElementById('levels').innerHTML = st.levels.slice().reverse().map(function (l) {
@@ -189,7 +190,7 @@ function pick(i) {
 
 window.addEventListener('DOMContentLoaded', function () {
   document.title = P.title;
-  [['nav-calc', TEXT.nav.calculator], ['nav-eq', TEXT.nav.equation], ['title', P.title], ['caveat', P.caveat],
+  [['nav-calc', TEXT.nav.calculator], ['nav-eq', TEXT.nav.equation], ['nav-harms', TEXT.nav.harms], ['title', P.title], ['caveat', P.caveat],
    ['type-heading', P.typeHeading], ['type-hint', P.typeHint], ['pick-heading', P.pickHeading], ['pick-hint', P.pickHint],
    ['causes-heading', P.causesHeading], ['levels-heading', P.levelsHeading]].forEach(function (x) { document.getElementById(x[0]).innerHTML = x[1]; });
   document.getElementById('credits-heading').textContent = P.photoCredits;

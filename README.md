@@ -38,6 +38,18 @@ item with a photo, put a cut-out PNG or WebP in `docs/img/`, add the file name
 as the fourth field of the item, and add its credit to `photos.js`. The cut-outs
 were made with `rembg` (`pip install "rembg[cpu]"`) and cropped to the subject.
 
+## Harms pages
+
+`docs/harms.html` lists every harm with the Welfare Footprint Project's own
+description of it, quoted from *Quantifying Pain in Broiler Chickens*
+(Schuck-Paim & Alonso, eds, 2022). The quotes and the page wording live in
+`text.js` under `harmsPage`. Each harm links to `docs/harms/<name>.html`, which
+shows every page of the report that mentions that harm, as images. The chapter
+PDFs are in `data/report/`; `scripts/build_harms.py` (needs `pip install
+pymupdf pillow`) finds the pages by keyword, renders them to
+`docs/report/<chapter>/`, and writes the manifest `docs/report.js`. Re-run it
+after changing the keyword rules in the script or replacing a chapter PDF.
+
 ## Data
 
 The weight constants (USDA NASS live weight, Wisconsin Extension dressing
