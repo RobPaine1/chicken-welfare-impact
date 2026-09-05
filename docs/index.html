@@ -11,107 +11,16 @@
 
 <h1>Chicken welfare calculator</h1>
 
-<p>I ate <input type="number" id="oz" value="6" min="0" step="0.5" size="4"> oz of cooked chicken.</p>
+<p>One serving is <input type="number" id="oz" value="6" min="0" step="0.5" size="4"> oz of cooked chicken.</p>
 
-<div id="top"></div>
+<p>Click any underlined term to open its own equation beneath it.</p>
 
-<p>Click any underlined term to go one level deeper.</p>
-
-<details id="result" open>
-<summary><b>Specific harms behind your meal</b> (<i>h<sub>i</sub></i>)</summary>
-<p>For each cause of pain <i>i</i>, your share is the fraction of a chicken times the hours one chicken spends in that pain:</p>
-<div id="eq-result"></div>
-</details>
-
-<details id="f">
-<summary><b>Fraction of a chicken</b> (<i>f</i>)</summary>
-<p>The raw meat you ate divided by the raw meat one chicken yields:</p>
-<div id="eq-f"></div>
-
-<details id="Wraw">
-<summary><b>Raw meat you ate</b> (<i>W</i><sub>raw</sub>)</summary>
-<p>Cooked meat weighs about three quarters of what it did raw, so divide by the cooking yield <i>y</i> to undo the cooking:</p>
-<div id="eq-Wraw"></div>
-</details>
-
-<details id="M">
-<summary><b>Raw meat from one chicken</b> (<i>M</i>)</summary>
-<p>One bird's live weight (total pounds produced in the U.S. in 2024, <i>P</i>, divided by birds produced, <i>N</i>), times the dressing share <i>d</i> (carcass as a share of live weight), times the edible share <i>e</i> (boneless meat as a share of the carcass):</p>
-<div id="eq-M"></div>
-<p>These are industry averages. Individual birds and cuts vary by roughly &plusmn;10%, and no formal interval is published for them.</p>
-</details>
-</details>
-
-<details id="H">
-<summary><b>Hours of pain per chicken lifetime</b> (<i>H</i>)</summary>
-<p>
-  The <a href="https://welfarefootprint.org/broilers/">Welfare Footprint Project</a> estimated how many hours an average
-  conventional meat chicken spends in pain over its life. For each cause they combined how many birds are affected,
-  how long it lasts, and how intense it is, then summed over the bird's life. That is why lifetime does not appear
-  as a separate multiplier: it is the window over which the hours accumulate.
-</p>
-<div id="eq-H"></div>
-<p>
-  Over a lifetime <i>T</i> of <a href="https://www.nationalchickencouncil.org/about-the-industry/statistics/u-s-broiler-performance/">47 days</a>
-  that is <span id="life-h"></span> hours, so the average bird is in some level of pain for about
-  <span id="life-pct"></span> of its life.
-</p>
-
-<details id="causes">
-<summary><b>The causes</b> (<i>H<sub>i</sub></i>, mean hours per lifetime)</summary>
-<ul>
-  <li><b>Lameness</b>: leg and joint disorders from growing too fast; walking hurts or becomes impossible.</li>
-  <li><b>No foraging or exploring</b>: barren sheds with nothing to scratch, peck or investigate.</li>
-  <li><b>No dustbathing</b>: no loose, dry substrate for the bathing behaviour that keeps feathers healthy.</li>
-  <li><b>No perching</b>: no raised places to rest, which chickens seek out for safety.</li>
-  <li><b>Heat stress</b>: heavy birds in crowded sheds cannot shed heat; they pant and become lethargic.</li>
-  <li><b>Ascites</b>: fluid builds up in the abdomen when the heart cannot keep up with rapid growth.</li>
-  <li><b>Sudden death syndrome</b>: acute heart failure. Brief but intense, so it adds almost no hours.</li>
-</ul>
-<p>The project publishes a lower and upper bound for each cause as well; they are not yet loaded here (see the repository's TODO).</p>
-</details>
-
-<details id="intensity">
-<summary><b>The same hours by intensity</b>, with uncertainty</summary>
-<p>
-  The project ran its estimate many times with every input varied over its plausible range and reports the
-  <b>mean</b> and a <b>90% interval</b> (the 5th to 95th percentile of those runs; no median or 95% interval is
-  published). Your meal's share of each, mean then interval in brackets:
-</p>
-<div id="eq-intensity"></div>
-<p>
-  Most of the uncertainty is here, in the pain estimates, not in the weights: the intervals are roughly &plusmn;40%
-  around the mean. The by-cause figures rest on the same evidence, so treat them as carrying about the same
-  uncertainty. The two breakdowns come from different releases of the same data and differ by about 4%, so read
-  the by-cause numbers as proportions rather than exact hours. The bracket on the total adds the individual
-  intervals, which slightly overstates its width.
-</p>
-<p>What the intensities mean (<a href="https://welfarefootprint.org/technical-definitions/pain-intensities/">project definitions</a>):</p>
-<ul>
-  <li><b>Annoying</b>: unpleasant, but does not disrupt normal activity.</li>
-  <li><b>Hurtful</b>: hard to ignore; the bird is aware of it most of the time.</li>
-  <li><b>Disabling</b>: continuously distressing; no enjoyment is possible.</li>
-  <li><b>Excruciating</b>: intolerable even for seconds.</li>
-</ul>
-</details>
-</details>
-
-<details id="sources">
-<summary><b>Sources and what is left out</b></summary>
-<ol>
-  <li>Live weight (<i>P</i>, <i>N</i>): <a href="https://www.nass.usda.gov/Publications/Todays_Reports/reports/plva0425.pdf">USDA NASS, Poultry Production and Value 2024 Summary</a> (9.33 billion broilers, 61.1 billion lb).</li>
-  <li>Dressing <i>d</i> = 0.75: <a href="https://extension.umaine.edu/publications/2223e/">University of Maine Extension, Understanding Poultry Yields</a>.</li>
-  <li>Edible share <i>e</i> = 0.74: <a href="https://livestock.extension.wisc.edu/articles/bird-breakdown-exploring-yields-and-cuts-of-poultry/">University of Wisconsin Extension, Bird Breakdown</a>.</li>
-  <li>Cooking yield <i>y</i> = 0.75: <a href="https://www.ars.usda.gov/ARSUserFiles/80400525/data/retn/usda_cookingyields_meatpoultry.pdf">USDA Table of Cooking Yields for Meat and Poultry</a>.</li>
-  <li>Lifetime <i>T</i> = 47 days: <a href="https://www.nationalchickencouncil.org/about-the-industry/statistics/u-s-broiler-performance/">National Chicken Council, U.S. Broiler Performance</a>.</li>
-  <li>Hours of pain by intensity, mean and 90% interval: <a href="https://welfarefootprint.org/broilers/">Welfare Footprint Institute, Broilers</a>, conventional scenario. Consistent with their finding that the Better Chicken Commitment prevents 33 [13 to 53] h of Disabling, 79 [-99 to 260] h of Hurtful and 25 [5 to 45] s of Excruciating pain per bird.</li>
-  <li>Hours of pain by cause: <a href="https://pain-track.org/broilers">Welfare Footprint Institute, Pain-Track for broilers</a>, "time in pain per harm" for the average bird.</li>
-</ol>
-<p>Not included: pain during transport and slaughter, breeder birds, and diseases the project did not model. The numbers are conservative.</p>
-</details>
+<div id="tree"></div>
 
 <script>
-// Sources (numbers in the equations link to these)
+// ---------------------------------------------------------------------------
+// Sources
+// ---------------------------------------------------------------------------
 var SRC = {
   nass:    'https://www.nass.usda.gov/Publications/Todays_Reports/reports/plva0425.pdf',
   umaine:  'https://extension.umaine.edu/publications/2223e/',
@@ -119,43 +28,53 @@ var SRC = {
   cooking: 'https://www.ars.usda.gov/ARSUserFiles/80400525/data/retn/usda_cookingyields_meatpoultry.pdf',
   ncc:     'https://www.nationalchickencouncil.org/about-the-industry/statistics/u-s-broiler-performance/',
   wfp:     'https://welfarefootprint.org/broilers/',
-  track:   'https://pain-track.org/broilers'
+  track:   'https://pain-track.org/broilers',
+  defs:    'https://welfarefootprint.org/technical-definitions/pain-intensities/'
 };
 
+// ---------------------------------------------------------------------------
 // Constants
+// ---------------------------------------------------------------------------
 var OZ_TO_G = 28.35;
-var Y = 0.75;                       // cooking yield
-var P_LB = 61.1e9;                  // lb live weight produced, 2024
-var N = 9.33e9;                     // birds produced, 2024
-var LIVE_LB = P_LB / N;             // 6.55 lb
+var COOKING_YIELD = 0.75;
+var LIVE_LB_PER_YEAR = 61.1e9;      // lb of live chickens produced in the U.S., 2024
+var BIRDS_PER_YEAR = 9.33e9;        // chickens produced, 2024
+var LIVE_LB = LIVE_LB_PER_YEAR / BIRDS_PER_YEAR;   // 6.55 lb per bird
 var LIVE_G = LIVE_LB * 453.6;
-var D = 0.75;                       // dressing
-var E = 0.74;                       // edible share
-var M = LIVE_G * D * E;             // raw edible meat per bird, g
-var T_DAYS = 47;                    // lifetime
+var DRESSING = 0.75;
+var EDIBLE_SHARE = 0.74;
+var RAW_MEAT_PER_BIRD = LIVE_G * DRESSING * EDIBLE_SHARE;   // g
+var LIFETIME_DAYS = 47;
 
-// Hours of pain per conventional broiler, Welfare Footprint Project.
-// [name, mean, lower, upper]. Bounds per cause not yet loaded (null).
+// Hours of pain over one conventional chicken's lifetime, Welfare Footprint Project.
+// [name, mean, lower, upper, what it is]. Per-cause bounds not yet loaded (see TODO.md).
 var HARMS = [
-  ['Lameness', 457.9, null, null],
-  ['No foraging or exploring', 76.7, null, null],
-  ['No dustbathing', 70.0, null, null],
-  ['No perching', 63.0, null, null],
-  ['Heat stress', 38.9, null, null],
-  ['Ascites', 28.3, null, null],
-  ['Sudden death syndrome', 0.0, null, null]
+  ['Lameness', 457.9, null, null, 'leg and joint disorders from growing too fast; walking hurts or becomes impossible'],
+  ['No foraging or exploring', 76.7, null, null, 'barren sheds with nothing to scratch, peck or investigate'],
+  ['No dustbathing', 70.0, null, null, 'no loose, dry substrate for the bathing behaviour that keeps feathers healthy'],
+  ['No perching', 63.0, null, null, 'no raised places to rest, which chickens seek out for safety'],
+  ['Heat stress', 38.9, null, null, 'heavy birds in crowded sheds cannot shed heat; they pant and become lethargic'],
+  ['Ascites', 28.3, null, null, 'fluid builds up in the abdomen when the heart cannot keep up with rapid growth'],
+  ['Sudden death syndrome', 0.0, null, null, 'acute heart failure; brief but intense, so it adds almost no hours']
 ];
 var INTENSITIES = [
-  ['Annoying',     324.7, 212.8, 436.5],
-  ['Hurtful',      333.6, 195.1, 472.1],
-  ['Disabling',     50.3,  33.0,  67.5],
-  ['Excruciating', 30.2 / 3600, 8.8 / 3600, 51.6 / 3600]   // seconds
+  ['Annoying',     324.7, 212.8, 436.5, 'unpleasant, but does not disrupt normal activity'],
+  ['Hurtful',      333.6, 195.1, 472.1, 'hard to ignore; the bird is aware of it most of the time'],
+  ['Disabling',     50.3,  33.0,  67.5, 'continuously distressing; no enjoyment is possible'],
+  ['Excruciating', 30.2 / 3600, 8.8 / 3600, 51.6 / 3600, 'intolerable even for seconds']
 ];
-var H_TOTAL = HARMS.reduce(function (s, h) { return s + h[1]; }, 0);
+var HARM_TOTAL = HARMS.reduce(function (s, h) { return s + h[1]; }, 0);
 
+// ---------------------------------------------------------------------------
+// Formatting helpers
+// ---------------------------------------------------------------------------
 function n(x, d) { return Number(x.toFixed(d === undefined ? 1 : d)).toLocaleString('en-US'); }
 function tex(x, d) { return n(x, d).replace(/,/g, '{,}'); }
-function L(url, body) { return '\\href{' + url + '}{' + body + '}'; }   // link (to a source, or to #section)
+function T(words) { return '\\text{' + words + '}'; }
+function F(top, bottom) { return '\\frac{' + T(top) + '}{' + T(bottom) + '}'; }          // word fraction
+function L(url, body) { return '\\href{' + url + '}{' + body + '}'; }                   // link
+function LF(id, top, bottom) { return L('#' + id, F(top, bottom)); }                    // clickable word fraction
+function LT(id, words) { return L('#' + id, T(words)); }                               // clickable words
 function hrs(h) {
   if (h === 0) return '0\\ \\text{h}';
   if (h < 1 / 60) return tex(h * 3600) + '\\ \\text{s}';
@@ -167,81 +86,163 @@ function range(lo, hi) {
   var k = unit === 's' ? 3600 : unit === 'min' ? 60 : 1;
   return '[\\,' + tex(lo * k) + '\\text{–}' + tex(hi * k) + '\\ \\text{' + unit + '}\\,]';
 }
-function show(id, src) {
-  var el = document.getElementById(id);
-  if (typeof katex === 'undefined') { el.textContent = src; return; }
-  katex.render(src, el, { displayMode: true, throwOnError: false, trust: function (c) { return c.command === '\\href'; } });
-}
 function aligned(rows) {
   return '\\begin{aligned}' + rows.map(function (r) { return r.join(' & '); }).join(' \\\\ ') + '\\end{aligned}';
+}
+function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+
+// ---------------------------------------------------------------------------
+// The equation tree. Each node: id, name (words), eq (LaTeX), note (HTML), children.
+// Children render as <details> directly beneath their parent's equation, so
+// the whole thing reads as one equation growing downward.
+// ---------------------------------------------------------------------------
+function buildTree(oz) {
+  var cookedG = oz * OZ_TO_G;
+  var rawG = cookedG / COOKING_YIELD;
+  var lifetimes = rawG / RAW_MEAT_PER_BIRD;
+  var lx = tex(lifetimes, 3);
+  var approx = lifetimes > 0 && lifetimes < 0.67 ? ' \\approx \\tfrac{1}{' + Math.round(1 / lifetimes) + '}' : '';
+
+  return {
+    id: 'top',
+    eq: LF('harm-per-serving', 'Specific Harm', 'Serving') + ' = ' +
+        LF('lifetimes-per-serving', 'Animal Lifetime', 'Serving') + ' \\times ' +
+        LF('harm-per-lifetime', 'Specific Harm', 'Animal Lifetime') +
+        '\\\\[0.8em] ' + LT('harm-per-serving', 'hours behind your meal') + ' = ' + L('#lifetimes-per-serving', lx) + ' \\times ' + LT('harm-per-lifetime', 'hours per lifetime'),
+    children: [
+      {
+        id: 'harm-per-serving', name: 'Specific Harm / Serving', open: true,
+        note: 'Your serving\'s share of each harm, for a ' + n(oz) + ' oz serving:',
+        eq: aligned(HARMS.map(function (h) {
+          return [F(h[0], 'Serving'), '= ' + lx + ' \\times ' + L(SRC.track, hrs(h[1])), '= \\mathbf{' + hrs(h[1] * lifetimes) + '}'];
+        }).concat([['\\hline ' + F('All Harms', 'Serving'), '= ' + lx + ' \\times ' + hrs(HARM_TOTAL), '= \\mathbf{' + hrs(HARM_TOTAL * lifetimes) + '}']]))
+      },
+      {
+        id: 'lifetimes-per-serving', name: 'Animal Lifetime / Serving',
+        note: 'How many chickens\' worth of meat is on the plate: the raw meat in the serving divided by the raw meat one chicken yields in its lifetime.',
+        eq: F('Animal Lifetime', 'Serving') + ' = ' + LF('raw-per-serving', 'Raw Meat', 'Serving') + ' \\div ' + LF('raw-per-lifetime', 'Raw Meat', 'Animal Lifetime') +
+            '\\\\[0.8em] = ' + tex(rawG, 0) + '\\ \\text{g} \\div ' + tex(RAW_MEAT_PER_BIRD, 0) + '\\ \\text{g} = \\mathbf{' + lx + '}' + approx,
+        children: [
+          {
+            id: 'raw-per-serving', name: 'Raw Meat / Serving',
+            note: 'Meat loses about a quarter of its weight in cooking, so divide the cooked weight by the cooking yield to get back to raw.',
+            eq: F('Raw Meat', 'Serving') + ' = ' + LF('cooked-per-serving', 'Cooked Meat', 'Serving') + ' \\div ' + LT('cooking-yield', 'Cooking Yield') +
+                '\\\\[0.8em] = ' + tex(cookedG, 0) + '\\ \\text{g} \\div ' + L(SRC.cooking, tex(COOKING_YIELD, 2)) + ' = \\mathbf{' + tex(rawG, 0) + '\\ \\text{g}}',
+            children: [
+              { id: 'cooked-per-serving', name: 'Cooked Meat / Serving',
+                eq: F('Cooked Meat', 'Serving') + ' = ' + tex(oz) + '\\ \\text{oz} \\times 28.35\\ \\text{g/oz} = \\mathbf{' + tex(cookedG, 0) + '\\ \\text{g}}',
+                note: 'This is the number you typed at the top.' },
+              { id: 'cooking-yield', name: 'Cooking Yield',
+                eq: T('Cooking Yield') + ' = ' + L(SRC.cooking, tex(COOKING_YIELD, 2)),
+                note: 'Share of raw weight left after cooking. Most roasted, grilled or fried cuts keep 70–80%. Source: <a href="' + SRC.cooking + '">USDA Table of Cooking Yields for Meat and Poultry</a>.' }
+            ]
+          },
+          {
+            id: 'raw-per-lifetime', name: 'Raw Meat / Animal Lifetime',
+            note: 'What one chicken yields: its live weight, times the share that is carcass, times the share of the carcass that is boneless meat.',
+            eq: F('Raw Meat', 'Animal Lifetime') + ' = ' + LF('live-weight', 'Live Weight', 'Animal') + ' \\times ' + LT('dressing', 'Dressing') + ' \\times ' + LT('edible-share', 'Edible Share') +
+                '\\\\[0.8em] = ' + tex(LIVE_G, 0) + '\\ \\text{g} \\times ' + L(SRC.umaine, tex(DRESSING, 2)) + ' \\times ' + L(SRC.wisc, tex(EDIBLE_SHARE, 2)) + ' = \\mathbf{' + tex(RAW_MEAT_PER_BIRD, 0) + '\\ \\text{g}}',
+            children: [
+              { id: 'live-weight', name: 'Live Weight / Animal',
+                note: 'U.S. average for 2024: all the live weight produced in the year divided by the number of birds. Source: <a href="' + SRC.nass + '">USDA NASS, Poultry Production and Value 2024 Summary</a>.',
+                eq: F('Live Weight', 'Animal') + ' = ' + F('Live Weight Produced', 'Year') + ' \\div ' + F('Animals Produced', 'Year') +
+                    '\\\\[0.8em] = ' + L(SRC.nass, '61.1 \\times 10^{9}\\ \\text{lb}') + ' \\div ' + L(SRC.nass, '9.33 \\times 10^{9}') + ' = ' + tex(LIVE_LB, 2) + '\\ \\text{lb} = \\mathbf{' + tex(LIVE_G, 0) + '\\ \\text{g}}' },
+              { id: 'dressing', name: 'Dressing',
+                eq: T('Dressing') + ' = ' + L(SRC.umaine, tex(DRESSING, 2)),
+                note: 'The ready-to-cook carcass as a share of live weight; 70–78% is typical. Source: <a href="' + SRC.umaine + '">University of Maine Extension, Understanding Poultry Yields</a>.' },
+              { id: 'edible-share', name: 'Edible Share',
+                eq: T('Edible Share') + ' = ' + L(SRC.wisc, tex(EDIBLE_SHARE, 2)),
+                note: 'Boneless meat as a share of the carcass. Source: <a href="' + SRC.wisc + '">University of Wisconsin Extension, Bird Breakdown</a>. These yields are industry averages; individual birds and cuts vary by roughly &plusmn;10%.' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'harm-per-lifetime', name: 'Specific Harm / Animal Lifetime',
+        note: 'How many hours an average conventional meat chicken spends in each kind of pain over its whole life, from the ' +
+              '<a href="' + SRC.wfp + '">Welfare Footprint Project</a>. For each cause they combined how many birds are affected, how long it lasts and how intense it is, then summed over the bird\'s life. ' +
+              'That is why the lifetime is not a separate multiplier: it is the window over which the hours accumulate.',
+        eq: aligned(HARMS.map(function (h) {
+          return [F(h[0], 'Animal Lifetime'), '= ' + L(SRC.track, hrs(h[1]))];
+        }).concat([['\\hline ' + F('All Harms', 'Animal Lifetime'), '= ' + hrs(HARM_TOTAL)]])) +
+            '\\\\[1em] ' + T('Animal Lifetime') + ' = ' + L(SRC.ncc, LIFETIME_DAYS + '\\ \\text{days}') + ' = ' + tex(LIFETIME_DAYS * 24, 0) + '\\ \\text{h}, \\qquad ' +
+            F('Time in Pain', 'Animal Lifetime') + ' = \\frac{' + hrs(HARM_TOTAL) + '}{' + tex(LIFETIME_DAYS * 24, 0) + '\\ \\text{h}} = ' + tex(HARM_TOTAL / (LIFETIME_DAYS * 24) * 100, 0) + '\\%',
+        children: [
+          { id: 'what-harms', name: 'What each harm is',
+            note: '<ul>' + HARMS.map(function (h) { return '<li><b>' + esc(h[0]) + '</b>: ' + esc(h[4]) + '.</li>'; }).join('') + '</ul>' +
+                  '<p>The project publishes a lower and upper bound for each cause as well; they are not yet loaded here (see the repository\'s TODO).</p>' },
+          { id: 'by-intensity', name: 'The same hours by intensity, with uncertainty',
+            note: 'The project ran its estimate many times with every input varied over its plausible range and reports the <b>mean</b> and a <b>90% interval</b> ' +
+                  '(the 5th to 95th percentile of those runs; no median or 95% interval is published). Per lifetime and per serving, mean then interval in brackets:',
+            eq: aligned(INTENSITIES.map(function (i) {
+              return [F(i[0], 'Animal Lifetime'), '= ' + L(SRC.wfp, hrs(i[1])) + '\\ ' + range(i[2], i[3]),
+                      '\\qquad ' + F(i[0], 'Serving'), '= ' + hrs(i[1] * lifetimes) + '\\ ' + range(i[2] * lifetimes, i[3] * lifetimes)];
+            }).concat([(function () {
+              var m = 0, lo = 0, hi = 0; INTENSITIES.forEach(function (i) { m += i[1]; lo += i[2]; hi += i[3]; });
+              return ['\\hline ' + F('All Intensities', 'Animal Lifetime'), '= ' + hrs(m) + '\\ ' + range(lo, hi),
+                      '\\qquad ' + F('All Intensities', 'Serving'), '= \\mathbf{' + hrs(m * lifetimes) + '}\\ ' + range(lo * lifetimes, hi * lifetimes)];
+            })()])),
+            children: [
+              { id: 'intensity-defs', name: 'What the intensities mean',
+                note: '<ul>' + INTENSITIES.map(function (i) { return '<li><b>' + i[0] + '</b>: ' + i[4] + '.</li>'; }).join('') + '</ul>' +
+                      '<p>Source: <a href="' + SRC.defs + '">Welfare Footprint Institute, pain intensity definitions</a>.</p>' },
+              { id: 'uncertainty-notes', name: 'Reading the uncertainty',
+                note: '<p>Most of the uncertainty is in these pain estimates, not in the weights: the intervals are roughly &plusmn;40% around the mean. ' +
+                      'The by-cause figures rest on the same evidence, so treat them as carrying about the same uncertainty. ' +
+                      'The two breakdowns come from different releases of the same data and differ by about 4%, so read the by-cause numbers as proportions rather than exact hours. ' +
+                      'The bracket on the total adds the individual intervals, which slightly overstates its width.</p>' +
+                      '<p>Not included anywhere on this page: pain during transport and slaughter, breeder birds, and diseases the project did not model. The numbers are conservative.</p>' }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Rendering
+// ---------------------------------------------------------------------------
+var openState = {};   // remembers which levels are open across re-renders
+
+function renderNode(node) {
+  var html = '';
+  if (node.note && !node.eq) html += '<div>' + node.note + '</div>';
+  if (node.note && node.eq) html += '<p>' + node.note + '</p>';
+  if (node.eq) html += '<div class="eq" data-tex="' + esc(node.eq).replace(/"/g, '&quot;') + '"></div>';
+  if (node.children) {
+    html += node.children.map(function (c) {
+      var open = openState[c.id] === undefined ? !!c.open : openState[c.id];
+      return '<details id="' + c.id + '"' + (open ? ' open' : '') + '><summary><b>' + esc(c.name) + '</b></summary><blockquote>' + renderNode(c) + '</blockquote></details>';
+    }).join('');
+  }
+  return html;
 }
 
 function update() {
   var oz = parseFloat(document.getElementById('oz').value) || 0;
-  var g = oz * OZ_TO_G;
-  var raw = g / Y;
-  var f = raw / M;
-  var fx = tex(f, 3);
-  var approx = f > 0 && f < 0.67 ? ' \\approx \\tfrac{1}{' + Math.round(1 / f) + '}' : '';
-
-  // Top level: f × H_i = h_i, each term clickable
-  show('top',
-    '\\underbrace{' + L('#f', 'f') + '}_{' + L('#f', '\\text{fraction of a chicken}') + '} \\times ' +
-    '\\underbrace{' + L('#H', 'H_i') + '}_{' + L('#H', '\\text{hours of pain per chicken lifetime}') + '} = ' +
-    '\\underbrace{' + L('#result', 'h_i') + '}_{' + L('#result', '\\text{specific harms behind your meal}') + '}' +
-    '\\\\[1em] ' + L('#f', fx) + ' \\times ' + L('#H', 'H_i') + ' = ' + L('#result', 'h_i'));
-
-  // Result: per-cause block
-  var rows = HARMS.map(function (h) {
-    return ['\\text{' + h[0] + '}', ': ' + fx + ' \\times ' + L(SRC.track, hrs(h[1])), '= \\mathbf{' + hrs(h[1] * f) + '}'];
+  var tree = buildTree(oz);
+  var root = document.getElementById('tree');
+  root.innerHTML = renderNode(tree);
+  root.querySelectorAll('.eq').forEach(function (el) {
+    var src = el.getAttribute('data-tex');
+    if (typeof katex === 'undefined') { el.textContent = src; return; }
+    katex.render(src, el, { displayMode: true, throwOnError: false, trust: function (c) { return c.command === '\\href'; } });
   });
-  rows.push(['\\hline \\textbf{Total}', ': ' + fx + ' \\times ' + hrs(H_TOTAL), '= \\mathbf{' + hrs(H_TOTAL * f) + '}']);
-  show('eq-result', aligned(rows));
-
-  // f
-  show('eq-f',
-    'f = \\frac{' + L('#Wraw', 'W_{\\text{raw}}') + '}{' + L('#M', 'M') + '} = \\frac{' + tex(raw, 0) + '\\ \\text{g}}{' + tex(M, 0) + '\\ \\text{g}} = \\mathbf{' + fx + '}' + approx);
-
-  // W_raw
-  show('eq-Wraw',
-    'W_{\\text{raw}} = \\frac{W_{\\text{cooked}}}{y} = \\frac{' + tex(oz) + '\\ \\text{oz} \\times 28.35\\ \\text{g/oz}}{' + L(SRC.cooking, '0.75') + '}' +
-    ' = \\frac{' + tex(g, 0) + '\\ \\text{g}}{' + L(SRC.cooking, '0.75') + '} = ' + tex(raw, 0) + '\\ \\text{g}');
-
-  // M
-  show('eq-M',
-    'M = \\frac{P}{N} \\times d \\times e = \\underbrace{\\frac{' + L(SRC.nass, '61.1 \\times 10^{9}\\ \\text{lb}') + '}{' + L(SRC.nass, '9.33 \\times 10^{9}\\ \\text{birds}') + '}}_{' +
-    tex(LIVE_LB, 2) + '\\ \\text{lb} \\,=\\, ' + tex(LIVE_G, 0) + '\\ \\text{g live}}' +
-    ' \\times \\underbrace{' + L(SRC.umaine, '0.75') + '}_{d} \\times \\underbrace{' + L(SRC.wisc, '0.74') + '}_{e} = ' + tex(M, 0) + '\\ \\text{g}');
-
-  // H
-  show('eq-H',
-    'H = \\sum_i ' + L('#causes', 'H_i') + ' = ' + HARMS.filter(function (h) { return h[1] > 0; }).map(function (h) { return L(SRC.track, tex(h[1])); }).join(' + ') + ' = ' + hrs(H_TOTAL) +
-    '\\\\[0.6em] ' + L(SRC.ncc, 'T') + ' = ' + T_DAYS + '\\ \\text{days} = ' + tex(T_DAYS * 24, 0) + '\\ \\text{h}, \\qquad \\frac{H}{T} = ' + tex(H_TOTAL / (T_DAYS * 24) * 100, 0) + '\\%');
-  document.getElementById('life-h').textContent = n(T_DAYS * 24, 0);
-  document.getElementById('life-pct').textContent = n(H_TOTAL / (T_DAYS * 24) * 100, 0) + '%';
-
-  // Intensity block with intervals
-  rows = INTENSITIES.map(function (i) {
-    return ['\\text{' + i[0] + '}', ': ' + fx + ' \\times ' + L(SRC.wfp, hrs(i[1])), '= ' + hrs(i[1] * f), '\\quad ' + range(i[2] * f, i[3] * f)];
+  root.querySelectorAll('details').forEach(function (d) {
+    d.addEventListener('toggle', function () { openState[d.id] = d.open; });
   });
-  var tm = 0, tlo = 0, thi = 0;
-  INTENSITIES.forEach(function (i) { tm += i[1]; tlo += i[2]; thi += i[3]; });
-  rows.push(['\\hline \\textbf{Total}', ': ' + fx + ' \\times ' + hrs(tm), '= \\mathbf{' + hrs(tm * f) + '}', '\\quad ' + range(tlo * f, thi * f)]);
-  show('eq-intensity', aligned(rows));
 }
 
-// Clicking a term in an equation opens that level (and every level above it).
+// Clicking a term opens its level (and every level above it) and scrolls there.
 function openLevel(id) {
   var el = document.getElementById(id);
-  while (el) {
-    if (el.tagName === 'DETAILS') el.open = true;
-    el = el.parentElement;
-  }
+  while (el) { if (el.tagName === 'DETAILS') el.open = true; el = el.parentElement; }
 }
 document.addEventListener('click', function (e) {
   var a = e.target.closest('a');
   if (!a && document.elementsFromPoint) {
-    // KaTeX stacks layout spans over the label under an underbrace; look beneath them for the link.
+    // KaTeX stacks layout spans over parts of a fraction; look beneath them for the link.
     var stack = document.elementsFromPoint(e.clientX, e.clientY);
     for (var k = 0; k < stack.length && !a; k++) a = stack[k].closest('a[href^="#"]');
   }
@@ -249,9 +250,8 @@ document.addEventListener('click', function (e) {
   var href = a.getAttribute('href') || '';
   if (href.charAt(0) !== '#') return;
   e.preventDefault();
-  var id = href.slice(1);
-  openLevel(id);
-  document.getElementById(id).scrollIntoView({ block: 'start' });
+  openLevel(href.slice(1));
+  document.getElementById(href.slice(1)).scrollIntoView({ block: 'start' });
 });
 
 window.addEventListener('DOMContentLoaded', function () {

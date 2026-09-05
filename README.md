@@ -3,11 +3,12 @@
 `docs/index.html` is a single plain HTML page, served by GitHub Pages. You type
 in ounces of cooked chicken and see one equation:
 
-    fraction of a chicken × hours of pain per chicken lifetime = specific harms behind your meal
+    Specific Harm / Serving = Animal Lifetime / Serving × Specific Harm / Animal Lifetime
 
-Clicking any term opens the next level down (a `<details>` block) with that
-term's own equation, whose terms can be clicked in turn, until you reach a
-sourced constant that links out to its source. Equations are typeset with
+Terms are written as word fractions so units cancel visibly. Clicking any term
+opens its own equation directly beneath it (a `<details>` block), whose terms
+can be clicked in turn, so the equation grows downward as a tree until it
+reaches sourced constants that link out. Equations are typeset with
 KaTeX, vendored in `docs/katex/`. No CSS of our own, no build step.
 
 Open items are tracked in `TODO.md`.
