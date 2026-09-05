@@ -23,27 +23,40 @@
 <p>Then divide by the raw meat one chicken yields:</p>
 <div id="eq-fraction"></div>
 
-<p>Where the meat per chicken comes from (U.S. averages, 2024):</p>
+<p>Where the meat per chicken comes from (U.S. averages, 2024). Each number links to its source:</p>
 <div id="eq-meat"></div>
+
+<p>
+  These are industry averages. Individual birds and cuts vary by roughly &plusmn;10%, so the fraction
+  of a chicken is approximate to about that degree.
+</p>
 
 <h2>Step 2. How much did that chicken suffer?</h2>
 
 <p>
   The Welfare Footprint Project estimated how many hours an average conventional meat chicken spends
-  in pain over its life of about 47 days, cause by cause. Your meal carries the fraction of those hours
-  found in step 1:
+  in pain over its life of <a href="https://www.nationalchickencouncil.org/about-the-industry/statistics/u-s-broiler-performance/">about 47 days</a>.
+  Your meal carries the fraction of those hours found in step 1:
 </p>
 <div id="eq-rule"></div>
 
 <p>By cause:</p>
 <div id="eq-causes"></div>
 
-<p>The same hours split by how bad the pain is, rather than what caused it:</p>
+<p>
+  The same hours split by how bad the pain is, rather than what caused it. Here the project publishes
+  a 90% range for each estimate, shown in brackets. Read it as: nine times out of ten the true value
+  is expected to fall inside the bracket.
+</p>
 <div id="eq-intensities"></div>
 
 <p>
-  The two breakdowns come from different releases of the same data and differ by about 4%.
-  Treat the by-cause numbers as proportions rather than exact hours.
+  Most of the uncertainty is in these pain estimates, not in the weights: the ranges are roughly
+  &plusmn;40% around the central value. The by-cause breakdown has no published ranges but rests on the
+  same evidence, so treat it as carrying about the same uncertainty. The two breakdowns also come
+  from different releases of the same data and differ by about 4%, so read the by-cause numbers as
+  proportions rather than exact hours. The bracket on the total simply adds the individual ranges,
+  which slightly overstates its width.
 </p>
 
 <h2>Sources</h2>
@@ -62,7 +75,17 @@
 <p>Not included: pain during transport and slaughter, breeder birds, and diseases the project did not model. The numbers are conservative.</p>
 
 <script>
-// Constants (see Sources above)
+// Sources (numbers in the equations link to these)
+var SRC = {
+  nass:    'https://www.nass.usda.gov/Publications/Todays_Reports/reports/plva0425.pdf',
+  umaine:  'https://extension.umaine.edu/publications/2223e/',
+  wisc:    'https://livestock.extension.wisc.edu/articles/bird-breakdown-exploring-yields-and-cuts-of-poultry/',
+  cooking: 'https://www.ars.usda.gov/ARSUserFiles/80400525/data/retn/usda_cookingyields_meatpoultry.pdf',
+  wfp:     'https://welfarefootprint.org/broilers/',
+  track:   'https://pain-track.org/broilers'
+};
+
+// Constants
 var OZ_TO_G = 28.35;
 var COOKING_YIELD = 0.75;
 var LIVE_LB = 61.1e9 / 9.33e9;      // 6.55 lb
@@ -71,7 +94,8 @@ var DRESSING = 0.75;
 var EDIBLE = 0.74;
 var MEAT_G = LIVE_G * DRESSING * EDIBLE;   // raw edible meat per bird
 
-// Hours of pain per conventional broiler, Welfare Footprint Project
+// Hours of pain per conventional broiler, Welfare Footprint Project.
+// By cause: central estimates only. By intensity: central and 90% range.
 var HARMS = [
   ['Lameness', 457.9],
   ['No foraging or exploring', 76.7],
@@ -82,24 +106,31 @@ var HARMS = [
   ['Sudden death syndrome', 0.0]
 ];
 var INTENSITIES = [
-  ['Annoying', 324.7],
-  ['Hurtful', 333.6],
-  ['Disabling', 50.3],
-  ['Excruciating', 30.2 / 3600]   // 30 seconds
+  ['Annoying',     324.7, 212.8, 436.5],
+  ['Hurtful',      333.6, 195.1, 472.1],
+  ['Disabling',     50.3,  33.0,  67.5],
+  ['Excruciating', 30.2 / 3600, 8.8 / 3600, 51.6 / 3600]   // seconds
 ];
 
 function n(x, d) { return Number(x.toFixed(d === undefined ? 1 : d)).toLocaleString('en-US'); }
-function tex(x, d) { return n(x, d).replace(/,/g, '{,}'); }   // thin thousands separator in math mode
+function tex(x, d) { return n(x, d).replace(/,/g, '{,}'); }
+function L(url, body) { return '\\href{' + url + '}{' + body + '}'; }   // hyperlink inside an equation
 function hrs(h) {
   if (h === 0) return '0\\ \\text{h}';
   if (h < 1 / 60) return tex(h * 3600) + '\\ \\text{s}';
   if (h < 1) return tex(h * 60) + '\\ \\text{min}';
   return tex(h) + '\\ \\text{h}';
 }
+function range(lo, hi) {
+  // same unit for both ends, chosen from the high end
+  var unit = hi < 1 / 60 ? 's' : hi < 1 ? 'min' : 'h';
+  var k = unit === 's' ? 3600 : unit === 'min' ? 60 : 1;
+  return '[\\,' + tex(lo * k) + '\\text{–}' + tex(hi * k) + '\\ \\text{' + unit + '}\\,]';
+}
 function show(id, src) {
   var el = document.getElementById(id);
   if (typeof katex === 'undefined') { el.textContent = src; return; }   // fallback: raw LaTeX
-  katex.render(src, el, { displayMode: true, throwOnError: false });
+  katex.render(src, el, { displayMode: true, throwOnError: false, trust: function (c) { return c.command === '\\href'; } });
 }
 
 function update() {
@@ -111,30 +142,31 @@ function update() {
   var approx = birds > 0 && birds < 0.67 ? ' \\approx \\tfrac{1}{' + Math.round(1 / birds) + '}' : '';
 
   show('eq-raw',
-    '\\text{raw meat} = \\frac{' + tex(oz) + '\\ \\text{oz} \\times 28.35\\ \\text{g/oz}}{0.75} = \\frac{' + tex(g, 0) + '\\ \\text{g cooked}}{0.75} = ' + tex(raw, 0) + '\\ \\text{g}');
+    '\\text{raw meat} = \\frac{' + tex(oz) + '\\ \\text{oz} \\times 28.35\\ \\text{g/oz}}{' + L(SRC.cooking, '0.75') + '} = \\frac{' + tex(g, 0) + '\\ \\text{g cooked}}{' + L(SRC.cooking, '0.75') + '} = ' + tex(raw, 0) + '\\ \\text{g}');
 
   show('eq-fraction',
     '\\text{fraction of a chicken} = \\frac{' + tex(raw, 0) + '\\ \\text{g}}{' + tex(MEAT_G, 0) + '\\ \\text{g per chicken}} = \\mathbf{' + f + '}' + approx);
 
   show('eq-meat',
-    '\\text{meat per chicken} = \\underbrace{\\frac{61.1 \\times 10^{9}\\ \\text{lb}}{9.33 \\times 10^{9}\\ \\text{birds}}}_{' + tex(LIVE_LB, 2) + '\\ \\text{lb} \\,=\\, ' + tex(LIVE_G, 0) + '\\ \\text{g live}}' +
-    ' \\times \\underbrace{0.75}_{\\text{dressing}} \\times \\underbrace{0.74}_{\\text{edible share}} = ' + tex(MEAT_G, 0) + '\\ \\text{g}');
+    '\\text{meat per chicken} = \\underbrace{\\frac{' + L(SRC.nass, '61.1 \\times 10^{9}\\ \\text{lb}') + '}{' + L(SRC.nass, '9.33 \\times 10^{9}\\ \\text{birds}') + '}}_{' + tex(LIVE_LB, 2) + '\\ \\text{lb} \\,=\\, ' + tex(LIVE_G, 0) + '\\ \\text{g live}}' +
+    ' \\times \\underbrace{' + L(SRC.umaine, '0.75') + '}_{\\text{dressing}} \\times \\underbrace{' + L(SRC.wisc, '0.74') + '}_{\\text{edible share}} = ' + tex(MEAT_G, 0) + '\\ \\text{g}');
 
   show('eq-rule',
     '\\text{hours behind your meal} = ' + f + ' \\times \\text{hours of pain per chicken}');
 
   var lines = HARMS.map(function (h) {
-    return '\\text{' + h[0] + '} &: ' + f + ' \\times ' + hrs(h[1]) + ' &= ' + hrs(h[1] * birds);
+    return '\\text{' + h[0] + '} &: ' + f + ' \\times ' + L(SRC.track, hrs(h[1])) + ' &= ' + hrs(h[1] * birds);
   });
   var total = HARMS.reduce(function (s, h) { return s + h[1]; }, 0);
   lines.push('\\hline \\textbf{Total} &: ' + f + ' \\times ' + hrs(total) + ' &= \\mathbf{' + hrs(total * birds) + '}');
   show('eq-causes', '\\begin{aligned}' + lines.join(' \\\\ ') + '\\end{aligned}');
 
   lines = INTENSITIES.map(function (i) {
-    return '\\text{' + i[0] + '} &: ' + f + ' \\times ' + hrs(i[1]) + ' &= ' + hrs(i[1] * birds);
+    return '\\text{' + i[0] + '} &: ' + f + ' \\times ' + L(SRC.wfp, hrs(i[1])) + ' &= ' + hrs(i[1] * birds) + ' &\\quad ' + range(i[2] * birds, i[3] * birds);
   });
-  total = INTENSITIES.reduce(function (s, i) { return s + i[1]; }, 0);
-  lines.push('\\hline \\textbf{Total} &: ' + f + ' \\times ' + hrs(total) + ' &= \\mathbf{' + hrs(total * birds) + '}');
+  var tc = 0, tlo = 0, thi = 0;
+  INTENSITIES.forEach(function (i) { tc += i[1]; tlo += i[2]; thi += i[3]; });
+  lines.push('\\hline \\textbf{Total} &: ' + f + ' \\times ' + hrs(tc) + ' &= \\mathbf{' + hrs(tc * birds) + '} &\\quad ' + range(tlo * birds, thi * birds));
   show('eq-intensities', '\\begin{aligned}' + lines.join(' \\\\ ') + '\\end{aligned}');
 }
 
