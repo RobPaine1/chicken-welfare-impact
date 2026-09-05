@@ -30,11 +30,13 @@ string; an apostrophe inside a single-quoted string needs a backslash (`it\'s`)
 or use the curly ’ instead. GitHub Pages updates about a minute after the
 commit lands on `main`.
 
-The photos of the common items are in `docs/img/` (Wikimedia Commons, CC0 /
-CC BY / CC BY-SA). Each item in `text.js` names its photo file, and
-`docs/photos.js` holds the credit for each file, which the page lists at the
-bottom. To add an item with a photo, drop a JPEG in `docs/img/`, add the file
-name as the fourth field of the item, and add its credit to `photos.js`.
+The photos of the common items are in `docs/img/` as cut-outs with transparent
+backgrounds (WebP, cut from Wikimedia Commons photos under CC0 / CC BY /
+CC BY-SA). Each item in `text.js` names its photo file, and `docs/photos.js`
+holds the credit for each file, which the page lists at the bottom. To add an
+item with a photo, put a cut-out PNG or WebP in `docs/img/`, add the file name
+as the fourth field of the item, and add its credit to `photos.js`. The cut-outs
+were made with `rembg` (`pip install "rembg[cpu]"`) and cropped to the subject.
 
 ## Data
 

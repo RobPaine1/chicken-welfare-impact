@@ -44,6 +44,8 @@ var TEXT = {
     typeHint: 'Count the chicken meat only, not the bun, breading or bones. A restaurant chicken breast is about 6 oz; a deck-of-cards portion is about 3 oz.',
     pickHeading: 'Or pick a common item',
     pickHint: 'Approximate cooked-meat weights.',
+    // Shown under an item's name when you hover over it. {oz} is the ounces of cooked chicken.
+    itemAmount: '{oz} oz of chicken',
     photoCredits: 'Photo credits',
     // {days} {farm} {fraction} {lifetime} {grams}
     headline: 'A chicken had to live <b>{days} days</b> {farm} to create this chicken.',
@@ -63,17 +65,17 @@ var TEXT = {
     // Common items: [name, grams of cooked chicken meat, note, photo file]. Add, remove or reorder freely.
     // Photo files live in docs/img/; their credits are in docs/photos.js.
     items: [
-      ['Chick-fil-A Chicken Sandwich', 100, 'one breaded breast filet', 'img/chick-fil-a-sandwich.jpg'],
-      ['Chick-fil-A Nuggets, 8 count', 95, '', 'img/chick-fil-a-nuggets.jpg'],
-      ['McDonald’s McNuggets, 10 piece', 80, 'about half of a nugget is chicken', 'img/mcnuggets.jpg'],
-      ['Popeyes Chicken Sandwich', 110, '', 'img/popeyes-sandwich.jpg'],
-      ['KFC 2-piece, thigh and drumstick', 140, 'meat only', 'img/kfc-2-piece.jpg'],
-      ['Chipotle chicken bowl or burrito', 113, 'a 4 oz scoop', 'img/chipotle-bowl.jpg'],
-      ['Grilled chicken breast, restaurant', 170, '6 oz', 'img/grilled-chicken-breast.jpg'],
-      ['Half a rotisserie chicken', 280, 'meat only', 'img/rotisserie-chicken.jpg'],
-      ['6 buffalo wings', 90, 'meat only', 'img/buffalo-wings.jpg'],
-      ['Chicken Caesar salad', 85, '', 'img/chicken-caesar-salad.jpg'],
-      ['Bowl of chicken noodle soup', 25, '', 'img/chicken-noodle-soup.jpg']
+      ['Chick-fil-A Chicken Sandwich', 100, 'one breaded breast filet', 'img/chick-fil-a-sandwich.webp'],
+      ['Chick-fil-A Nuggets, 8 count', 95, '', 'img/chick-fil-a-nuggets.webp'],
+      ['McDonald’s McNuggets, 10 piece', 80, 'about half of a nugget is chicken', 'img/mcnuggets.webp'],
+      ['Popeyes Chicken Sandwich', 110, '', 'img/popeyes-sandwich.webp'],
+      ['KFC 2-piece, thigh and drumstick', 140, 'meat only', 'img/kfc-2-piece.webp'],
+      ['Chipotle chicken bowl or burrito', 113, 'a 4 oz scoop', 'img/chipotle-bowl.webp'],
+      ['Grilled chicken breast, restaurant', 170, '6 oz', 'img/grilled-chicken-breast.webp'],
+      ['Half a rotisserie chicken', 280, 'meat only', 'img/rotisserie-chicken.webp'],
+      ['6 buffalo wings', 90, 'meat only', 'img/buffalo-wings.webp'],
+      ['Chicken Caesar salad', 85, '', 'img/chicken-caesar-salad.webp'],
+      ['Bowl of chicken noodle soup', 25, '', 'img/chicken-noodle-soup.webp']
     ]
   },
 

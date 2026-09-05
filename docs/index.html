@@ -12,13 +12,17 @@
   .cols > div { flex: 1 1 320px; }
   input[type=number] { font-size: 1.2em; width: 6em; padding: 0.2em 0.4em; }
   select { font-size: 1em; padding: 0.2em; }
-  .items { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.5em; }
-  .items button { display: block; width: 100%; text-align: left; font: inherit; padding: 0; background: #f6f6f6; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; overflow: hidden; }
-  .items button:hover { background: #ececec; }
-  .items button.on { background: #e4ecf7; border-color: #9bb7dd; box-shadow: 0 0 0 2px #9bb7dd; }
-  .items button img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
-  .items button span { display: block; padding: 0.35em 0.5em; font-size: 0.92em; line-height: 1.3; }
-  .items button small { color: #666; display: block; }
+  .items { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.4em; }
+  .items button { position: relative; display: block; width: 100%; font: inherit; padding: 0; background: none; border: 0; cursor: pointer; transition: transform 0.15s ease; }
+  .items button img { display: block; width: 100%; aspect-ratio: 1; object-fit: contain; }
+  .items button.on img { filter: drop-shadow(0 0 5px #4a7fd0); }
+  .items button span { position: absolute; left: 50%; top: 100%; transform: translate(-50%, -0.6em); width: max-content; max-width: 15em;
+    background: rgba(255,255,255,0.96); border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    padding: 0.3em 0.6em; font-size: 0.88em; line-height: 1.3; text-align: center; opacity: 0; pointer-events: none; transition: opacity 0.15s; z-index: 2; }
+  .items button small { color: #555; display: block; }
+  .items button:hover, .items button:focus-visible { transform: scale(1.12); z-index: 3; outline: none; }
+  .items button:hover span, .items button:focus-visible span, .items button.on span { opacity: 1; }
+  @media (hover: none) { .items button span { position: static; transform: none; width: auto; max-width: none; opacity: 1; border: 0; box-shadow: none; background: none; } }
   #credits { font-size: 0.85em; color: #666; }
   #credits li { margin: 0.15em 0; }
   #headline { font-size: 1.35em; margin: 1.2em 0 0.4em; }
@@ -138,11 +142,20 @@ function render() {
   document.getElementById('foot').innerHTML = P.footnote;
 }
 
+// Keep an item's hover label inside the window when the item sits at an edge.
+function placeLabel(b) {
+  var sp = b.querySelector('span'); if (!sp) return;
+  sp.style.left = ''; sp.style.right = ''; sp.style.transform = '';
+  var r = sp.getBoundingClientRect(), vw = document.documentElement.clientWidth;
+  if (r.right > vw - 4) { sp.style.left = 'auto'; sp.style.right = '0'; sp.style.transform = 'translate(0, -0.6em)'; }
+  else if (r.left < 4) { sp.style.left = '0'; sp.style.transform = 'translate(0, -0.6em)'; }
+}
 function pick(i) {
   var it = ITEMS[i];
   var unit = document.getElementById('unit').value;
   document.getElementById('amount').value = unit === 'oz' ? Math.round(it[1] / OZ_TO_G * 10) / 10 : it[1];
   document.querySelectorAll('.items button').forEach(function (b, j) { b.classList.toggle('on', j === i); });
+  placeLabel(document.querySelectorAll('.items button')[i]);
   render();
 }
 
@@ -164,9 +177,12 @@ window.addEventListener('DOMContentLoaded', function () {
   var items = document.getElementById('items');
   ITEMS.forEach(function (it, i) {
     var b = document.createElement('button');
-    b.innerHTML = (it[3] ? '<img src="' + it[3] + '" alt="" loading="lazy">' : '') +
-      '<span>' + it[0] + ' <small>' + n(it[1] / OZ_TO_G, 1) + ' oz' + (it[2] ? ', ' + it[2] : '') + '</small></span>';
+    b.innerHTML = (it[3] ? '<img src="' + it[3] + '" alt="' + it[0] + '" loading="lazy">' : '') +
+      '<span>' + it[0] + '<small>' + fmt(P.itemAmount, { oz: n(it[1] / OZ_TO_G, 1) }) + (it[2] ? ', ' + it[2] : '') + '</small></span>';
+    b.title = it[0];
     b.addEventListener('click', function () { pick(i); });
+    b.addEventListener('mouseenter', function () { placeLabel(b); });
+    b.addEventListener('focus', function () { placeLabel(b); });
     items.appendChild(b);
   });
   document.getElementById('amount').addEventListener('input', function () {
