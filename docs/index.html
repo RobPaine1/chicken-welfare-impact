@@ -116,7 +116,7 @@ function buildTree(oz, hi) {     // hi = index into HARMS, or -1 for all harms
 
   var rawPerLifetime = {
     id: 'raw-per-lifetime', name: F('Raw Meat', 'Animal Lifetime'), value: G(RAW_MEAT_PER_BIRD),
-    note: 'What one chicken yields: its live weight, times the share that is carcass, times the share of the carcass that is boneless meat.',
+    note: 'What one chicken yields: its live weight, times the percentage that is carcass, times the percentage of the carcass that is boneless meat.',
     ops: ['\u00d7', '\u00d7'],
     terms: [
       { id: 'live-weight', name: F('Live Weight', 'Animal'), value: G(LIVE_G) + '\\ (' + tex(LIVE_LB, 2) + '\\ \\text{lb})',
@@ -126,9 +126,9 @@ function buildTree(oz, hi) {     // hi = index into HARMS, or -1 for all harms
           { name: F('Live Weight Produced', 'Year'), value: L(SRC.nass, '61.1 \\times 10^{9}\\ \\text{lb}') },
           { name: F('Animals Produced', 'Year'), value: L(SRC.nass, '9.33 \\times 10^{9}') }
         ] },
-      { id: 'dressing', name: T('Dressing'), value: L(SRC.umaine, tex(DRESSING, 2)),
+      { id: 'dressing', name: T('Dressing Percentage'), value: L(SRC.umaine, tex(DRESSING * 100, 0) + '\\%'),
         note: 'The ready-to-cook carcass as a share of live weight; 70–78% is typical. Source: <a href="' + SRC.umaine + '">University of Maine Extension, Understanding Poultry Yields</a>.' },
-      { id: 'edible-share', name: T('Edible Share'), value: L(SRC.wisc, tex(EDIBLE_SHARE, 2)),
+      { id: 'edible-share', name: T('Edible Share Percentage'), value: L(SRC.wisc, tex(EDIBLE_SHARE * 100, 0) + '\\%'),
         note: 'Boneless meat as a share of the carcass. Source: <a href="' + SRC.wisc + '">University of Wisconsin Extension, Bird Breakdown</a>. These yields are industry averages; individual birds and cuts vary by roughly &plusmn;10%.' }
     ]
   };
@@ -357,6 +357,7 @@ window.addEventListener('DOMContentLoaded', function () {
   HARMS.forEach(function (h, i) {
     var o = document.createElement('option'); o.value = i; o.textContent = h[0]; sel.appendChild(o);
   });
+  sel.value = '0';   // default to lameness, the largest single harm
   document.getElementById('oz').addEventListener('input', update);
   sel.addEventListener('change', update);
   update();
