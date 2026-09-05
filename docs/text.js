@@ -46,7 +46,7 @@ var TEXT = {
     pickHint: 'Approximate cooked-meat weights.',
     // {days} {farm} {fraction} {lifetime} {grams}
     headline: 'A chicken had to live <b>{days} days</b> {farm} to create this chicken.',
-    headlineSmall: 'That is {fraction} of one bird’s {lifetime}-day life, from {grams} g of cooked meat.',
+    headlineSmall: 'That is {fraction} of one bird’s {lifetime}-day life, from {grams} g of cooked meat (likely {daysLo} to {daysHi} days, depending on the bird’s yield and whether skin counts as meat).',
     causesHeading: 'This resulted in:',
     causeLine: 'of {harm}',                         // after the hours, e.g. "52 hours of lameness"
     rangeLine: 'likely {lo} to {hi}',               // the grey 90% range
@@ -99,7 +99,8 @@ var TEXT = {
     notesUncertainty: 'The project varies every input over its plausible range and reports a mean and a 90% interval (5th to 95th percentile); no median or 95% interval is published. ' +
                       'The intervals on the by-intensity totals are the project’s own, from its Tableau workbook. The intervals on individual causes are derived: each cause’s standard deviation from the project’s per-harm figures, scaled so the same rule reproduces the published interval for the total. Treat those as approximate. ' +
                       'The interval on the all-harms total combines the four intensity intervals in quadrature. ' +
-                      'The interval shown on the final number is the harm interval multiplied by the serving’s fraction of a chicken; that fraction has no published interval of its own, and its yields and weights are industry averages good to about ±10%.',
+                      'The weight side carries its own range: dressing percentage 72–75% (Wisconsin Extension) and edible share from 48% (meat only) to 68% (meat and skin), both USDA refuse figures, so the raw meat one bird yields is 1,027–1,515 g around the 1,485 g used. ' +
+                      'The interval on the final number combines the weight-side and harm-side ranges as independent relative errors.',
     notesReformed: 'is the project’s reformed scenario: a slower-growing breed reaching 2.5 kg at 56 days under Better Chicken Commitment conditions. The dressing and edible-share percentages are assumed unchanged.',
     notesExcluded: 'pain during transport and slaughter, and diseases the project did not model. The numbers are conservative.',
     notesSources: 'by the tag shown as a subscript in the equations.'

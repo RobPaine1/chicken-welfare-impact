@@ -18,10 +18,15 @@
       burdens are included, which the project's own total does.
 - [x] **Sleep.** Confirmed from welfarefootprint.org/broilers: the hours of pain
       count "only hours awake". No sleep adjustment; the page's Notes say so.
-- [ ] Find a better-cited source for the 0.74 edible share and a range for
-      dressing percentage, so step 1 can carry an interval too.
-- [ ] Re-run `scripts/fetch_paintrack.py` occasionally; the project revises
-      its estimates (workbook revision 4.4 as of this fetch).
+- [x] **Edible share and dressing range.** The 0.74 edible share had no real
+      source. Replaced with USDA SR28 refuse data: whole broiler raw, meat and
+      skin, 32% refuse (68% edible, used); meat only, 52% refuse (48%, used as
+      the low bound). Dressing 73.5% with the Wisconsin Extension 72–75% range.
+      Step 1 now carries an interval and the final number combines it with
+      the harm interval. Net effect: about 11% more chicken per serving than
+      before.
+- [x] Re-ran `scripts/fetch_paintrack.py` live on 2026-09-05: data unchanged.
+- [ ] Re-run it occasionally; the project revises its estimates.
 
 ## Scope
 

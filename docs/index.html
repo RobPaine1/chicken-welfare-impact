@@ -112,7 +112,7 @@ function render() {
   var st = servingStats(g, sysKey);
   box.hidden = false;
 
-  var vars = { days: n(st.days, st.days < 10 ? 1 : 0), farm: TEXT.systems[sysKey].farm, fraction: frac(st.lifetimes), lifetime: st.lifetimeDays, grams: n(st.cookedG, 0) };
+  var vars = { days: n(st.days, st.days < 10 ? 1 : 0), daysLo: n(st.daysLo, st.daysLo < 10 ? 1 : 0), daysHi: n(st.daysHi, st.daysHi < 10 ? 1 : 0), farm: TEXT.systems[sysKey].farm, fraction: frac(st.lifetimes), lifetime: st.lifetimeDays, grams: n(st.cookedG, 0) };
   document.getElementById('headline').innerHTML = fmt(P.headline, vars) + '<br><small>' + fmt(P.headlineSmall, vars) + '</small>';
 
   var openHarms = {};

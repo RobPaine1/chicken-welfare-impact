@@ -4,8 +4,9 @@ var COOKING_YIELD = 0.75;           // USDA ARS: cooked weight as a share of raw
 var LIVE_LB_PER_YEAR = 61.1e9;      // USDA NASS 2024: lb of live chickens produced in the U.S.
 var BIRDS_PER_YEAR = 9.33e9;        // USDA NASS 2024: chickens produced
 var LIVE_LB = LIVE_LB_PER_YEAR / BIRDS_PER_YEAR;   // 6.55 lb per bird
-var DRESSING = 0.75;                // University of Maine Extension: carcass as a share of live weight
-var EDIBLE_SHARE = 0.74;            // University of Wisconsin Extension: boneless meat as a share of carcass
+var DRESSING = 0.735, DRESSING_LO = 0.72, DRESSING_HI = 0.75;   // University of Wisconsin Extension: 72–75% for a 6.5 lb commercial broiler
+var EDIBLE_SHARE = 0.68;            // USDA SR28 item 05006, whole broiler raw, meat and skin: 32% refuse (bone)
+var EDIBLE_MEAT_ONLY = 0.48;        // USDA SR28 item 05011, whole broiler raw, meat only: 52% refuse (bone and skin)
 
 // The two production systems the Welfare Footprint Project modelled.
 var SYSTEMS = {
@@ -24,16 +25,34 @@ function servingStats(cookedG, sysKey) {
   var data = WFP.systems[sysKey];
   var rawG = cookedG / COOKING_YIELD;
   var rawPerBird = sys.liveG * DRESSING * EDIBLE_SHARE;
+  var rawPerBirdHi = sys.liveG * DRESSING_HI * EDIBLE_SHARE;       // most meat per bird: high dressing, skin counted
+  var rawPerBirdLo = sys.liveG * DRESSING_LO * EDIBLE_MEAT_ONLY;   // least: low dressing, meat only
   var lifetimes = rawG / rawPerBird;
+  var lifetimesLo = rawG / rawPerBirdHi, lifetimesHi = rawG / rawPerBirdLo;
+  // Scale a per-bird quantity with its interval to this serving, combining the weight-side
+  // and harm-side uncertainties as independent relative errors (in quadrature).
+  function scaled(mean, lo, hi) {
+    if (!(mean > 0)) return { hours: 0, lo: 0, hi: 0 };
+    var rlH = (mean - lo) / mean, rhH = (hi - mean) / mean;
+    var rlF = (lifetimes - lifetimesLo) / lifetimes, rhF = (lifetimesHi - lifetimes) / lifetimes;
+    var h = mean * lifetimes;
+    return { hours: h, lo: Math.max(0, h * (1 - Math.sqrt(rlH * rlH + rlF * rlF))), hi: h * (1 + Math.sqrt(rhH * rhH + rhF * rhF)) };
+  }
   var causes = data.causes.map(function (c) {
-    return { name: c.name, what: harmWhat(c), hours: c.total * lifetimes, lo: c.total_lo * lifetimes, hi: c.total_hi * lifetimes, perBird: c.total };
+    var x = scaled(c.total, c.total_lo, c.total_hi);
+    return { name: c.name, what: harmWhat(c), hours: x.hours, lo: x.lo, hi: x.hi, perBird: c.total, perBirdLo: c.total_lo, perBirdHi: c.total_hi };
   });
   var levels = LEVELS.map(function (l) {
-    var p = data.published[l];
-    return { key: l, name: LEVEL_NAMES[l], def: LEVEL_DEFS[l], hours: p.mean * lifetimes, lo: p.lo * lifetimes, hi: p.hi * lifetimes, perBird: p.mean };
+    var p = data.published[l], x = scaled(p.mean, p.lo, p.hi);
+    return { key: l, name: LEVEL_NAMES[l], def: LEVEL_DEFS[l], hours: x.hours, lo: x.lo, hi: x.hi, perBird: p.mean, perBirdLo: p.lo, perBirdHi: p.hi };
   });
   var allPerBird = data.causes.reduce(function (s, c) { return s + c.total; }, 0);
-  return { cookedG: cookedG, rawG: rawG, rawPerBird: rawPerBird, lifetimes: lifetimes,
-           days: lifetimes * sys.lifetimeDays, lifetimeDays: sys.lifetimeDays,
-           causes: causes, levels: levels, allHours: allPerBird * lifetimes, allPerBird: allPerBird };
+  var allSd = Math.sqrt(LEVELS.reduce(function (s, l) { var sd = (data.published[l].hi - data.published[l].lo) / 2 / 1.645; return s + sd * sd; }, 0));
+  var allLo = Math.max(0, allPerBird - 1.645 * allSd), allHi = allPerBird + 1.645 * allSd;
+  var all = scaled(allPerBird, allLo, allHi);
+  return { cookedG: cookedG, rawG: rawG, rawPerBird: rawPerBird, rawPerBirdLo: rawPerBirdLo, rawPerBirdHi: rawPerBirdHi,
+           lifetimes: lifetimes, lifetimesLo: lifetimesLo, lifetimesHi: lifetimesHi,
+           days: lifetimes * sys.lifetimeDays, daysLo: lifetimesLo * sys.lifetimeDays, daysHi: lifetimesHi * sys.lifetimeDays, lifetimeDays: sys.lifetimeDays,
+           causes: causes, levels: levels, allHours: all.hours, allLo: all.lo, allHi: all.hi,
+           allPerBird: allPerBird, allPerBirdLo: allLo, allPerBirdHi: allHi, scaled: scaled };
 }
