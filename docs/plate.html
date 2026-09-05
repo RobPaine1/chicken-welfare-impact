@@ -26,6 +26,17 @@
   td.def { color: #555; font-size: 0.92em; }
   .muted { color: #666; font-size: 0.9em; }
   #result[hidden] { display: none; }
+  details.harm { border-bottom: 1px solid #eee; }
+  details.harm summary { display: flex; gap: 0.5em; align-items: baseline; padding: 0.35em 0.5em; cursor: pointer; list-style: none; }
+  details.harm summary::-webkit-details-marker { display: none; }
+  details.harm summary .num { width: 8em; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: bold; }
+  details.harm summary .name { flex: 1; }
+  details.harm summary .name::before { content: '\25BE\00a0'; color: #888; }
+  details.harm[open] summary .name::before { content: '\25B4\00a0'; }
+  details.harm summary .range { color: #777; white-space: nowrap; font-size: 0.9em; }
+  details.harm .desc { margin: 0 0.5em 0.6em 8.5em; color: #444; font-size: 0.92em; }
+  .total { padding: 0.35em 0.5em; display: flex; gap: 0.5em; }
+  .total .num { width: 8em; text-align: right; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -52,7 +63,7 @@
   <div class="cols">
     <div>
       <h2>This resulted in:</h2>
-      <table id="causes"></table>
+      <div id="causes"></div>
     </div>
     <div>
       <h2>Researchers think this resulted in the chicken feeling:</h2>
@@ -115,9 +126,14 @@ function render() {
     'A chicken had to live <b>' + n(st.days, st.days < 10 ? 1 : 0) + ' days</b> ' + farm + ' to create this chicken.' +
     '<br><small>That is ' + frac(st.lifetimes) + ' of one bird’s ' + st.lifetimeDays + '-day life, from ' + n(st.cookedG, 0) + ' g of cooked meat.</small>';
 
+  var openHarms = {};
+  document.querySelectorAll('#causes details[open]').forEach(function (d) { openHarms[d.getAttribute('data-name')] = true; });
   document.getElementById('causes').innerHTML = st.causes.slice().sort(function (a, b) { return b.hours - a.hours; }).map(function (c) {
-    return '<tr title="' + c.what.replace(/"/g, '&quot;') + '"><td class="num"><b>' + dur(c.hours) + '</b></td><td>of ' + c.name.toLowerCase() + '</td><td class="range">' + durRange(c.lo, c.hi) + '</td></tr>';
-  }).join('') + '<tr><td class="num"><b>' + dur(st.allHours) + '</b></td><td>of pain in total</td><td class="range"></td></tr>';
+    var what = c.what.charAt(0).toUpperCase() + c.what.slice(1) + '.';
+    return '<details class="harm" data-name="' + c.name + '"' + (openHarms[c.name] ? ' open' : '') + '><summary>' +
+      '<span class="num">' + dur(c.hours) + '</span><span class="name">of ' + c.name.toLowerCase() + '</span><span class="range">' + durRange(c.lo, c.hi) + '</span></summary>' +
+      '<div class="desc">' + what + ' An average bird in this system spends <b>' + dur(c.perBird) + '</b> in this pain over its life; this serving is ' + frac(st.lifetimes) + ' of a bird, so it carries that share.</div></details>';
+  }).join('') + '<div class="total"><span class="num">' + dur(st.allHours) + '</span><span>of pain in total</span></div>';
 
   document.getElementById('levels').innerHTML = st.levels.slice().reverse().map(function (l) {
     return '<tr><td class="num"><b>' + dur(l.hours) + '</b></td><td>of <b>' + l.name.toLowerCase() + '</b> pain, which is “' + l.def + '”</td><td class="range">' + durRange(l.lo, l.hi) + '</td></tr>';
