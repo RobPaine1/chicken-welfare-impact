@@ -8,13 +8,7 @@ function bookCite() {
   return b.authors + '. <a href="' + b.url + '"><i>' + b.title + '</i></a>. ' + b.publisher + ', ' + b.year;
 }
 
-function fillNav(prefix) {
-  var ids = { 'nav-calc': TEXT.nav.calculator, 'nav-eq': TEXT.nav.equation, 'nav-harms': TEXT.nav.harms };
-  Object.keys(ids).forEach(function (id) { var el = document.getElementById(id); if (el) el.textContent = ids[id]; });
-}
-
 function renderHarmsIndex() {
-  fillNav('');
   document.title = HP.title;
   var h = '<h1>' + HP.title + '</h1><p>' + HP.intro.replace('{book}', bookCite()) + '</p>';
   Object.keys(HP.definitions).forEach(function (name) {
@@ -29,7 +23,6 @@ function renderHarmsIndex() {
 }
 
 function renderHarmPage(name) {
-  fillNav('../');
   document.title = name;
   var r = REPORT.harms[name];
   var h = '<h1>' + name + '</h1><p class="muted">' + HP.pageIntro.replace('{name}', name.toLowerCase()).replace('{book}', bookCite()) + '</p>';

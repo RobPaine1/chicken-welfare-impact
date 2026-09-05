@@ -5,7 +5,7 @@
 var TEXT = {
 
   // ---- Shared -------------------------------------------------------------
-  nav: { calculator: 'Calculator', equation: 'Equation', harms: 'Harms' },
+  nav: { calculator: 'Calculator', methodology: 'Methodology', harms: 'Harms', about: 'About' },
 
   // What each harm is. Keys must match the names produced by scripts/fetch_paintrack.py.
   harms: {
@@ -86,6 +86,19 @@ var TEXT = {
     ]
   },
 
+  // ---- About page ---------------------------------------------------------
+  about: {
+    title: 'About',
+    // One entry per paragraph. HTML is allowed (links, <b>, <i>).
+    paragraphs: [
+      'This site puts a number on the animal welfare cost of eating chicken. Type in an amount of chicken, or pick a common item, and it works out how much of one chicken’s life that meat represents and how many hours of pain that share of a life carried.',
+      'The pain figures come from the Welfare Footprint Project, a research group that estimates how long farmed animals spend in pain of different intensities, cause by cause. Their report <a href="https://welfarefootprint.org/broilers"><i>Quantifying Pain in Broiler Chickens</i></a> is the source of every hour on this site, including the ranges. The <a href="harms.html">Harms</a> page shows their definitions and the pages of the report behind each harm.',
+      'The weights, yields and lifespans that turn a serving into a share of a chicken come from the US Department of Agriculture and university extension sources. The <a href="methodology.html">Methodology</a> page lays the whole calculation out step by step, with every number tagged with its source.',
+      'The calculator assumes a conventional fast-growing chicken, which is what nearly all chicken sold is. Slower-growing birds raised to higher welfare standards carry less pain; the Methodology page lets you compare the two.',
+      'This is an independent project and is not affiliated with the Welfare Footprint Project. The code and data are open on <a href="https://github.com/RobPaine1/chicken-welfare-impact">GitHub</a>, where corrections and suggestions are welcome.'
+    ]
+  },
+
   // ---- Harms page ---------------------------------------------------------
   harmsPage: {
     title: 'Harms',
@@ -148,7 +161,7 @@ var TEXT = {
 
   // ---- Equation page ------------------------------------------------------
   equation: {
-    title: 'Chicken welfare calculator',
+    title: 'Methodology',
     servingBefore: 'One serving is',
     servingAfter: 'oz of cooked chicken.',
     chickenLabel: 'Chicken:',

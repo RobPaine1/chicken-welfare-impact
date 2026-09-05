@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chicken welfare calculator</title>
+<link rel="stylesheet" href="site.css">
 <link rel="stylesheet" href="katex/katex.min.css">
 <script defer src="katex/katex.min.js"></script>
 <style>
-  body { max-width: 1100px; margin: 1em auto; padding: 0 1em; }
   /* The equation rows: capped in width so the words and their number stay close; each column centred. */
   table.row { width: 100%; max-width: 820px; }
   table.row td.words, table.row td.nums { text-align: center; }
@@ -35,14 +35,13 @@
   .k-lifetime { color: #616161; }
   .k-harmserv { color: #b71c1c; }
   .k-allserv  { color: #8d6e63; }
-  .nav { color: #666; }
   #notes { margin-top: 2em; font-size: 0.95em; color: #333; }
   #notes summary { cursor: pointer; }
 </style>
 </head>
-<body>
-
-<p class="nav"><a href="index.html" id="nav-calc"></a> &middot; <b id="nav-eq"></b> &middot; <a href="harms.html" id="nav-harms"></a></p>
+<body data-page="methodology">
+<nav class="side" id="side"></nav>
+<main>
 <h1 id="title"></h1>
 
 <p>
@@ -60,7 +59,9 @@
 <div id="notes-body"></div>
 </details>
 
+</main>
 <script src="text.js"></script>
+<script src="nav.js"></script>
 <script src="wfp.js"></script>
 <script src="chicken.js"></script>
 <script>
@@ -319,9 +320,6 @@ function renderNotes() {
 
 function fillStaticText() {
   var E = TEXT.equation;
-  document.getElementById('nav-eq').textContent = TEXT.nav.equation;
-  document.getElementById('nav-calc').textContent = TEXT.nav.calculator;
-  document.getElementById('nav-harms').textContent = TEXT.nav.harms;
   document.getElementById('title').textContent = E.title;
   document.title = E.title;
   document.getElementById('serving-before').textContent = E.servingBefore;

@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>What did this chicken cost?</title>
+<link rel="stylesheet" href="site.css">
 <style>
-  body { max-width: 1000px; margin: 1em auto; padding: 0 1em; line-height: 1.45; }
-  .nav { color: #666; }
   h1 { margin-bottom: 0.2em; }
   .cols { display: flex; gap: 2em; flex-wrap: wrap; align-items: flex-start; }
   .cols > div { flex: 1 1 320px; }
@@ -49,9 +48,9 @@
   .total .num { width: 8em; text-align: right; font-weight: bold; }
 </style>
 </head>
-<body>
-
-<p class="nav"><b id="nav-calc"></b> &middot; <a href="equation.html" id="nav-eq"></a> &middot; <a href="harms.html" id="nav-harms"></a></p>
+<body data-page="calculator">
+<nav class="side" id="side"></nav>
+<main>
 <h1 id="title"></h1>
 
 <div class="cols">
@@ -85,7 +84,9 @@
 <p class="muted" id="caveat"></p>
 <details id="credits"><summary id="credits-heading"></summary><ul id="credits-list"></ul></details>
 
+</main>
 <script src="text.js"></script>
+<script src="nav.js"></script>
 <script src="photos.js"></script>
 <script src="wfp.js"></script>
 <script src="chicken.js"></script>
@@ -190,7 +191,7 @@ function pick(i) {
 
 window.addEventListener('DOMContentLoaded', function () {
   document.title = P.title;
-  [['nav-calc', TEXT.nav.calculator], ['nav-eq', TEXT.nav.equation], ['nav-harms', TEXT.nav.harms], ['title', P.title], ['caveat', P.caveat],
+  [['title', P.title], ['caveat', P.caveat],
    ['type-heading', P.typeHeading], ['type-hint', P.typeHint], ['pick-heading', P.pickHeading], ['pick-hint', P.pickHint],
    ['causes-heading', P.causesHeading], ['levels-heading', P.levelsHeading]].forEach(function (x) { document.getElementById(x[0]).innerHTML = x[1]; });
   document.getElementById('credits-heading').textContent = P.photoCredits;

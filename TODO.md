@@ -54,8 +54,8 @@
       and every page of the report per harm; the calculator's one-liners are
       unchanged.
 - [ ] Fix the equation colours.
-- [ ] Add an About page.
-- [ ] Add more text to the methodology page (the Equation page's Notes).
+- [x] Add an About page (`docs/about.html`; text in `text.js` under `about`).
+- [ ] Add more text to the Methodology page (its Notes section).
 - [ ] Double-check every number, source and equation, and make sure they
       make sense to a reader (personally understand them).
 - [ ] Fix the subscripts in the equations.

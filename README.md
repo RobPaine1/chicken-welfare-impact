@@ -7,7 +7,7 @@ item (a Chick-fil-A sandwich, a Chipotle bowl) and read how many days a chicken
 had to live on a farm for it, the hours of each harm, and the hours at each pain
 intensity with its definition.
 
-`docs/equation.html` is the equation view. You type in ounces of cooked chicken
+`docs/methodology.html` is the methodology (equation) view. You type in ounces of cooked chicken
 and see one equation:
 
     Specific Harm / Serving = Animal Lifetime / Serving × Specific Harm / Animal Lifetime
@@ -38,7 +38,7 @@ item with a photo, put a cut-out PNG or WebP in `docs/img/`, add the file name
 as the fourth field of the item, and add its credit to `photos.js`. The cut-outs
 were made with `rembg` (`pip install "rembg[cpu]"`) and cropped to the subject.
 
-## Harms pages
+## Harms and About pages
 
 `docs/harms.html` lists every harm with the Welfare Footprint Project's own
 description of it, quoted from *Quantifying Pain in Broiler Chickens*
