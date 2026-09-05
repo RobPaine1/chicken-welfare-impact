@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chicken welfare calculator</title>
+<link rel="stylesheet" href="katex/katex.min.css">
+<script defer src="katex/katex.min.js"></script>
 </head>
 <body>
 
@@ -15,76 +17,32 @@
 
 <h2>Step 1. How much of a chicken is that?</h2>
 
-<table border="1" cellpadding="6">
-  <tr>
-    <td>cooked chicken eaten</td>
-    <td><span id="s1-oz"></span> oz</td>
-    <td>= <span id="s1-g"></span> g</td>
-  </tr>
-  <tr>
-    <td>&divide; cooking yield (meat loses about a quarter of its weight when cooked)</td>
-    <td>&divide; 0.75</td>
-    <td>= <span id="s1-raw"></span> g of raw meat</td>
-  </tr>
-  <tr>
-    <td>&divide; raw meat from one chicken</td>
-    <td>&divide; <span id="meat-per-bird"></span> g</td>
-    <td>= <b><span id="s1-birds"></span> of a chicken</b> (<span id="s1-frac"></span>)</td>
-  </tr>
-</table>
+<p>Cooked meat weighs about three quarters of what it did raw, so first undo the cooking:</p>
+<div id="eq-raw"></div>
 
-<p>Where "raw meat from one chicken" comes from:</p>
+<p>Then divide by the raw meat one chicken yields:</p>
+<div id="eq-fraction"></div>
 
-<table border="1" cellpadding="6">
-  <tr>
-    <td>live weight of a U.S. meat chicken</td>
-    <td>61.1 billion lb &divide; 9.33 billion birds</td>
-    <td>= 6.55 lb = <span id="live-g"></span> g</td>
-  </tr>
-  <tr>
-    <td>&times; dressing (carcass as a share of live weight)</td>
-    <td>&times; 0.75</td>
-    <td>= <span id="carcass-g"></span> g carcass</td>
-  </tr>
-  <tr>
-    <td>&times; edible meat as a share of the carcass</td>
-    <td>&times; 0.74</td>
-    <td>= <b><span id="meat-per-bird-2"></span> g of raw meat</b></td>
-  </tr>
-</table>
+<p>Where the meat per chicken comes from (U.S. averages, 2024):</p>
+<div id="eq-meat"></div>
 
 <h2>Step 2. How much did that chicken suffer?</h2>
 
 <p>
   The Welfare Footprint Project estimated how many hours an average conventional meat chicken spends
-  in pain over its life (about 47 days), cause by cause.
-  Your meal's share is that number multiplied by the fraction of a chicken from step 1.
+  in pain over its life of about 47 days, cause by cause. Your meal carries the fraction of those hours
+  found in step 1:
 </p>
+<div id="eq-rule"></div>
 
-<table border="1" cellpadding="6">
-  <tr>
-    <th>cause of pain</th>
-    <th>hours per chicken</th>
-    <th>&times; your fraction</th>
-    <th>= hours behind your meal</th>
-  </tr>
-  <tbody id="harms"></tbody>
-</table>
+<p>By cause:</p>
+<div id="eq-causes"></div>
 
-<p>The same hours, split by how bad the pain is instead of what caused it:</p>
-
-<table border="1" cellpadding="6">
-  <tr>
-    <th>intensity</th>
-    <th>per chicken</th>
-    <th>&times; your fraction</th>
-    <th>= behind your meal</th>
-  </tr>
-  <tbody id="intensities"></tbody>
-</table>
+<p>The same hours split by how bad the pain is, rather than what caused it:</p>
+<div id="eq-intensities"></div>
 
 <p>
-  The two tables come from different releases of the same data and differ by about 4%.
+  The two breakdowns come from different releases of the same data and differ by about 4%.
   Treat the by-cause numbers as proportions rather than exact hours.
 </p>
 
@@ -109,12 +67,13 @@ var OZ_TO_G = 28.35;
 var COOKING_YIELD = 0.75;
 var LIVE_LB = 61.1e9 / 9.33e9;      // 6.55 lb
 var LIVE_G = LIVE_LB * 453.6;
-var CARCASS_G = LIVE_G * 0.75;
-var MEAT_G = CARCASS_G * 0.74;      // raw edible meat per bird
+var DRESSING = 0.75;
+var EDIBLE = 0.74;
+var MEAT_G = LIVE_G * DRESSING * EDIBLE;   // raw edible meat per bird
 
 // Hours of pain per conventional broiler, Welfare Footprint Project
 var HARMS = [
-  ['Lameness (leg disorders from fast growth)', 457.9],
+  ['Lameness', 457.9],
   ['No foraging or exploring', 76.7],
   ['No dustbathing', 70.0],
   ['No perching', 63.0],
@@ -129,53 +88,60 @@ var INTENSITIES = [
   ['Excruciating', 30.2 / 3600]   // 30 seconds
 ];
 
-function n(x, d) { return Number(x.toFixed(d === undefined ? 1 : d)).toLocaleString(); }
+function n(x, d) { return Number(x.toFixed(d === undefined ? 1 : d)).toLocaleString('en-US'); }
+function tex(x, d) { return n(x, d).replace(/,/g, '{,}'); }   // thin thousands separator in math mode
 function hrs(h) {
-  if (h === 0) return '0 h';
-  if (h < 1 / 60) return n(h * 3600) + ' s';
-  if (h < 1) return n(h * 60) + ' min';
-  return n(h) + ' h';
+  if (h === 0) return '0\\ \\text{h}';
+  if (h < 1 / 60) return tex(h * 3600) + '\\ \\text{s}';
+  if (h < 1) return tex(h * 60) + '\\ \\text{min}';
+  return tex(h) + '\\ \\text{h}';
 }
-function set(id, text) { document.getElementById(id).textContent = text; }
-
-set('live-g', n(LIVE_G, 0));
-set('carcass-g', n(CARCASS_G, 0));
-set('meat-per-bird', n(MEAT_G, 0));
-set('meat-per-bird-2', n(MEAT_G, 0));
+function show(id, src) {
+  var el = document.getElementById(id);
+  if (typeof katex === 'undefined') { el.textContent = src; return; }   // fallback: raw LaTeX
+  katex.render(src, el, { displayMode: true, throwOnError: false });
+}
 
 function update() {
   var oz = parseFloat(document.getElementById('oz').value) || 0;
   var g = oz * OZ_TO_G;
   var raw = g / COOKING_YIELD;
   var birds = raw / MEAT_G;
+  var f = tex(birds, 3);
+  var approx = birds > 0 && birds < 0.67 ? ' \\approx \\tfrac{1}{' + Math.round(1 / birds) + '}' : '';
 
-  set('s1-oz', n(oz));
-  set('s1-g', n(g, 0));
-  set('s1-raw', n(raw, 0));
-  set('s1-birds', n(birds, 3));
-  set('s1-frac', birds > 0 && birds < 0.67 ? 'about 1/' + Math.round(1 / birds) : n(birds, 2) + ' chickens');
+  show('eq-raw',
+    '\\text{raw meat} = \\frac{' + tex(oz) + '\\ \\text{oz} \\times 28.35\\ \\text{g/oz}}{0.75} = \\frac{' + tex(g, 0) + '\\ \\text{g cooked}}{0.75} = ' + tex(raw, 0) + '\\ \\text{g}');
 
-  var rows = '';
-  var total = 0;
-  HARMS.forEach(function (h) {
-    total += h[1];
-    rows += '<tr><td>' + h[0] + '</td><td>' + hrs(h[1]) + '</td><td>&times; ' + n(birds, 3) + '</td><td><b>' + hrs(h[1] * birds) + '</b></td></tr>';
+  show('eq-fraction',
+    '\\text{fraction of a chicken} = \\frac{' + tex(raw, 0) + '\\ \\text{g}}{' + tex(MEAT_G, 0) + '\\ \\text{g per chicken}} = \\mathbf{' + f + '}' + approx);
+
+  show('eq-meat',
+    '\\text{meat per chicken} = \\underbrace{\\frac{61.1 \\times 10^{9}\\ \\text{lb}}{9.33 \\times 10^{9}\\ \\text{birds}}}_{' + tex(LIVE_LB, 2) + '\\ \\text{lb} \\,=\\, ' + tex(LIVE_G, 0) + '\\ \\text{g live}}' +
+    ' \\times \\underbrace{0.75}_{\\text{dressing}} \\times \\underbrace{0.74}_{\\text{edible share}} = ' + tex(MEAT_G, 0) + '\\ \\text{g}');
+
+  show('eq-rule',
+    '\\text{hours behind your meal} = ' + f + ' \\times \\text{hours of pain per chicken}');
+
+  var lines = HARMS.map(function (h) {
+    return '\\text{' + h[0] + '} &: ' + f + ' \\times ' + hrs(h[1]) + ' &= ' + hrs(h[1] * birds);
   });
-  rows += '<tr><td><b>Total</b></td><td>' + hrs(total) + '</td><td></td><td><b>' + hrs(total * birds) + '</b></td></tr>';
-  document.getElementById('harms').innerHTML = rows;
+  var total = HARMS.reduce(function (s, h) { return s + h[1]; }, 0);
+  lines.push('\\hline \\textbf{Total} &: ' + f + ' \\times ' + hrs(total) + ' &= \\mathbf{' + hrs(total * birds) + '}');
+  show('eq-causes', '\\begin{aligned}' + lines.join(' \\\\ ') + '\\end{aligned}');
 
-  rows = '';
-  total = 0;
-  INTENSITIES.forEach(function (i) {
-    total += i[1];
-    rows += '<tr><td>' + i[0] + '</td><td>' + hrs(i[1]) + '</td><td>&times; ' + n(birds, 3) + '</td><td><b>' + hrs(i[1] * birds) + '</b></td></tr>';
+  lines = INTENSITIES.map(function (i) {
+    return '\\text{' + i[0] + '} &: ' + f + ' \\times ' + hrs(i[1]) + ' &= ' + hrs(i[1] * birds);
   });
-  rows += '<tr><td><b>Total</b></td><td>' + hrs(total) + '</td><td></td><td><b>' + hrs(total * birds) + '</b></td></tr>';
-  document.getElementById('intensities').innerHTML = rows;
+  total = INTENSITIES.reduce(function (s, i) { return s + i[1]; }, 0);
+  lines.push('\\hline \\textbf{Total} &: ' + f + ' \\times ' + hrs(total) + ' &= \\mathbf{' + hrs(total * birds) + '}');
+  show('eq-intensities', '\\begin{aligned}' + lines.join(' \\\\ ') + '\\end{aligned}');
 }
 
-document.getElementById('oz').addEventListener('input', update);
-update();
+window.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('oz').addEventListener('input', update);
+  update();
+});
 </script>
 
 </body>
