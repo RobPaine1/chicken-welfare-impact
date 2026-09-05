@@ -48,7 +48,12 @@ var TEXT = {
     itemAmount: '{oz} oz of chicken',
     photoCredits: 'Photo credits',
     // {days} {farm} {fraction} {lifetime} {grams}
-    headline: 'A chicken had to live <b>{days} days</b> {farm} to create this chicken.',
+    // {amount} is the entered amount ("6 oz" or "170 g"); {item} is the item note below, or empty when an amount was typed.
+    headline: 'To create <b>{amount}</b>{item} of meat, a chicken had to live <b>{days} days</b> {farm}.',
+    // Inserted after the amount when a common item was picked. {a} is "a " or "" (for names that start with a number or "Half"); {name} is the item's name.
+    headlineItem: ' (the amount in {a}{name})',
+    // Item names that keep their capital letter mid-sentence. Any other name has its first letter lower-cased in the headline.
+    brands: ['Chick-fil-A', 'McDonald’s', 'Popeyes', 'KFC', 'Chipotle'],
     headlineSmall: 'That is {fraction} of one bird’s {lifetime}-day life, from {grams} g of cooked meat (likely {daysLo} to {daysHi} days, depending on the bird’s yield and whether skin counts as meat).',
     causesHeading: 'This resulted in:',
     causeLine: 'of {harm}',                         // after the hours, e.g. "52 hours of lameness"

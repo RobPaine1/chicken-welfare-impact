@@ -124,7 +124,9 @@ function render() {
   var st = servingStats(g, sysKey);
   box.hidden = false;
 
-  var vars = { days: n(st.days, st.days < 10 ? 1 : 0), daysLo: n(st.daysLo, st.daysLo < 10 ? 1 : 0), daysHi: n(st.daysHi, st.daysHi < 10 ? 1 : 0), farm: TEXT.systems[sysKey].farm, fraction: frac(st.lifetimes), lifetime: st.lifetimeDays, grams: n(st.cookedG, 0) };
+  var vars = { days: n(st.days, st.days < 10 ? 1 : 0), daysLo: n(st.daysLo, st.daysLo < 10 ? 1 : 0), daysHi: n(st.daysHi, st.daysHi < 10 ? 1 : 0), farm: TEXT.systems[sysKey].farm, fraction: frac(st.lifetimes), lifetime: st.lifetimeDays, grams: n(st.cookedG, 0),
+               amount: document.getElementById('amount').value + ' ' + (document.getElementById('unit').value === 'oz' ? 'oz' : 'g'),
+               item: pickedItem === null ? '' : fmt(P.headlineItem, { name: itemName(ITEMS[pickedItem][0]), a: /^(\d|half )/i.test(ITEMS[pickedItem][0]) ? '' : 'a ' }) };
   document.getElementById('headline').innerHTML = fmt(P.headline, vars) + '<br><small>' + fmt(P.headlineSmall, vars) + '</small>';
 
   var openHarms = {};
@@ -152,13 +154,31 @@ function placeLabel(b) {
   else if (r.left < 4) { sp.style.left = '0'; sp.style.transform = 'translate(0, -0.6em)'; }
 }
 // Slide down to the results once they are shown.
+var SCROLL_MS = 1600;   // how long the slide down to the results takes
 function scrollToResult() {
   var box = document.getElementById('result');
   if (box.hidden) return;
-  box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  var start = window.scrollY, target = start + box.getBoundingClientRect().top - 8, t0 = null;
+  var max = document.documentElement.scrollHeight - window.innerHeight;
+  if (target > max) target = max;
+  function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+  function step(ts) {
+    if (t0 === null) t0 = ts;
+    var f = Math.min(1, (ts - t0) / SCROLL_MS);
+    window.scrollTo(0, start + (target - start) * ease(f));
+    if (f < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 }
+// An item's name as it reads mid-sentence: first letter lower-cased unless it starts with a brand name.
+function itemName(name) {
+  var brand = (P.brands || []).some(function (b) { return name.indexOf(b) === 0; });
+  return brand ? name : name.charAt(0).toLowerCase() + name.slice(1);
+}
+var pickedItem = null;   // index into ITEMS of the picked common item, or null when an amount was typed
 function pick(i) {
   var it = ITEMS[i];
+  pickedItem = i;
   var unit = document.getElementById('unit').value;
   document.getElementById('amount').value = unit === 'oz' ? Math.round(it[1] / OZ_TO_G * 10) / 10 : it[1];
   document.querySelectorAll('.items button').forEach(function (b, j) { b.classList.toggle('on', j === i); });
@@ -195,6 +215,7 @@ window.addEventListener('DOMContentLoaded', function () {
   });
   var amount = document.getElementById('amount');
   amount.addEventListener('input', function () {
+    pickedItem = null;
     document.querySelectorAll('.items button').forEach(function (b) { b.classList.remove('on'); });
     var wasHidden = document.getElementById('result').hidden;
     render();
