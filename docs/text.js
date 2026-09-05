@@ -37,8 +37,10 @@ var TEXT = {
   // ---- Calculator page ----------------------------------------------------
   plate: {
     title: 'Whats the welfare footprint of chicken?',
-    chickenLabel: 'Chicken:',
     typeHeading: 'Type an amount',
+    // Shown at the bottom of the page.
+    caveat: 'This assumes a conventional fast-growing bird, which is what nearly all chicken sold is, including most free-range and organic chicken in the US. ' +
+            'A slower-growing bird raised to Better Chicken Commitment standards would carry about two-thirds less disabling pain; the Equation page shows that comparison.',
     typeHint: 'Count the chicken meat only, not the bun, breading or bones. A restaurant chicken breast is about 6 oz; a deck-of-cards portion is about 3 oz.',
     pickHeading: 'Or pick a common item',
     pickHint: 'Approximate cooked-meat weights.',

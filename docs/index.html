@@ -43,7 +43,6 @@
 
 <p class="nav"><b id="nav-calc"></b> &middot; <a href="equation.html" id="nav-eq"></a></p>
 <h1 id="title"></h1>
-<p class="muted"><span id="chicken-label"></span> <select id="system"></select></p>
 
 <div class="cols">
   <div>
@@ -72,6 +71,8 @@
   </div>
   <p class="muted" id="foot"></p>
 </div>
+
+<p class="muted" id="caveat"></p>
 
 <script src="text.js"></script>
 <script src="wfp.js"></script>
@@ -107,7 +108,7 @@ function render() {
   var g = currentGrams();
   var box = document.getElementById('result');
   if (!(g > 0)) { box.hidden = true; return; }
-  var sysKey = document.getElementById('system').value;
+  var sysKey = 'conventional';   // nearly all chicken sold is conventional; the Equation page has the comparison
   var st = servingStats(g, sysKey);
   box.hidden = false;
 
@@ -140,11 +141,9 @@ function pick(i) {
 
 window.addEventListener('DOMContentLoaded', function () {
   document.title = P.title;
-  [['nav-calc', TEXT.nav.calculator], ['nav-eq', TEXT.nav.equation], ['title', P.title], ['chicken-label', P.chickenLabel],
+  [['nav-calc', TEXT.nav.calculator], ['nav-eq', TEXT.nav.equation], ['title', P.title], ['caveat', P.caveat],
    ['type-heading', P.typeHeading], ['type-hint', P.typeHint], ['pick-heading', P.pickHeading], ['pick-hint', P.pickHint],
    ['causes-heading', P.causesHeading], ['levels-heading', P.levelsHeading]].forEach(function (x) { document.getElementById(x[0]).innerHTML = x[1]; });
-  var sys = document.getElementById('system');
-  Object.keys(SYSTEMS).forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = SYSTEMS[k].label; sys.appendChild(o); });
   var items = document.getElementById('items');
   ITEMS.forEach(function (it, i) {
     var b = document.createElement('button');
@@ -161,7 +160,6 @@ window.addEventListener('DOMContentLoaded', function () {
     if (v > 0) a.value = document.getElementById('unit').value === 'oz' ? Math.round(v / OZ_TO_G * 10) / 10 : Math.round(v * OZ_TO_G);
     render();
   });
-  sys.addEventListener('change', render);
   render();
 });
 </script>
