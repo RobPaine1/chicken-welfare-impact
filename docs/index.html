@@ -11,7 +11,10 @@
 
 <h1>Chicken welfare calculator</h1>
 
-<p>One serving is <input type="number" id="oz" value="6" min="0" step="0.5" size="4"> oz of cooked chicken.</p>
+<p>
+  One serving is <input type="number" id="oz" value="6" min="0" step="0.5" size="4"> oz of cooked chicken.
+  &nbsp; Harm: <select id="harm"><option value="-1">All harms</option></select>
+</p>
 
 <p>Left: the equation in words. Right: the same equation with the numbers plugged in. Rows with a triangle open into their own equation, laid out the same way.</p>
 
@@ -97,7 +100,7 @@ function rep(x, k) { var a = []; for (var i = 0; i < k; i++) a.push(x); return a
 // `note` is an explanation shown first; `extras` are plain rows shown after the
 // result; `subs` are further dropdowns shown last.
 // ---------------------------------------------------------------------------
-function buildTree(oz) {
+function buildTree(oz, hi) {     // hi = index into HARMS, or -1 for all harms
   var cookedG = oz * OZ_TO_G;
   var rawG = cookedG / COOKING_YIELD;
   var lifetimes = rawG / RAW_MEAT_PER_BIRD;
@@ -206,6 +209,27 @@ function buildTree(oz) {
     result: { name: F('All Harms', 'Serving'), value: '\\mathbf{' + hrs(HARM_TOTAL * lifetimes) + '}' }
   };
 
+  if (hi >= 0) {
+    var h = HARMS[hi];
+    var share = HARM_TOTAL > 0 ? h[1] / HARM_TOTAL * 100 : 0;
+    harmPerLifetime = {
+      id: 'harm-per-lifetime', name: F(h[0], 'Animal Lifetime'), value: L(SRC.track, hrs(h[1])),
+      note: '<b>' + esc(h[0]) + '</b>: ' + esc(h[4]) + '. The hours are how long an average conventional meat chicken spends in this pain over its whole life, from the ' +
+            '<a href="' + SRC.wfp + '">Welfare Footprint Project</a>, who combined how many birds are affected, how long it lasts and how intense it is, then summed over the bird\'s life. ' +
+            'That is why the lifetime is not a separate multiplier: it is the window over which the hours accumulate.',
+      extras: [
+        { name: F('All Harms', 'Animal Lifetime'), value: hrs(HARM_TOTAL) },
+        { name: F(h[0], 'All Harms'), value: tex(share, 0) + '\\%' },
+        { name: T('Animal Lifetime'), value: L(SRC.ncc, LIFETIME_DAYS + '\\ \\text{days}') + ' = ' + tex(LIFETIME_DAYS * 24, 0) + '\\ \\text{h}' }
+      ],
+      subs: harmPerLifetime.subs
+    };
+    harmPerServing = {
+      id: 'harm-per-serving', name: F(h[0], 'Serving'), value: '\\mathbf{' + hrs(h[1] * lifetimes) + '}', open: true,
+      note: 'For a ' + n(oz) + ' oz serving. This is ' + tex(share, 0) + '% of the ' + n(HARM_TOTAL * lifetimes) + ' h of pain of all kinds behind the serving. ' +
+            'Choose "All harms" at the top to see every cause side by side.'
+    };
+  }
   return { id: 'top', ops: ['\u00d7'], terms: [lifetimesPerServing, harmPerLifetime], result: harmPerServing };
 }
 
@@ -260,8 +284,9 @@ function renderInside(node, path, big) {
 
 function update() {
   var oz = parseFloat(document.getElementById('oz').value) || 0;
+  var hi = parseInt(document.getElementById('harm').value, 10);
   var root = document.getElementById('tree');
-  root.innerHTML = renderInside(buildTree(oz), 'top', true);
+  root.innerHTML = renderInside(buildTree(oz, hi), 'top', true);
   root.querySelectorAll('.eq').forEach(function (el) {
     var src = el.getAttribute('data-tex');
     if (typeof katex === 'undefined') { el.textContent = src; return; }
@@ -292,7 +317,12 @@ document.addEventListener('click', function (e) {
 });
 
 window.addEventListener('DOMContentLoaded', function () {
+  var sel = document.getElementById('harm');
+  HARMS.forEach(function (h, i) {
+    var o = document.createElement('option'); o.value = i; o.textContent = h[0]; sel.appendChild(o);
+  });
   document.getElementById('oz').addEventListener('input', update);
+  sel.addEventListener('change', update);
   update();
 });
 </script>
