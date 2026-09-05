@@ -41,3 +41,17 @@
 
 - [ ] The R pipeline in `scripts/` sums breeder-hen harms (hunger,
       peritonitis) into each meat bird. Filter by animal type before summing.
+
+## Site (added 2026-09-05)
+
+- [ ] Add photos for the common items you can pick on the Calculator.
+- [ ] Weekly intake: enter the chicken you eat in a week and see what that
+      adds up to over months and years.
+- [ ] Fuller descriptions of the harms (currently one line each in
+      `docs/text.js`).
+- [ ] Fix the equation colours.
+- [ ] Add an About page.
+- [ ] Add more text to the methodology page (the Equation page's Notes).
+- [ ] Double-check every number, source and equation, and make sure they
+      make sense to a reader (personally understand them).
+- [ ] Fix the subscripts in the equations.
