@@ -6,6 +6,23 @@
 <title>Chicken welfare calculator</title>
 <link rel="stylesheet" href="katex/katex.min.css">
 <script defer src="katex/katex.min.js"></script>
+<style>
+  body { max-width: 1100px; margin: 1em auto; padding: 0 1em; --line: #777; }
+  /* Each derivation block: a thread line running down its left edge to its result row. */
+  blockquote { margin: 0.3em 0 0.3em 10px; padding-left: 18px; border-left: 2px solid var(--line); }
+  blockquote blockquote { --line: #9a9a9a; }
+  blockquote blockquote blockquote { --line: #b8b8b8; }
+  blockquote blockquote blockquote blockquote { --line: #d0d0d0; }
+  /* The "=" line under the operands, in the same colour as its thread. */
+  hr { border: 0; border-top: 2px solid var(--line); margin: 0.5em 0 0.4em; }
+  /* Rows: capped in width so the words and their number stay close; each column centred so operators sit under their terms. */
+  table.row { width: 100%; max-width: 820px; }
+  table.row td.words, table.row td.nums { text-align: center; }
+  table.row td.glyph { color: #555; }
+  table[data-toggle], table[data-focus] { cursor: pointer; }
+  table[data-toggle]:hover, table[data-focus]:hover { background: #f3f3f3; }
+  p.note { margin: 0.4em 0 0.6em; color: #333; }
+</style>
 </head>
 <body>
 
@@ -242,14 +259,14 @@ function eqCell(src) { return '<div class="eq" data-tex="' + esc(src).replace(/"
 function bigIf(big, s) { return big ? '<big><big>' + s + '</big></big>' : s; }
 function rowTable(node, id, big, glyph) {
   var attrs = id ? ' data-toggle="' + id + '"' : (node.focus !== undefined ? ' data-focus="' + node.focus + '"' : '');
-  return '<table width="100%"' + attrs + '><tr>' +
-    '<td width="24" align="center">' + bigIf(big, glyph || '') + '</td>' +
-    '<td width="50%" align="center" valign="middle">' + bigIf(big, eqCell('\\displaystyle ' + node.name)) + '</td>' +
-    '<td width="50%" align="center" valign="middle">' + bigIf(big, node.value ? eqCell('\\displaystyle ' + node.value) : '') + '</td></tr></table>';
+  return '<table width="100%" class="row"' + attrs + '><tr>' +
+    '<td width="24" class="glyph" align="center">' + bigIf(big, glyph || '') + '</td>' +
+    '<td width="50%" class="words" valign="middle">' + bigIf(big, eqCell('\\displaystyle ' + node.name)) + '</td>' +
+    '<td width="50%" class="nums" valign="middle">' + bigIf(big, node.value ? eqCell('\\displaystyle ' + node.value) : '') + '</td></tr></table>';
 }
 function opRow(op, big) {
-  return '<table width="100%"><tr><td width="24"></td>' +
-    '<td width="50%" align="center">' + bigIf(big, op) + '</td><td width="50%" align="center">' + bigIf(big, op) + '</td></tr></table>';
+  return '<table width="100%" class="row"><tr><td width="24"></td>' +
+    '<td width="50%" class="words">' + bigIf(big, op) + '</td><td width="50%" class="nums">' + bigIf(big, op) + '</td></tr></table>';
 }
 function expandable(node) { return !!(node.note || node.terms || node.subs || node.extras); }
 function glyphFor(open) { return open ? '&#9661;' : '&#9650;'; }   // ▽ open, ▲ closed
@@ -276,7 +293,7 @@ function renderInside(node, path, big) {
     });
     html += '<hr>';
   }
-  if (node.note) html += '<p>' + node.note + '</p>';   // explanation sits directly above the row it describes
+  if (node.note) html += '<p class="note">' + node.note + '</p>';   // explanation sits directly above the row it describes
   return html;
 }
 
