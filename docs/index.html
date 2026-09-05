@@ -23,19 +23,18 @@
   table.steps td.n { width: 1.5em; color: #888; text-align: right; }
   table.steps td.words { width: 55%; }
   table.steps tr.result td { font-weight: bold; }
-  /* Each quantity that is produced on one line and used on another gets its own light tint,
+  /* Each quantity that is produced on one line and used on another gets its own colour,
      applied to both its words and its number. */
-  .k { display: inline-block; border-radius: 4px; padding: 0.05em 0.25em; }
-  .k-cooked   { background: #fffae0; }
-  .k-rawserv  { background: #fff0e0; }
-  .k-live     { background: #e6f1fc; }
-  .k-rawlife  { background: #e4f6e9; }
-  .k-lifeserv { background: #efe9fb; }
-  .k-harmlife { background: #fde7ed; }
-  .k-allharms { background: #e1f5f0; }
-  .k-lifetime { background: #eeeff2; }
-  .k-harmserv { background: #fbe6f6; }
-  .k-allserv  { background: #f8ece0; }
+  .k-cooked   { color: #a67c00; }
+  .k-rawserv  { color: #d35400; }
+  .k-live     { color: #1e6fb8; }
+  .k-rawlife  { color: #2e8b57; }
+  .k-lifeserv { color: #6a3fc9; }
+  .k-harmlife { color: #d81b60; }
+  .k-allharms { color: #00838f; }
+  .k-lifetime { color: #616161; }
+  .k-harmserv { color: #b71c1c; }
+  .k-allserv  { color: #8d6e63; }
   #notes { margin-top: 2em; font-size: 0.95em; color: #333; }
   #notes summary { cursor: pointer; }
 </style>
@@ -126,7 +125,8 @@ function range(lo, hi) {
 }
 function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
 var TIMES = ' \\times ', DIV = ' \\div ', EQ = ' = ', PLUS = ' + ';
-function K(key, body) { return '\\htmlClass{k k-' + key + '}{' + body + '}'; }   // tint a term
+function K(key, body) { return '\\htmlClass{k-' + key + '}{' + body + '}'; }   // colour a term
+function smallRange(lo, hi) { var r = range(lo, hi); return r ? '\\ {\\small ' + r + '}' : ''; }
 function S(tag, body) { return body + '_{\\text{' + tag + '}}'; }                      // source tag as a subscript
 
 // ---------------------------------------------------------------------------
@@ -138,6 +138,9 @@ function buildEquation(oz, sysKey, hi) {     // hi = index into the system's cau
   var data = WFP.systems[sysKey];
   var causes = data.causes;
   var allTotal = causes.reduce(function (s, c) { return s + c.total; }, 0);
+  var pubAll = data.published;
+  var allSd = Math.sqrt(LEVELS.reduce(function (s, l) { var sd = (pubAll[l].hi - pubAll[l].lo) / 2 / 1.645; return s + sd * sd; }, 0));
+  var allLo = Math.max(0, allTotal - 1.645 * allSd), allHi = allTotal + 1.645 * allSd;
   var cookedG = oz * OZ_TO_G;
   var rawG = cookedG / COOKING_YIELD;
   var rawPerBird = sys.liveG * DRESSING * EDIBLE_SHARE;
@@ -186,7 +189,7 @@ function buildEquation(oz, sysKey, hi) {     // hi = index into the system's cau
     return [F(LEVEL_NAMES[l], 'Animal Lifetime'), S('WFP', hrs(pub[l].mean)) + '\\ ' + range(pub[l].lo, pub[l].hi)];
   })).concat([
     [F('All Intensities', 'Animal Lifetime') + EQ + LEVELS.map(function (l) { return T(LEVEL_NAMES[l]); }).join(PLUS),
-     hrs(LEVELS.reduce(function (s, l) { return s + pub[l].mean; }, 0))]
+     hrs(LEVELS.reduce(function (s, l) { return s + pub[l].mean; }, 0)) + '\\ ' + range(allLo, allHi)]
   ]);
 
   var B, C;
@@ -195,7 +198,7 @@ function buildEquation(oz, sysKey, hi) {     // hi = index into the system's cau
     var harmlife = { w: K('harmlife', F(h.name, 'Animal Lifetime')), n: K('harmlife', hrs(h.total)) };
     var harmserv = { w: K('harmserv', F(h.name, 'Serving')),         n: K('harmserv', hrs(h.total * lifetimes)) };
     B = {
-      id: 'harm-per-lifetime', name: F(h.name, 'Animal Lifetime'), value: S('WFP', hrs(h.total)),
+      id: 'harm-per-lifetime', name: F(h.name, 'Animal Lifetime'), value: S('WFP', hrs(h.total)) + smallRange(h.total_lo, h.total_hi),
       tip: h.name + ': ' + h.what + '. Hours an average bird spends in this pain over its life (Welfare Footprint Project).',
       steps: [
         [harmlife.w + EQ + LEVELS.map(function (l) { return T(LEVEL_NAMES[l]); }).join(PLUS),
@@ -206,15 +209,16 @@ function buildEquation(oz, sysKey, hi) {     // hi = index into the system's cau
       ]
     };
     C = {
-      id: 'harm-per-serving', name: F(h.name, 'Serving'), value: '\\mathbf{' + hrs(h.total * lifetimes) + '}',
+      id: 'harm-per-serving', name: F(h.name, 'Serving'), value: '\\mathbf{' + hrs(h.total * lifetimes) + '}' + smallRange(h.total_lo * lifetimes, h.total_hi * lifetimes),
       tip: 'Hours of ' + h.name.toLowerCase() + ' behind this serving.',
-      steps: [[harmserv.w + EQ + lifeserv.w + TIMES + harmlife.w, harmserv.n + EQ + lifeserv.n + TIMES + harmlife.n]]
+      steps: [[harmserv.w + EQ + lifeserv.w + TIMES + harmlife.w,
+               harmserv.n + '\\ ' + range(h.total_lo * lifetimes, h.total_hi * lifetimes) + EQ + lifeserv.n + TIMES + harmlife.n + '\\ ' + range(h.total_lo, h.total_hi)]]
     };
   } else {
     var sumW = causes.map(function (c) { return T(c.name); }).join(PLUS);
     var sumN = causes.map(function (c) { return tex(c.total); }).join(PLUS) + '\\ \\text{h}_{\\text{WFP}}';
     B = {
-      id: 'harm-per-lifetime', name: F('All Harms', 'Animal Lifetime'), value: hrs(allTotal),
+      id: 'harm-per-lifetime', name: F('All Harms', 'Animal Lifetime'), value: hrs(allTotal) + smallRange(allLo, allHi),
       tip: 'Hours an average bird spends in pain over its life, all causes added (Welfare Footprint Project).',
       steps: [
         [allharms.w + EQ + sumW, allharms.n + EQ + sumN],
@@ -224,9 +228,11 @@ function buildEquation(oz, sysKey, hi) {     // hi = index into the system's cau
       ].concat(intensitySteps)
     };
     C = {
-      id: 'harm-per-serving', name: F('All Harms', 'Serving'), value: '\\mathbf{' + hrs(allTotal * lifetimes) + '}',
+      id: 'harm-per-serving', name: F('All Harms', 'Serving'), value: '\\mathbf{' + hrs(allTotal * lifetimes) + '}' + smallRange(allLo * lifetimes, allHi * lifetimes),
       tip: 'Hours of pain of all kinds behind this serving. Open to see it by cause.',
-      steps: ['By cause. Click one to focus the equation on it.'].concat(causes.map(function (c, i) {
+      steps: [[allserv.w + EQ + lifeserv.w + TIMES + allharms.w,
+               allserv.n + '\\ ' + range(allLo * lifetimes, allHi * lifetimes) + EQ + lifeserv.n + TIMES + allharms.n + '\\ ' + range(allLo, allHi)],
+              'By cause. Click one to focus the equation on it.'].concat(causes.map(function (c, i) {
         return { focus: i, words: F(c.name, 'Serving') + EQ + lifeserv.w + TIMES + F(c.name, 'Animal Lifetime'),
                  nums: hrs(c.total * lifetimes) + EQ + lifeserv.n + TIMES + hrs(c.total) + '\\ ' + range(c.total_lo, c.total_hi) };
       }))
@@ -323,7 +329,8 @@ function renderNotes() {
     '<ul>' + LEVEL_DEFS.map(function (d) { return li('<b>' + d[0] + '</b>: ' + d[1] + '.'); }).join('') + '</ul>' +
     '<p><b>Uncertainty.</b> The project varies every input over its plausible range and reports a mean and a 90% interval (5th to 95th percentile); no median or 95% interval is published. ' +
     'The intervals on the by-intensity totals are the project\u2019s own, from its Tableau workbook. The intervals on individual causes are derived: each cause\u2019s standard deviation from the project\u2019s per-harm figures, scaled so the same rule reproduces the published interval for the total. Treat those as approximate. ' +
-    'Yields and weights are industry averages good to about \u00b110%.</p>' +
+    'The interval on the all-harms total combines the four intensity intervals in quadrature. ' +
+    'The interval shown on the final number is the harm interval multiplied by the serving\u2019s fraction of a chicken; that fraction has no published interval of its own, and its yields and weights are industry averages good to about \u00b110%.</p>' +
     '<p><b>Higher-welfare chicken</b> is the project\u2019s reformed scenario: a slower-growing breed reaching 2.5 kg at 56 days under Better Chicken Commitment conditions. The dressing and edible-share percentages are assumed unchanged.</p>' +
     '<p><b>Not included:</b> pain during transport and slaughter, and diseases the project did not model. The numbers are conservative.</p>' +
     '<p><b>Sources</b>, by the tag shown as a subscript in the equations.</p><ul>' +
