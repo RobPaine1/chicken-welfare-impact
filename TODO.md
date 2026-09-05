@@ -17,6 +17,15 @@
 - [ ] Find a better-cited source for the 0.74 edible share and a range for
       dressing percentage, so step 1 can carry an interval too.
 
+- [ ] **Confirm how the WFP estimates treat sleep.** The per-harm durations are
+      meant to be time the bird actually experiences the pain, and I believe the
+      project counts waking hours only for chronic conditions, but this was not
+      verified from the primary text in this environment. Check the methods
+      chapters of *Quantifying Pain in Broiler Chickens* (and the Pain-Track
+      notes). Do not add a separate sleep factor unless that check shows the
+      published hours include sleep; if they do, expose any adjustment as an
+      explicit, optional, user-visible step rather than a hidden multiplier.
+
 ## Scope
 
 - [ ] Eggs: hens per egg (eggs per layer per year, hen lifespan) and the WFP
