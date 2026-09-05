@@ -44,6 +44,7 @@ var TEXT = {
     typeHint: 'Count the chicken meat only, not the bun, breading or bones. A restaurant chicken breast is about 6 oz; a deck-of-cards portion is about 3 oz.',
     pickHeading: 'Or pick a common item',
     pickHint: 'Approximate cooked-meat weights.',
+    photoCredits: 'Photo credits',
     // {days} {farm} {fraction} {lifetime} {grams}
     headline: 'A chicken had to live <b>{days} days</b> {farm} to create this chicken.',
     headlineSmall: 'That is {fraction} of one bird’s {lifetime}-day life, from {grams} g of cooked meat (likely {daysLo} to {daysHi} days, depending on the bird’s yield and whether skin counts as meat).',
@@ -59,19 +60,20 @@ var TEXT = {
     footnote: 'Hours are an average bird’s time in pain over its life (Welfare Footprint Project, waking hours only), scaled to this serving. ' +
               'Harms that happen at the same time are each counted, so the totals are harm-hours rather than clock hours; this matters most for the annoying and hurtful rows. ' +
               'The grey figures are 90% ranges. The causes and the intensities are the same hours split two ways. Sources and the full working are on the Equation page.',
-    // Common items: [name, grams of cooked chicken meat, note]. Add, remove or reorder freely.
+    // Common items: [name, grams of cooked chicken meat, note, photo file]. Add, remove or reorder freely.
+    // Photo files live in docs/img/; their credits are in docs/photos.js.
     items: [
-      ['Chick-fil-A Chicken Sandwich', 100, 'one breaded breast filet'],
-      ['Chick-fil-A Nuggets, 8 count', 95, ''],
-      ['McDonald’s McNuggets, 10 piece', 80, 'about half of a nugget is chicken'],
-      ['Popeyes Chicken Sandwich', 110, ''],
-      ['KFC 2-piece, thigh and drumstick', 140, 'meat only'],
-      ['Chipotle chicken bowl or burrito', 113, 'a 4 oz scoop'],
-      ['Grilled chicken breast, restaurant', 170, '6 oz'],
-      ['Half a rotisserie chicken', 280, 'meat only'],
-      ['6 buffalo wings', 90, 'meat only'],
-      ['Chicken Caesar salad', 85, ''],
-      ['Bowl of chicken noodle soup', 25, '']
+      ['Chick-fil-A Chicken Sandwich', 100, 'one breaded breast filet', 'img/chick-fil-a-sandwich.jpg'],
+      ['Chick-fil-A Nuggets, 8 count', 95, '', 'img/chick-fil-a-nuggets.jpg'],
+      ['McDonald’s McNuggets, 10 piece', 80, 'about half of a nugget is chicken', 'img/mcnuggets.jpg'],
+      ['Popeyes Chicken Sandwich', 110, '', 'img/popeyes-sandwich.jpg'],
+      ['KFC 2-piece, thigh and drumstick', 140, 'meat only', 'img/kfc-2-piece.jpg'],
+      ['Chipotle chicken bowl or burrito', 113, 'a 4 oz scoop', 'img/chipotle-bowl.jpg'],
+      ['Grilled chicken breast, restaurant', 170, '6 oz', 'img/grilled-chicken-breast.jpg'],
+      ['Half a rotisserie chicken', 280, 'meat only', 'img/rotisserie-chicken.jpg'],
+      ['6 buffalo wings', 90, 'meat only', 'img/buffalo-wings.jpg'],
+      ['Chicken Caesar salad', 85, '', 'img/chicken-caesar-salad.jpg'],
+      ['Bowl of chicken noodle soup', 25, '', 'img/chicken-noodle-soup.jpg']
     ]
   },
 

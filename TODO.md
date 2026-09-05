@@ -44,7 +44,9 @@
 
 ## Site (added 2026-09-05)
 
-- [ ] Add photos for the common items you can pick on the Calculator.
+- [x] Add photos for the common items you can pick on the Calculator. Done with
+      Wikimedia Commons photos (CC0, CC BY, CC BY-SA); credits in `docs/photos.js`
+      and at the bottom of the page.
 - [ ] Weekly intake: enter the chicken you eat in a week and see what that
       adds up to over months and years.
 - [ ] Fuller descriptions of the harms (currently one line each in
