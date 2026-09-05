@@ -1,16 +1,14 @@
 # Chicken welfare calculator
 
-`docs/index.html` is a single plain HTML page, served by GitHub Pages, that
-shows the equation behind the chicken welfare numbers. You type in ounces of
-cooked chicken and every step of the calculation updates in place:
+`docs/index.html` is a single plain HTML page, served by GitHub Pages. You type
+in ounces of cooked chicken and see one equation:
 
-1. cooked weight → raw weight → fraction of a chicken (USDA production data,
-   yield percentages)
-2. that fraction × hours of pain per chicken, by cause and by intensity
-   (Welfare Footprint Project, conventional broilers)
+    fraction of a chicken × hours of pain per chicken lifetime = specific harms behind your meal
 
-No CSS, no build step, no dependencies. The constants and their sources are
-listed on the page and in the page's script.
+Clicking any term opens the next level down (a `<details>` block) with that
+term's own equation, whose terms can be clicked in turn, until you reach a
+sourced constant that links out to its source. Equations are typeset with
+KaTeX, vendored in `docs/katex/`. No CSS of our own, no build step.
 
 Open items are tracked in `TODO.md`.
 
