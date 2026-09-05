@@ -7,20 +7,23 @@
 <link rel="stylesheet" href="katex/katex.min.css">
 <script defer src="katex/katex.min.js"></script>
 <style>
-  body { max-width: 1100px; margin: 1em auto; padding: 0 1em; --line: #777; }
-  /* Each derivation block: a thread line running down its left edge to its result row. */
-  blockquote { margin: 0.3em 0 0.3em 10px; padding-left: 18px; border-left: 2px solid var(--line); }
-  blockquote blockquote { --line: #9a9a9a; }
-  blockquote blockquote blockquote { --line: #b8b8b8; }
-  blockquote blockquote blockquote blockquote { --line: #d0d0d0; }
-  /* The "=" line under the operands, in the same colour as its thread. */
-  hr { border: 0; border-top: 2px solid var(--line); margin: 0.5em 0 0.4em; }
-  /* Rows: capped in width so the words and their number stay close; each column centred so operators sit under their terms. */
+  body { max-width: 1100px; margin: 1em auto; padding: 0 1em; }
+  /* The equation rows: capped in width so the words and their number stay close; each column centred. */
   table.row { width: 100%; max-width: 820px; }
   table.row td.words, table.row td.nums { text-align: center; }
   table.row td.glyph { color: #555; }
-  table[data-toggle], table[data-focus] { cursor: pointer; }
-  table[data-toggle]:hover, table[data-focus]:hover { background: #f3f3f3; }
+  table[data-toggle], tr[data-focus] { cursor: pointer; }
+  table[data-toggle]:hover, tr[data-focus]:hover { background: #f3f3f3; }
+  table[data-toggle].open { background: #f3f3f3; }
+  /* A term's worked steps, shown directly beneath its row. */
+  .panel { margin: 0.4em 0 1em 24px; }
+  .panel h3 { font-size: 1em; font-weight: normal; color: #444; margin: 0.6em 0 0.3em; }
+  table.steps { width: 100%; border-collapse: collapse; }
+  table.steps th { text-align: left; font-weight: normal; color: #666; font-size: 0.85em; padding: 0.3em 0.6em; border-bottom: 1px solid #bbb; }
+  table.steps td { padding: 0.45em 0.6em; border-bottom: 1px solid #e2e2e2; vertical-align: middle; }
+  table.steps td.n { width: 1.5em; color: #888; text-align: right; }
+  table.steps td.words { width: 55%; }
+  table.steps tr.result td { font-weight: bold; }
   #notes { margin-top: 2em; font-size: 0.95em; color: #333; }
   #notes summary { cursor: pointer; }
 </style>
@@ -34,7 +37,7 @@
   &nbsp; Harm: <select id="harm"><option value="-1">All harms</option></select>
 </p>
 
-<p>Words on the left, numbers on the right. A row marked &#9650; is computed from rows that unfold above it. Hover a row for a one-line explanation.</p>
+<p>Words on the left, numbers on the right. Click a row marked &#9662; to see how it is worked out, step by step.</p>
 
 <div id="tree"></div>
 
@@ -100,6 +103,7 @@ function T(words) { return '\\text{' + words + '}'; }
 function F(top, bottom) { return '\\frac{' + T(top) + '}{' + T(bottom) + '}'; }          // word fraction
 function L(url, body) { return '\\href{' + url + '}{' + body + '}'; }                   // link
 function G(x) { return tex(x, 0) + '\\ \\text{g}'; }
+function H(x) { return x + '\\ \\text{h}'; }
 function hrs(h) {
   if (h === 0) return '0\\ \\text{h}';
   if (h < 1 / 60) return tex(h * 3600) + '\\ \\text{s}';
@@ -112,176 +116,166 @@ function range(lo, hi) {
   return '[\\,' + tex(lo * k) + '\\text{–}' + tex(hi * k) + '\\ \\text{' + unit + '}\\,]';
 }
 function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
-function rep(x, k) { var a = []; for (var i = 0; i < k; i++) a.push(x); return a; }
+var TIMES = ' \\times ', DIV = ' \\div ', EQ = ' = ', PLUS = ' + ';
 
 // ---------------------------------------------------------------------------
-// The equation tree.
-//
-// Every node is one row: words on the left (name), the number on the right (value),
-// and a one-line `tip` shown on hover. A node with `terms` is computed from them:
-// when opened, the terms unfold ABOVE the row, stacked with `ops` between them
-// then a line, then the row itself as their result. `flipOf` is the same quantity
-// the other way up, shown between the line and the row. `extras` and `subs` are context rows shown above the terms.
+// The equation: three rows, each with an optional table of worked steps.
+// A step is [words, numbers] (both LaTeX) or a heading string.
 // ---------------------------------------------------------------------------
-function buildTree(oz, hi) {     // hi = index into HARMS, or -1 for all harms
+function buildEquation(oz, hi) {     // hi = index into HARMS, or -1 for all harms
   var cookedG = oz * OZ_TO_G;
   var rawG = cookedG / COOKING_YIELD;
   var lifetimes = rawG / RAW_MEAT_PER_BIRD;
   var lx = tex(lifetimes, 3);
   var approx = lifetimes > 0 && lifetimes < 0.67 ? ' \\approx \\tfrac{1}{' + Math.round(1 / lifetimes) + '}' : '';
   var im = 0, ilo = 0, ihi = 0; INTENSITIES.forEach(function (i) { im += i[1]; ilo += i[2]; ihi += i[3]; });
+  var lifeH = LIFETIME_DAYS * 24;
 
-  var rawPerLifetime = {
-    id: 'raw-per-lifetime', name: F('Raw Meat', 'Animal Lifetime'), value: '\\frac{' + G(RAW_MEAT_PER_BIRD) + '}{\\text{chicken}}',
-    tip: 'Raw boneless meat from one chicken: live weight, times the percentage that is carcass, times the percentage of the carcass that is meat.',
-    ops: ['\u00d7', '\u00d7'],
-    terms: [
-      { id: 'live-weight', name: F('Live Weight', 'Animal'), value: G(LIVE_G) + '\\ (' + tex(LIVE_LB, 2) + '\\ \\text{lb})',
-        tip: 'U.S. average for 2024 (USDA): all live weight produced in the year divided by the number of birds.',
-        ops: ['\u00f7'],
-        terms: [
-          { name: F('Live Weight Produced', 'Year'), value: L(SRC.nass, '61.1 \\times 10^{9}\\ \\text{lb}'), tip: 'USDA NASS, 2024. Click the number for the source.' },
-          { name: F('Animals Produced', 'Year'), value: L(SRC.nass, '9.33 \\times 10^{9}'), tip: 'USDA NASS, 2024. Click the number for the source.' }
-        ] },
-      { name: T('Dressing Percentage'), value: L(SRC.umaine, tex(DRESSING * 100, 0) + '\\%'),
-        tip: 'Ready-to-cook carcass as a share of live weight; 70–78% is typical. Click the number for the source.' },
-      { name: T('Edible Share Percentage'), value: L(SRC.wisc, tex(EDIBLE_SHARE * 100, 0) + '\\%'),
-        tip: 'Boneless meat as a share of the carcass. Industry average; individual cuts vary by about ±10%. Click the number for the source.' }
-    ]
-  };
-
-  var lifetimesPerServing = {
+  var A = {
     id: 'lifetimes-per-serving', name: F('Animal Lifetime', 'Serving'), value: lx + '\\ \\text{chickens}' + approx,
     tip: 'How many chickens\u2019 worth of meat is on the plate.',
-    ops: ['\u00d7'],
-    terms: [
-      {
-        id: 'raw-per-serving', name: F('Raw Meat', 'Serving'), value: G(rawG),
-        tip: 'The serving\u2019s weight before cooking.',
-        ops: ['\u00d7'],
-        terms: [
-          { id: 'cooked-per-serving', name: F('Cooked Meat', 'Serving'), value: G(cookedG),
-            tip: 'The ounces you typed at the top, in grams.',
-            ops: ['\u00d7'],
-            terms: [
-              { name: T('Ounces Eaten'), value: tex(oz) + '\\ \\text{oz}', tip: 'Your input.' },
-              { name: T('Grams per Ounce'), value: '28.35\\ \\text{g/oz}', tip: 'Unit conversion.' }
-            ] },
-          { name: F('Raw Meat', 'Cooked Meat'), value: L(SRC.cooking, tex(1 / COOKING_YIELD, 2)),
-            tip: 'Meat loses about a quarter of its weight in cooking (USDA cooking yield 0.75), so each cooked gram began as about 1.33 g raw. Click the number for the source.' }
-        ]
-      },
-      { id: 'lifetimes-per-raw', name: F('Animal Lifetime', 'Raw Meat'), value: '\\frac{1\\ \\text{chicken}}{' + G(RAW_MEAT_PER_BIRD) + '}',
-        tip: 'One chicken for every ' + n(RAW_MEAT_PER_BIRD, 0) + ' g of raw meat: the row above it, read the other way up.',
-        ops: rawPerLifetime.ops, terms: rawPerLifetime.terms,
-        flipOf: { name: rawPerLifetime.name, value: rawPerLifetime.value, tip: rawPerLifetime.tip } }
+    steps: [
+      [F('Cooked Meat', 'Serving') + EQ + T('Ounces Eaten') + TIMES + T('Grams per Ounce'),
+       G(cookedG) + EQ + tex(oz) + '\\ \\text{oz}' + TIMES + '28.35\\ \\text{g/oz}'],
+      [F('Raw Meat', 'Serving') + EQ + F('Cooked Meat', 'Serving') + TIMES + F('Raw Meat', 'Cooked Meat'),
+       G(rawG) + EQ + G(cookedG) + TIMES + L(SRC.cooking, tex(1 / COOKING_YIELD, 2))],
+      [F('Live Weight', 'Animal') + EQ + F('Live Weight Produced', 'Year') + DIV + F('Animals Produced', 'Year'),
+       G(LIVE_G) + EQ + L(SRC.nass, '61.1 \\times 10^{9}\\ \\text{lb}') + DIV + L(SRC.nass, '9.33 \\times 10^{9}')],
+      [F('Raw Meat', 'Animal Lifetime') + EQ + F('Live Weight', 'Animal') + TIMES + T('Dressing \\%') + TIMES + T('Edible Share \\%'),
+       G(RAW_MEAT_PER_BIRD) + EQ + G(LIVE_G) + TIMES + L(SRC.umaine, '75\\%') + TIMES + L(SRC.wisc, '74\\%')],
+      [F('Animal Lifetime', 'Serving') + EQ + F('Raw Meat', 'Serving') + DIV + F('Raw Meat', 'Animal Lifetime'),
+       lx + '\\ \\text{chickens}' + EQ + G(rawG) + DIV + G(RAW_MEAT_PER_BIRD)]
     ]
   };
 
-  var lifetimeRows = [
-    { name: T('Animal Lifetime'), value: L(SRC.ncc, LIFETIME_DAYS + '\\ \\text{days}') + ' = ' + tex(LIFETIME_DAYS * 24, 0) + '\\ \\text{h}',
-      tip: 'Average U.S. market age (National Chicken Council). Click for the source.' },
-    { name: F('Time in Pain', 'Animal Lifetime'), value: '\\frac{' + hrs(HARM_TOTAL) + '}{' + tex(LIFETIME_DAYS * 24, 0) + '\\ \\text{h}} = ' + tex(HARM_TOTAL / (LIFETIME_DAYS * 24) * 100, 0) + '\\%',
-      tip: 'Share of its life the average bird spends in some level of pain.' }
-  ];
-  var byIntensity = {
-    id: 'by-intensity', name: F('All Harms by Intensity', 'Serving'), value: hrs(im * lifetimes) + '\\ ' + range(ilo * lifetimes, ihi * lifetimes),
-    tip: 'The same hours split by how bad the pain is. Mean, then the 90% interval in brackets.',
-    ops: rep('+', INTENSITIES.length - 1),
-    terms: INTENSITIES.map(function (i) {
-      return { name: F(i[0], 'Serving'), value: hrs(i[1] * lifetimes) + '\\ ' + range(i[2] * lifetimes, i[3] * lifetimes),
-               tip: i[0] + ': ' + i[4] + '.',
-               ops: ['\u00d7'],
-               terms: [
-                 { name: L('#lifetimes-per-serving', F('Animal Lifetime', 'Serving')), value: L('#lifetimes-per-serving', lx), tip: 'From the left branch of the equation.' },
-                 { name: F(i[0], 'Animal Lifetime'), value: L(SRC.wfp, hrs(i[1])) + '\\ ' + range(i[2], i[3]), tip: 'Welfare Footprint Project, conventional broilers: mean and 90% interval. Click for the source.' }
-               ] };
-    })
-  };
+  var sumWords = HARMS.map(function (x) { return T(x[0]); }).join(PLUS);
+  var sumNums = HARMS.map(function (x) { return L(SRC.track, tex(x[1])); }).join(PLUS) + '\\ \\text{h}';
+  var intensitySteps = [
+    'The same hours by intensity, all harms: mean, then the 90% interval in brackets'
+  ].concat(INTENSITIES.map(function (i) {
+    return [F(i[0], 'Animal Lifetime'), L(SRC.wfp, hrs(i[1])) + '\\ ' + range(i[2], i[3])];
+  })).concat([
+    [F('All Intensities', 'Animal Lifetime') + EQ + INTENSITIES.map(function (i) { return T(i[0]); }).join(PLUS),
+     hrs(im) + '\\ ' + range(ilo, ihi)]
+  ]);
 
-  var harmPerLifetime, harmPerServing, breakdown = null;
-  var wfpTip = 'Welfare Footprint Project: hours an average conventional chicken spends in this pain over its whole life. Click the number for the source.';
+  var B, C, breakdown = null;
   if (hi >= 0) {
     var h = HARMS[hi];
-    var share = HARM_TOTAL > 0 ? h[1] / HARM_TOTAL * 100 : 0;
-    harmPerLifetime = {
+    var share = HARM_TOTAL > 0 ? h[1] / HARM_TOTAL : 0;
+    B = {
       id: 'harm-per-lifetime', name: F(h[0], 'Animal Lifetime'), value: L(SRC.track, hrs(h[1])),
-      tip: h[0] + ': ' + h[4] + '. ' + wfpTip,
-      extras: [
-        { name: F('All Harms', 'Animal Lifetime'), value: hrs(HARM_TOTAL), tip: 'All seven causes added together.' },
-        { name: F(h[0], 'All Harms'), value: tex(share, 0) + '\\%', tip: 'This harm\u2019s share of all pain hours.' }
-      ].concat(lifetimeRows),
-      subs: [byIntensity]
+      tip: h[0] + ': ' + h[4] + '. Hours an average conventional chicken spends in this pain over its life (Welfare Footprint Project).',
+      steps: [
+        [F(h[0], 'Animal Lifetime') + EQ + T('Welfare Footprint Project estimate'), L(SRC.track, hrs(h[1]))],
+        [F('All Harms', 'Animal Lifetime') + EQ + sumWords, hrs(HARM_TOTAL) + EQ + sumNums],
+        [F(h[0], 'All Harms') + EQ + F(h[0], 'Animal Lifetime') + DIV + F('All Harms', 'Animal Lifetime'),
+         tex(share * 100, 0) + '\\%' + EQ + hrs(h[1]) + DIV + hrs(HARM_TOTAL)],
+        [T('Animal Lifetime') + EQ + T('Days Alive') + TIMES + T('Hours per Day'),
+         H(tex(lifeH, 0)) + EQ + L(SRC.ncc, LIFETIME_DAYS + '\\ \\text{days}') + TIMES + '24\\ \\text{h/day}'],
+        [F('Time in Pain', 'Animal Lifetime') + EQ + F('All Harms', 'Animal Lifetime') + DIV + T('Animal Lifetime'),
+         tex(HARM_TOTAL / lifeH * 100, 0) + '\\%' + EQ + hrs(HARM_TOTAL) + DIV + H(tex(lifeH, 0))]
+      ].concat(intensitySteps)
     };
-    harmPerServing = {
+    C = {
       id: 'harm-per-serving', name: F(h[0], 'Serving'), value: '\\mathbf{' + hrs(h[1] * lifetimes) + '}',
-      tip: 'Hours of ' + h[0].toLowerCase() + ' behind this serving: ' + tex(share, 0) + '% of the ' + n(HARM_TOTAL * lifetimes) + ' h of pain of all kinds behind it.'
+      tip: 'Hours of ' + h[0].toLowerCase() + ' behind this serving.',
+      steps: [
+        [F(h[0], 'Serving') + EQ + F('Animal Lifetime', 'Serving') + TIMES + F(h[0], 'Animal Lifetime'),
+         hrs(h[1] * lifetimes) + EQ + lx + TIMES + hrs(h[1])],
+        [F('All Harms', 'Serving') + EQ + F('Animal Lifetime', 'Serving') + TIMES + F('All Harms', 'Animal Lifetime'),
+         hrs(HARM_TOTAL * lifetimes) + EQ + lx + TIMES + hrs(HARM_TOTAL)],
+        [F(h[0], 'All Harms'), tex(share * 100, 0) + '\\%']
+      ]
     };
   } else {
-    harmPerLifetime = {
+    B = {
       id: 'harm-per-lifetime', name: F('All Harms', 'Animal Lifetime'), value: hrs(HARM_TOTAL),
-      tip: 'Welfare Footprint Project: hours an average conventional chicken spends in pain over its whole life, all causes added.',
-      extras: lifetimeRows, subs: [byIntensity],
-      ops: rep('+', HARMS.length - 1),
-      terms: HARMS.map(function (x, i) { return { name: F(x[0], 'Animal Lifetime'), value: L(SRC.track, hrs(x[1])), tip: x[0] + ': ' + x[4] + '. Click the number for the source.', focus: i }; })
+      tip: 'Hours an average conventional chicken spends in pain over its life, all causes added (Welfare Footprint Project).',
+      steps: [
+        [F('All Harms', 'Animal Lifetime') + EQ + sumWords, hrs(HARM_TOTAL) + EQ + sumNums],
+        [T('Animal Lifetime') + EQ + T('Days Alive') + TIMES + T('Hours per Day'),
+         H(tex(lifeH, 0)) + EQ + L(SRC.ncc, LIFETIME_DAYS + '\\ \\text{days}') + TIMES + '24\\ \\text{h/day}'],
+        [F('Time in Pain', 'Animal Lifetime') + EQ + F('All Harms', 'Animal Lifetime') + DIV + T('Animal Lifetime'),
+         tex(HARM_TOTAL / lifeH * 100, 0) + '\\%' + EQ + hrs(HARM_TOTAL) + DIV + H(tex(lifeH, 0))]
+      ].concat(intensitySteps)
     };
-    harmPerServing = {
+    C = {
       id: 'harm-per-serving', name: F('All Harms', 'Serving'), value: '\\mathbf{' + hrs(HARM_TOTAL * lifetimes) + '}',
-      tip: 'Hours of pain of all kinds behind this serving.'
+      tip: 'Hours of pain of all kinds behind this serving. Open to see it by cause.',
+      steps: ['By cause. Click one to focus the equation on it.'].concat(HARMS.map(function (x, i) {
+        return { focus: i, words: F(x[0], 'Serving') + EQ + F('Animal Lifetime', 'Serving') + TIMES + F(x[0], 'Animal Lifetime'),
+                 nums: hrs(x[1] * lifetimes) + EQ + lx + TIMES + hrs(x[1]) };
+      }))
     };
-    breakdown = HARMS.map(function (x, i) { return { name: F(x[0], 'Serving'), value: hrs(x[1] * lifetimes), tip: 'Click to focus the equation on ' + x[0].toLowerCase() + '.', focus: i }; });
   }
-
-  return { terms: [lifetimesPerServing, harmPerLifetime], ops: ['\u00d7'], result: harmPerServing, breakdown: breakdown };
+  return { A: A, B: B, C: C };
 }
 
 // ---------------------------------------------------------------------------
-// Rendering. Every row is a table: [toggle] [words] [numbers].
-// An expandable row is preceded by its (hidden) derivation block.
+// Rendering
 // ---------------------------------------------------------------------------
-var openState = {};   // which rows are unfolded, kept across re-renders
+var openState = {};
 
-function eqCell(src) { return '<div class="eq" data-tex="' + esc(src) + '"></div>'; }
-function bigIf(big, s) { return big ? '<big><big>' + s + '</big></big>' : s; }
-function rowTable(node, id, big, glyph) {
-  var attrs = id ? ' data-toggle="' + id + '"' : (node.focus !== undefined ? ' data-focus="' + node.focus + '"' : '');
-  if (node.tip) attrs += ' title="' + esc(node.tip) + '"';
-  return '<table width="100%" class="row"' + attrs + '><tr>' +
-    '<td width="24" class="glyph" align="center">' + bigIf(big, glyph || '') + '</td>' +
-    '<td width="50%" class="words" valign="middle">' + bigIf(big, eqCell('\\displaystyle ' + node.name)) + '</td>' +
-    '<td width="50%" class="nums" valign="middle">' + bigIf(big, node.value ? eqCell('\\displaystyle ' + node.value) : '') + '</td></tr></table>';
+function eqCell(src) { return '<span class="eq" data-tex="' + esc(src) + '"></span>'; }
+function big(s) { return '<big><big>' + s + '</big></big>'; }
+function rowTable(node) {
+  var open = !!openState[node.id];
+  return '<table width="100%" class="row' + (open ? ' open' : '') + '" data-toggle="' + node.id + '" title="' + esc(node.tip || '') + '"><tr>' +
+    '<td width="24" class="glyph" align="center">' + big('<span id="' + node.id + '-glyph">' + (open ? '&#9652;' : '&#9662;') + '</span>') + '</td>' +
+    '<td width="50%" class="words">' + big(eqCell('\\displaystyle ' + node.name)) + '</td>' +
+    '<td width="50%" class="nums">' + big(eqCell('\\displaystyle ' + node.value)) + '</td></tr></table>';
 }
-function opRow(op, big) {
+function opRow(op) {
   return '<table width="100%" class="row"><tr><td width="24"></td>' +
-    '<td width="50%" class="words">' + bigIf(big, op) + '</td><td width="50%" class="nums">' + bigIf(big, op) + '</td></tr></table>';
+    '<td width="50%" class="words">' + big(op) + '</td><td width="50%" class="nums">' + big(op) + '</td></tr></table>';
 }
-function expandable(node) { return !!(node.terms || node.subs || node.extras); }
-function glyphFor(open) { return open ? '&#9661;' : '&#9650;'; }   // ▽ open, ▲ closed
+function panel(node) {
+  var k = 0;
+  var rows = node.steps.map(function (st, i) {
+    if (typeof st === 'string') return '<tr><th colspan="3">' + st + '</th></tr>';
+    var words = st.words || st[0], nums = st.nums || st[1];
+    var last = i === node.steps.length - 1 && st.focus === undefined;
+    var attrs = st.focus !== undefined ? ' data-focus="' + st.focus + '"' : '';
+    k += 1;
+    return '<tr' + (last ? ' class="result"' : '') + attrs + '><td class="n">' + k + '</td>' +
+      '<td class="words">' + eqCell('\\displaystyle ' + words) + '</td><td class="nums">' + eqCell('\\displaystyle ' + nums) + '</td></tr>';
+  }).join('');
+  return '<div class="panel" id="' + node.id + '-panel"' + (openState[node.id] ? '' : ' hidden') + '>' +
+    '<table class="steps"><tr><th></th><th>In words</th><th>With numbers</th></tr>' + rows + '</table></div>';
+}
 
-// One row. Expandable rows get their derivation block placed ABOVE them.
-function renderRow(node, path, big) {
-  if (!expandable(node)) return rowTable(node, null, big);
-  var id = node.id || path;
-  var open = openState[id] === undefined ? !!node.open : openState[id];
-  return '<blockquote id="' + id + '-block" data-block' + (open ? '' : ' hidden') + '>' + renderInside(node, id) + '</blockquote>' +
-         '<div id="' + id + '-row">' + rowTable(node, id, big, '<span id="' + id + '-glyph">' + glyphFor(open) + '</span>') + '</div>';
+function update() {
+  var oz = parseFloat(document.getElementById('oz').value) || 0;
+  var hi = parseInt(document.getElementById('harm').value, 10);
+  var e = buildEquation(oz, hi);
+  var html = rowTable(e.A) + panel(e.A) + opRow('\u00d7') + rowTable(e.B) + panel(e.B) + opRow('=') + rowTable(e.C) + panel(e.C);
+  var root = document.getElementById('tree');
+  root.innerHTML = html;
+  root.querySelectorAll('.eq').forEach(function (el) {
+    var src = el.getAttribute('data-tex');
+    if (typeof katex === 'undefined') { el.textContent = src; return; }
+    katex.render(src, el, { displayMode: false, throwOnError: false, trust: function (c) { return c.command === '\\href'; } });
+  });
 }
 
-// The derivation block: extras and subs first, then the terms with operators, then the line.
-function renderInside(node, path, big) {
-  var html = '';
-  if (node.extras) node.extras.forEach(function (x, i) { html += renderRow(x, path + '-x' + i); });
-  if (node.subs) node.subs.forEach(function (s, i) { html += renderRow(s, path + '-s' + i); });
-  if (node.terms) {
-    node.terms.forEach(function (t, i) {
-      if (i > 0) html += opRow(node.ops[i - 1], big);
-      html += renderRow(t, path + '-' + i, big);
-    });
-    html += '<hr>';
-  }
-  if (node.flipOf) html += rowTable(node.flipOf, null, big);   // the same quantity before flipping it
-  return html;
+function toggle(id) {
+  var p = document.getElementById(id + '-panel');
+  if (!p) return;
+  openState[id] = p.hidden;
+  p.hidden = !p.hidden;
+  document.getElementById(id + '-glyph').innerHTML = p.hidden ? '&#9662;' : '&#9652;';
+  document.querySelector('table[data-toggle="' + id + '"]').classList.toggle('open', !p.hidden);
 }
+
+document.addEventListener('click', function (e) {
+  var a = e.target.closest('a');
+  if (a) return;                                        // a source link: let it open
+  var t = e.target.closest('table[data-toggle]');
+  if (t) { toggle(t.getAttribute('data-toggle')); return; }
+  var f = e.target.closest('tr[data-focus]');
+  if (f) { document.getElementById('harm').value = f.getAttribute('data-focus'); update(); window.scrollTo(0, 0); }
+});
 
 function renderNotes() {
   var li = function (s) { return '<li>' + s + '</li>'; };
@@ -295,94 +289,12 @@ function renderNotes() {
     li('Live weight: <a href="' + SRC.nass + '">USDA NASS, Poultry Production and Value 2024 Summary</a> (9.33 billion broilers, 61.1 billion lb).') +
     li('Dressing percentage 75%: <a href="' + SRC.umaine + '">University of Maine Extension, Understanding Poultry Yields</a>.') +
     li('Edible share percentage 74%: <a href="' + SRC.wisc + '">University of Wisconsin Extension, Bird Breakdown</a>.') +
-    li('Cooking yield 0.75: <a href="' + SRC.cooking + '">USDA Table of Cooking Yields for Meat and Poultry</a>.') +
+    li('Raw meat per cooked gram 1.33 (cooking yield 0.75): <a href="' + SRC.cooking + '">USDA Table of Cooking Yields for Meat and Poultry</a>.') +
     li('Lifetime 47 days: <a href="' + SRC.ncc + '">National Chicken Council, U.S. Broiler Performance</a>.') +
     li('Hours of pain by intensity, mean and 90% interval: <a href="' + SRC.wfp + '">Welfare Footprint Institute, Broilers</a>, conventional scenario.') +
     li('Hours of pain by cause: <a href="' + SRC.track + '">Welfare Footprint Institute, Pain-Track for broilers</a>.') +
     '</ol>';
 }
-
-function update() {
-  var oz = parseFloat(document.getElementById('oz').value) || 0;
-  var hi = parseInt(document.getElementById('harm').value, 10);
-  var tree = buildTree(oz, hi);
-  var html = '';
-  tree.terms.forEach(function (t, i) {
-    if (i > 0) html += opRow(tree.ops[i - 1], true);
-    html += renderRow(t, 'top-' + i, true);
-  });
-  html += opRow('=', true);
-  html += renderRow(tree.result, 'top-result', true);
-  if (tree.breakdown) {
-    html += '<p>By cause, for this serving. Click one to focus on it.</p>';
-    tree.breakdown.forEach(function (b, i) { html += renderRow(b, 'bd-' + i); });
-  }
-  var root = document.getElementById('tree');
-  root.innerHTML = html;
-  root.querySelectorAll('.eq').forEach(function (el) {
-    var src = el.getAttribute('data-tex');
-    if (typeof katex === 'undefined') { el.textContent = src; return; }
-    katex.render(src, el, { displayMode: false, throwOnError: false, trust: function (c) { return c.command === '\\href'; } });
-  });
-}
-
-// Open or close a row's derivation, keeping the row where it is on screen.
-// Closing a row also closes everything nested inside it, so reopening shows one level.
-function setOpen(id, open) {
-  var block = document.getElementById(id + '-block');
-  var row = document.getElementById(id + '-row');
-  if (!block || !row) return;
-  var before = row.getBoundingClientRect().top;
-  block.hidden = !open;
-  openState[id] = open;
-  var g = document.getElementById(id + '-glyph');
-  if (g) g.innerHTML = glyphFor(open);
-  if (!open) {
-    block.querySelectorAll('[data-block]').forEach(function (inner) {
-      inner.hidden = true;
-      var iid = inner.id.replace(/-block$/, '');
-      openState[iid] = false;
-      var ig = document.getElementById(iid + '-glyph');
-      if (ig) ig.innerHTML = glyphFor(false);
-    });
-  }
-  window.scrollBy(0, row.getBoundingClientRect().top - before);
-}
-function toggle(id) {
-  var block = document.getElementById(id + '-block');
-  if (block) setOpen(id, block.hidden);
-}
-// Open a row's derivation and every enclosing one, then scroll to the row.
-function openLevel(id) {
-  var el = document.getElementById(id + '-block');
-  if (!el) return;
-  var ids = [];
-  while (el) {
-    if (el.hasAttribute && el.hasAttribute('data-block')) ids.push(el.id.replace(/-block$/, ''));
-    el = el.parentElement;
-  }
-  ids.reverse().forEach(function (x) { setOpen(x, true); });
-  document.getElementById(id + '-row').scrollIntoView({ block: 'center' });
-}
-
-document.addEventListener('click', function (e) {
-  var a = e.target.closest('a');
-  if (!a && document.elementsFromPoint) {
-    var stack = document.elementsFromPoint(e.clientX, e.clientY);
-    for (var k = 0; k < stack.length && !a; k++) a = stack[k].closest('a[href^="#"]');
-  }
-  if (a) {
-    var href = a.getAttribute('href') || '';
-    if (href.charAt(0) !== '#') return;          // external source: let it open
-    e.preventDefault();
-    openLevel(href.slice(1));
-    return;
-  }
-  var t = e.target.closest('table[data-toggle]');
-  if (t) { toggle(t.getAttribute('data-toggle')); return; }
-  var f = e.target.closest('table[data-focus]');
-  if (f) { document.getElementById('harm').value = f.getAttribute('data-focus'); update(); window.scrollTo(0, 0); }
-});
 
 window.addEventListener('DOMContentLoaded', function () {
   var sel = document.getElementById('harm');
