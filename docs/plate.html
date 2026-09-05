@@ -41,20 +41,20 @@
 </head>
 <body>
 
-<p class="nav"><a href="index.html">Equation</a> &middot; <b>Plate</b></p>
-<h1>Select an amount of chicken</h1>
-<p class="muted">Cooked meat only, not counting bone, breading or sauce. Chicken: <select id="system"></select></p>
+<p class="nav"><a href="index.html" id="nav-eq"></a> &middot; <b id="nav-plate"></b></p>
+<h1 id="title"></h1>
+<p class="muted"><span id="subtitle"></span> <span id="chicken-label"></span> <select id="system"></select></p>
 
 <div class="cols">
   <div>
-    <p><b>Type an amount</b></p>
+    <p><b id="type-heading"></b></p>
     <p><input type="number" id="amount" min="0" step="0.5" placeholder="0"> <select id="unit"><option value="oz">oz</option><option value="g">grams</option></select></p>
-    <p class="muted">A restaurant chicken breast is about 6 oz. A deck-of-cards portion is about 3 oz.</p>
+    <p class="muted" id="type-hint"></p>
   </div>
   <div>
-    <p><b>Or pick a common item</b></p>
+    <p><b id="pick-heading"></b></p>
     <div class="items" id="items"></div>
-    <p class="muted">Approximate cooked-meat weights.</p>
+    <p class="muted" id="pick-hint"></p>
   </div>
 </div>
 
@@ -62,34 +62,23 @@
   <p id="headline"></p>
   <div class="cols">
     <div>
-      <h2>This resulted in:</h2>
+      <h2 id="causes-heading"></h2>
       <div id="causes"></div>
     </div>
     <div>
-      <h2>Researchers think this resulted in the chicken feeling:</h2>
+      <h2 id="levels-heading"></h2>
       <table id="levels"></table>
     </div>
   </div>
   <p class="muted" id="foot"></p>
 </div>
 
+<script src="text.js"></script>
 <script src="wfp.js"></script>
 <script src="chicken.js"></script>
 <script>
-// Common items, as grams of cooked chicken meat (approximate; bone, breading and sauce excluded).
-var ITEMS = [
-  ['Chick-fil-A Chicken Sandwich', 100, 'one breaded breast filet'],
-  ['Chick-fil-A Nuggets, 8 count', 95, ''],
-  ['McDonald’s McNuggets, 10 piece', 80, 'about half of a nugget is chicken'],
-  ['Popeyes Chicken Sandwich', 110, ''],
-  ['KFC 2-piece, thigh and drumstick', 140, 'meat only'],
-  ['Chipotle chicken bowl or burrito', 113, 'a 4 oz scoop'],
-  ['Grilled chicken breast, restaurant', 170, '6 oz'],
-  ['Half a rotisserie chicken', 280, 'meat only'],
-  ['6 buffalo wings', 90, 'meat only'],
-  ['Chicken Caesar salad', 85, ''],
-  ['Bowl of chicken noodle soup', 25, '']
-];
+var ITEMS = TEXT.plate.items;
+var P = TEXT.plate;
 
 function n(x, d) { return Number(x.toFixed(d === undefined ? 1 : d)).toLocaleString('en-US'); }
 function dur(h) {
@@ -103,7 +92,8 @@ function durRange(lo, hi) {
   if (hi === 0) return '';
   var unit = hi < 1 / 60 ? 3600 : hi < 1 ? 60 : 1;
   var d = hi * unit < 10 ? 1 : 0;
-  return 'likely ' + n(lo * unit, d) + ' to ' + n(hi * unit, d) + (unit === 3600 ? ' s' : unit === 60 ? ' min' : ' h');
+  var u = unit === 3600 ? ' s' : unit === 60 ? ' min' : ' h';
+  return fmt(P.rangeLine, { lo: n(lo * unit, d), hi: n(hi * unit, d) + u });
 }
 function frac(x) { return x > 0 && x < 0.67 ? 'about 1/' + Math.round(1 / x) : n(x, 2); }
 
@@ -121,27 +111,23 @@ function render() {
   var st = servingStats(g, sysKey);
   box.hidden = false;
 
-  var farm = sysKey === 'conventional' ? 'on a factory farm' : 'on a higher-welfare farm';
-  document.getElementById('headline').innerHTML =
-    'A chicken had to live <b>' + n(st.days, st.days < 10 ? 1 : 0) + ' days</b> ' + farm + ' to create this chicken.' +
-    '<br><small>That is ' + frac(st.lifetimes) + ' of one bird’s ' + st.lifetimeDays + '-day life, from ' + n(st.cookedG, 0) + ' g of cooked meat.</small>';
+  var vars = { days: n(st.days, st.days < 10 ? 1 : 0), farm: TEXT.systems[sysKey].farm, fraction: frac(st.lifetimes), lifetime: st.lifetimeDays, grams: n(st.cookedG, 0) };
+  document.getElementById('headline').innerHTML = fmt(P.headline, vars) + '<br><small>' + fmt(P.headlineSmall, vars) + '</small>';
 
   var openHarms = {};
   document.querySelectorAll('#causes details[open]').forEach(function (d) { openHarms[d.getAttribute('data-name')] = true; });
   document.getElementById('causes').innerHTML = st.causes.slice().sort(function (a, b) { return b.hours - a.hours; }).map(function (c) {
-    var what = c.what.charAt(0).toUpperCase() + c.what.slice(1) + '.';
+    var what = c.what.charAt(0).toUpperCase() + c.what.slice(1);
     return '<details class="harm" data-name="' + c.name + '"' + (openHarms[c.name] ? ' open' : '') + '><summary>' +
-      '<span class="num">' + dur(c.hours) + '</span><span class="name">of ' + c.name.toLowerCase() + '</span><span class="range">' + durRange(c.lo, c.hi) + '</span></summary>' +
-      '<div class="desc">' + what + ' An average bird in this system spends <b>' + dur(c.perBird) + '</b> in this pain over its life; this serving is ' + frac(st.lifetimes) + ' of a bird, so it carries that share.</div></details>';
-  }).join('') + '<div class="total"><span class="num">' + dur(st.allHours) + '</span><span>of pain in total</span></div>';
+      '<span class="num">' + dur(c.hours) + '</span><span class="name">' + fmt(P.causeLine, { harm: c.name.toLowerCase() }) + '</span><span class="range">' + durRange(c.lo, c.hi) + '</span></summary>' +
+      '<div class="desc">' + fmt(P.causeDetail, { what: what, perBird: dur(c.perBird), fraction: frac(st.lifetimes) }) + '</div></details>';
+  }).join('') + '<div class="total"><span class="num">' + dur(st.allHours) + '</span><span>' + P.totalLine + '</span></div>';
 
   document.getElementById('levels').innerHTML = st.levels.slice().reverse().map(function (l) {
-    return '<tr><td class="num"><b>' + dur(l.hours) + '</b></td><td>of <b>' + l.name.toLowerCase() + '</b> pain, which is “' + l.def + '”</td><td class="range">' + durRange(l.lo, l.hi) + '</td></tr>';
+    return '<tr><td class="num"><b>' + dur(l.hours) + '</b></td><td>' + fmt(P.levelLine, { level: l.name.toLowerCase(), definition: l.def }) + '</td><td class="range">' + durRange(l.lo, l.hi) + '</td></tr>';
   }).join('');
 
-  document.getElementById('foot').textContent =
-    'Hours are an average bird’s time in pain over its life (Welfare Footprint Project, waking hours only), scaled to this serving. ' +
-    'The grey figures are 90% ranges. The causes and the intensities are the same hours split two ways. Sources and the full working are on the Equation page.';
+  document.getElementById('foot').innerHTML = P.footnote;
 }
 
 function pick(i) {
@@ -153,6 +139,10 @@ function pick(i) {
 }
 
 window.addEventListener('DOMContentLoaded', function () {
+  document.title = P.title;
+  [['nav-eq', TEXT.nav.equation], ['nav-plate', TEXT.nav.plate], ['title', P.title], ['subtitle', P.subtitle], ['chicken-label', P.chickenLabel],
+   ['type-heading', P.typeHeading], ['type-hint', P.typeHint], ['pick-heading', P.pickHeading], ['pick-hint', P.pickHint],
+   ['causes-heading', P.causesHeading], ['levels-heading', P.levelsHeading]].forEach(function (x) { document.getElementById(x[0]).innerHTML = x[1]; });
   var sys = document.getElementById('system');
   Object.keys(SYSTEMS).forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = SYSTEMS[k].label; sys.appendChild(o); });
   var items = document.getElementById('items');

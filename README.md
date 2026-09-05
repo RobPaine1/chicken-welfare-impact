@@ -20,6 +20,16 @@ last. Sourced numbers carry a subscript tag (NASS, ARS, UMaine, UWisc, NCC,
 WFP) keyed to the Notes and sources section. Equations are typeset with KaTeX,
 vendored in `docs/katex/`. A small stylesheet, no build step.
 
+## Editing the words
+
+Every heading, sentence, harm description, intensity definition, common-item
+name and note on both pages lives in `docs/text.js`. Edit that file and nothing
+else: on GitHub, open it, click the pencil, change the text, commit. Keep the
+`{placeholders}` (they are filled in with numbers) and the quotes around each
+string; an apostrophe inside a single-quoted string needs a backslash (`it\'s`)
+or use the curly ’ instead. GitHub Pages updates about a minute after the
+commit lands on `main`.
+
 ## Data
 
 The weight constants are in `docs/chicken.js`, shared by both pages, with a
