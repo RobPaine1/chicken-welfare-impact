@@ -42,9 +42,9 @@
       carries a 0.70–0.80 range; the notes say every interval is approximate.
 - [x] Cooking-yield range 0.65–0.75, checked against the ARS table itself (copy
       in `data/`) and SR28 paired raw/roasted weights.
-- [ ] Settle whether the Wisconsin 72–75% dressing figure includes neck and
-      giblets. If it does, the edible share should be 61% (SR28: 276 g meat and
-      skin per lb ready-to-cook), raising every harm about 12%.
+- [x] Neck and giblets: dressing percentage is defined without them (Maine
+      Extension), so the 68% bone-only refuse share is the right one; SR28's
+      61% per lb ready-to-cook includes them and reconciles to about 67%.
 - [ ] Source the cooked-chicken weight of each common item (nutrition labels).
 - [ ] Re-run it occasionally; the project revises its estimates.
 
