@@ -96,6 +96,7 @@
     <div>
       <h2 id="levels-heading"></h2>
       <table id="levels"></table>
+      <p class="muted" id="levels-note"></p>
     </div>
   </div>
   <p class="muted" id="foot"></p>
@@ -112,6 +113,7 @@
       <div>
         <h2 id="long-levels-heading"></h2>
         <table id="long-levels"></table>
+        <p class="muted" id="long-levels-note"></p>
       </div>
     </div>
   </div>
@@ -272,7 +274,7 @@ window.addEventListener('DOMContentLoaded', function () {
   document.title = P.title;
   [['title', P.title], ['caveat', P.caveat],
    ['type-heading', P.typeHeading], ['type-hint', P.typeHint], ['pick-heading', P.pickHeading], ['pick-hint', P.pickHint],
-   ['causes-heading', P.causesHeading], ['levels-heading', P.levelsHeading]].forEach(function (x) { document.getElementById(x[0]).innerHTML = x[1]; });
+   ['causes-heading', P.causesHeading], ['levels-heading', P.levelsHeading], ['levels-note', P.levelsNote], ['long-levels-note', P.longrun.levelsNote]].forEach(function (x) { document.getElementById(x[0]).innerHTML = x[1]; });
   var L = P.longrun;
   ['long-heading', 'long-causes-heading', 'long-levels-heading'].forEach(function (id, i) { document.getElementById(id).innerHTML = [L.heading, L.causesHeading, L.levelsHeading][i]; });
   document.getElementById('long-question').innerHTML = fmt(L.question, {

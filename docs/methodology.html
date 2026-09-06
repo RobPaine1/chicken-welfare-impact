@@ -304,6 +304,7 @@ function renderNotes() {
   return '<p><b>The harms.</b> ' + fmt(E.notesHarms, { retrieved: WFP.retrieved }) + '</p>' +
     '<ul>' + causes.map(function (c) { return li('<b>' + c.name + '</b>: ' + harmWhat(c) + '.'); }).join('') + '</ul>' +
     '<p>' + E.notesBreeders + '</p>' +
+    '<p><b>Overlap.</b> ' + E.notesOverlap + '</p>' +
     '<p><b>' + E.notesIntensities + '</b> (<a href="' + SRC.defs + '">project definitions</a>):</p>' +
     '<ul>' + LEVELS.map(function (l) { return li('<b>' + LEVEL_NAMES[l] + '</b>: ' + LEVEL_DEFS[l] + '.'); }).join('') + '</ul>' +
     '<p><b>Uncertainty.</b> ' + E.notesUncertainty + '</p>' +

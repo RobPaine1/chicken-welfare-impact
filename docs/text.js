@@ -102,11 +102,13 @@ var TEXT = {
     causeDetail: '{what}. An average bird in this system spends <b>{perBird}</b> in this pain over its life; this serving is {fraction} of a bird, so it carries that share.',
     totalLine: 'of harm in total, counting each harm separately',
     levelsHeading: 'Researchers think this resulted in the chicken feeling:',
+    // Line under the intensity table.
+    levelsNote: 'Counting each harm separately, so hours can overlap when a bird suffers two harms at once.',
     // {level} {definition}
     levelLine: 'of <b>{level}</b> pain, which is “{definition}”',
     footnote: 'Hours are an average bird’s time in pain over its life (Welfare Footprint Project, waking hours only), scaled to this serving. ' +
               'Harms that happen at the same time are each counted, so the totals are harm-hours rather than clock hours; this matters most for the annoying and hurtful rows. ' +
-              'The grey figures are 90% ranges. The causes and the intensities are the same hours split two ways. Sources and the full working are on the Equation page.',
+              'The grey figures are 90% ranges. The causes and the intensities are the same hours split two ways. Sources and the full working are on the Methodology page.',
     // ---- The "over the long run" block at the bottom of the results ----
     longrun: {
       heading: 'Over the long run',
@@ -119,7 +121,8 @@ var TEXT = {
       headline: 'That’s <b>{meals} meals</b>, or <b>{chickens} chickens</b>, over {years} years.',
       headlineSmall: 'About {perYear} lb of chicken a year (likely {chickensLo} to {chickensHi} chickens). Between them, those chickens spent:',
       causesHeading: 'In total:',
-      levelsHeading: 'Which researchers think they felt as:'
+      levelsHeading: 'Which researchers think they felt as:',
+      levelsNote: 'Counting each harm separately, so hours can overlap when a bird suffers two harms at once.'
     },
     // Common items: [name, grams of cooked chicken meat, note, photo file]. Add, remove or reorder freely.
     // Photo files live in docs/img/; their credits are in docs/photos.js.
@@ -311,6 +314,7 @@ var TEXT = {
                 'Only hours awake are counted, so no separate allowance for sleep is needed. Lifetime is not a separate multiplier: it is the window over which the hours accumulate. ' +
                 'Harms that happen at the same time are each counted, so totals are harm-hours rather than clock hours.',
     notesBreeders: 'The two breeder-hen lines are part of the project’s own total: the parent hens’ pain is spread over the chicks each produces, so a broiler carries a small share of it.',
+    notesOverlap: 'The hours are harm-hours, like person-hours: a bird that is lame and heat-stressed for the same hour is counted for two hours, one under each harm. The intensity totals are the same hours sorted by severity, so they overlap in the same way. That is why the total for a 42-day bird, about 709 hours, can exceed the roughly 630 hours it is awake. The project builds each harm’s estimate from evidence specific to that harm and then assumes harms neither cancel nor amplify one another; it lists that assumption as a research gap. A single harm on its own, such as lameness, is the cleanest number to quote, since it cannot overlap with itself.',
     notesIntensities: 'The intensities',
     notesUncertainty: 'The project varies every input over its plausible range and reports a mean and a 90% interval (5th to 95th percentile); no median or 95% interval is published. ' +
                       'The intervals on the by-intensity totals are the project’s own, from its Tableau workbook. The intervals on individual causes are derived: each cause’s standard deviation from the project’s per-harm figures, scaled so the same rule reproduces the published interval for the total. Treat those as approximate. ' +
