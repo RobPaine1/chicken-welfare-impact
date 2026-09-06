@@ -59,6 +59,10 @@
       `docs/text.js`). The Harms page now carries the report's own definitions
       and every page of the report per harm; the calculator's one-liners are
       unchanged.
+- [x] Photos for each harm on the Harms page and in the calculator dropdowns
+      (Wikimedia Commons). Weak spots: the ascites and peritonitis photos are
+      laying hens, the sudden-death photo is a dead chick, and the heat-stress
+      photo is a crowded shed rather than a panting bird. Replace if better ones turn up.
 - [ ] Fix the equation colours.
 - [x] Add an About page (`docs/about.html`; text in `text.js` under `about`).
 - [ ] Add more text to the Methodology page (its Notes section).

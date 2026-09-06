@@ -51,6 +51,13 @@ pymupdf pillow`) finds the pages by keyword, renders them to
 `docs/report/<chapter>/`, and writes the manifest `docs/report.js`. Re-run it
 after changing the keyword rules in the script or replacing a chapter PDF.
 
+Each harm on the Harms page has a photo (in `docs/img/harms/`, chosen in
+`text.js` under `harmsPage.photos` with its caption; credits in `photos.js`),
+which also appears as a thumbnail in the calculator's dropdown for that harm.
+
+`docs/about.html` shows the paragraphs in `text.js` under `about`. The nav on
+the left of every page is built by `docs/nav.js` from the labels in `text.js`.
+
 ## Data
 
 The weight constants (USDA NASS live weight, Wisconsin Extension dressing
