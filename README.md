@@ -54,8 +54,8 @@ saved raw files (`python3 scripts/fetch_paintrack.py data/paintrack_broilers_raw
 `docs/harms/<name>.html`, which gives the Welfare Footprint Project's own
 description of the harm, quoted from *Quantifying Pain in Broiler Chickens*
 (Schuck-Paim & Alonso, eds, 2022), then every page of the report that mentions
-that harm, as images. The quotes and the page wording live in `text.js` under
-`harmsPage`. The chapter
+that harm, as images, with a further-reading list of outside sources in between.
+The quotes, the links and the page wording live in `text.js` under `harmsPage`. The chapter
 PDFs are in `data/report/`; `scripts/build_harms.py` (needs `pip install
 pymupdf pillow`) finds the pages by keyword, renders them to
 `docs/report/<chapter>/`, and writes the manifest `docs/report.js`. Re-run it

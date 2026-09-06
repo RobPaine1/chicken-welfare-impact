@@ -182,6 +182,69 @@ var TEXT = {
       'Breeder hen peritonitis': 'The parent hens of meat chickens. The calculator spreads each hen’s pain over the chicks she produces.',
       'Stunning and slaughter': 'Counted by the calculator using the report’s low-voltage, high-frequency electrical waterbath scenario, which the report expects to prevail where stunning is unregulated, including the United States. The higher-welfare comparison on the Methodology page uses properly run CO2 stunning instead.'
     },
+    // Further reading on each harm's page: [title, url, one-line note]. Add, remove or reorder freely.
+    linksHeading: 'Further reading',
+    links: {
+      'Lameness': [
+        ['Knowles et al. 2008, Leg disorders in broiler chickens: prevalence, risk factors and prevention', 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0001545', 'PLOS ONE; the large UK survey of gait scores in commercial flocks (27.6% of birds at gait score 3 or worse).'],
+        ['Granquist et al. 2019, Lameness and its relationship with health and production measures in broiler chickens', 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6749567/', 'Open access, in the journal Animal.'],
+        ['Caplen et al. 2012, Kinematic analysis quantifies gait abnormalities associated with lameness in broiler chickens', 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0040800', 'PLOS ONE; how lame birds change the way they walk.'],
+        ['EFSA 2023, Welfare of broilers on farm', 'https://doi.org/10.2903/j.efsa.2023.7788', 'The European food safety authority’s scientific opinion; lameness, stocking density and litter.']
+      ],
+      'Ascites': [
+        ['Wideman et al. 2013, Pulmonary arterial hypertension (ascites syndrome) in broilers: a review', 'https://pubmed.ncbi.nlm.nih.gov/23243232/', 'Poultry Science; the standard review of the condition.'],
+        ['The Poultry Site: Pulmonary arterial hypertension (ascites syndrome) in broilers', 'https://www.thepoultrysite.com/articles/pulmonary-arterial-hypertension-ascites-syndrome-in-broilers-a-review', 'A readable summary of the review above.']
+      ],
+      'Sudden death syndrome': [
+        ['MSD Veterinary Manual: Sudden death syndrome of broiler chickens', 'https://www.msdvetmanual.com/poultry/sudden-death-syndrome-of-broiler-chickens/sudden-death-syndrome-of-broiler-chickens', 'Signs, findings at post-mortem and links to growth rate.'],
+        ['Poultry Extension: Sudden death syndrome in poultry', 'https://poultry.extension.org/articles/poultry-health/common-poultry-diseases/sudden-death-syndrome-in-poultry/', 'US university extension summary.'],
+        ['Siddiqui et al. 2009, Pathological studies of “sudden death syndrome” in broiler chickens', 'https://pmc.ncbi.nlm.nih.gov/articles/PMC1789498/', 'Open access.']
+      ],
+      'Heat stress': [
+        ['University of Florida IFAS: Heat stress management in broilers', 'https://ask.ifas.ufl.edu/publication/VM019', 'Extension guide; what heat stress does to the bird and how sheds try to manage it.'],
+        ['Rehman et al. 2020, Strategies to combat heat stress in broiler chickens', 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7356496/', 'Open-access review of the physiology.'],
+        ['Kim et al. 2022, Meta-analysis and systematic review of the thermal stress response in chickens', 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8832064/', 'Open access.']
+      ],
+      'No foraging or exploring': [
+        ['Anderson et al. 2021, Environmental complexity positively impacts affective states of broiler chickens', 'https://www.nature.com/articles/s41598-021-95280-4', 'Scientific Reports; birds in enriched pens were measurably more optimistic.'],
+        ['Baxter et al. 2021, Behaviour and animal welfare indicators of broiler chickens housed in an enriched environment', 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0256963', 'PLOS ONE.'],
+        ['EFSA 2023, Welfare of broilers on farm', 'https://doi.org/10.2903/j.efsa.2023.7788', 'Recommends friable litter so birds can forage and explore.']
+      ],
+      'No perching': [
+        ['Anderson et al. 2023, Environmental complexity and reduced stocking density promote positive behavioral outcomes in broiler chickens', 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10339985/', 'Open access; perch use rises when there is room.'],
+        ['Baxter et al. 2021, Behaviour and animal welfare indicators of broiler chickens housed in an enriched environment', 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0256963', 'PLOS ONE.'],
+        ['EFSA 2023, Welfare of broilers on farm', 'https://doi.org/10.2903/j.efsa.2023.7788', 'Recommends elevated platforms for resting and leg health.']
+      ],
+      'No dustbathing': [
+        ['Anderson et al. 2021, Environmental complexity positively impacts affective states of broiler chickens', 'https://www.nature.com/articles/s41598-021-95280-4', 'Scientific Reports; dustbathing among the behaviours studied.'],
+        ['Baxter et al. 2021, Behaviour and animal welfare indicators of broiler chickens housed in an enriched environment', 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0256963', 'PLOS ONE.']
+      ],
+      'Breeder hen hunger': [
+        ['Mench 2002, Broiler breeders: feed restriction and welfare', 'https://doi.org/10.1079/WPS20020035', 'World’s Poultry Science Journal; the classic review.'],
+        ['Dixon et al. 2014, Food-restricted broiler breeder chickens cross a water barrier to forage in an area of wood shavings without food', 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0102322', 'PLOS ONE; how hard hungry breeders will work to forage.'],
+        ['Arrazola et al. 2020, Effect of qualitative feed restriction in broiler breeder pullets on stress and clinical welfare indicators', 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7300207/', 'Open access; diluted diets do not remove the hunger.']
+      ],
+      'Breeder hen peritonitis': [
+        ['Merck Veterinary Manual: Egg peritonitis in poultry', 'https://www.merckvetmanual.com/poultry/disorders-of-the-reproductive-system-in-poultry/egg-peritonitis-in-poultry', 'What the condition is and why treatment rarely works.'],
+        ['Landman et al. 2013, Reproduction of the Escherichia coli peritonitis syndrome in laying hens', 'https://doi.org/10.1080/03079457.2013.775694', 'Avian Pathology.'],
+        ['Poultry Science 2024, Characterization of Escherichia coli pathogenicity and drug resistance in yolk peritonitis', 'https://www.sciencedirect.com/science/article/pii/S0032579124003936', 'Open access.']
+      ],
+      'Stunning and slaughter': [
+        ['EFSA 2019, Slaughter of animals: poultry', 'https://doi.org/10.2903/j.efsa.2019.5849', 'Scientific opinion on every stage from shackling to bleeding, with the welfare consequences of each.'],
+        ['EFSA 2012, Electrical requirements for waterbath stunning equipment applicable for poultry', 'https://doi.org/10.2903/j.efsa.2012.2757', 'Why low-current settings fail to stun.'],
+        ['EFSA 2013, Monitoring procedures at slaughterhouses for poultry', 'https://doi.org/10.2903/j.efsa.2013.3521', 'How to tell whether a bird is unconscious on the line.'],
+        ['Wikipedia: Electrical water bath stunning', 'https://en.wikipedia.org/wiki/Electrical_water_bath_stunning', 'An overview with references.'],
+        ['Bogosavljević-Bošković et al. 2021, The influence of broilers’ body weight on the efficiency of electrical stunning', 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8151686/', 'Open access; field data on stun failure.']
+      ]
+    },
+    // General reading, listed at the bottom of the Harms page.
+    generalHeading: 'Further reading on broiler welfare',
+    generalLinks: [
+      ['EFSA 2023, Welfare of broilers on farm (plain-language summary)', 'https://www.efsa.europa.eu/en/plain-language-summary/welfare-broilers-farm', 'The European food safety authority’s overview of the main welfare problems and what would fix them.'],
+      ['Welfare Footprint Project: Broilers', 'https://welfarefootprint.org/broilers', 'The research group whose pain estimates this site uses.'],
+      ['Rayner et al. 2024, An analysis of the welfare of fast-growing and slower-growing strains of broiler chicken', 'https://www.frontiersin.org/journals/animal-science/articles/10.3389/fanim.2024.1374609/full', 'Frontiers in Animal Science; what changes with slower-growing breeds.'],
+      ['RSPCA: Better chicken', 'https://www.rspca.org.uk/getinvolved/campaign/betterchicken', 'The case for the Better Chicken Commitment standards.']
+    ],
     // Quotes from the report that define each harm. Order here is the order on the page.
     definitions: {
       'Lameness': [

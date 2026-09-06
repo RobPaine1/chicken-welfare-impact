@@ -17,7 +17,13 @@ function renderHarmsIndex() {
     h += '<a class="card" href="harms/' + r.slug + '.html">' + (ph ? '<img src="' + ph[0] + '" alt="" loading="lazy">' : '<div class="noimg"></div>') +
          '<span class="name">' + name + '</span></a>';
   });
-  document.getElementById('harms').innerHTML = h + '</div>';
+  h += '</div>';
+  if (HP.generalLinks && HP.generalLinks.length) {
+    h += '<h2 class="links-heading">' + HP.generalHeading + '</h2><ul class="links">' + HP.generalLinks.map(function (l) {
+      return '<li><a href="' + l[1] + '">' + l[0] + '</a>' + (l[2] ? ' <span class="note">' + l[2] + '</span>' : '') + '</li>';
+    }).join('') + '</ul>';
+  }
+  document.getElementById('harms').innerHTML = h;
 }
 
 function renderHarmPage(name) {
@@ -30,6 +36,12 @@ function renderHarmPage(name) {
                '</figcaption></figure>';
   if (HP.notes[name]) h += '<p class="muted">' + HP.notes[name] + '</p>';
   (HP.definitions[name] || []).forEach(function (d) { h += '<blockquote>' + d.quote + '<cite>' + d.cite + '</cite></blockquote>'; });
+  var links = HP.links && HP.links[name];
+  if (links && links.length) {
+    h += '<h2 class="links-heading">' + HP.linksHeading + '</h2><ul class="links">' + links.map(function (l) {
+      return '<li><a href="' + l[1] + '">' + l[0] + '</a>' + (l[2] ? ' <span class="note">' + l[2] + '</span>' : '') + '</li>';
+    }).join('') + '</ul>';
+  }
   h += '<h2 class="pages-heading">' + HP.pageIntro.replace('{name}', name.toLowerCase()).replace('{book}', bookCite().replace(/\.$/, '')) + '</h2>';
   var byChapter = {};
   r.pages.forEach(function (p) { (byChapter[p[0]] = byChapter[p[0]] || []).push(p[1]); });
