@@ -1,0 +1,6996 @@
+{
+ "apiUnits": [
+  {
+   "_id": "5e61ae9b209d685560a633c0",
+   "name": "second",
+   "abbreviation": "sec",
+   "precedence": 7,
+   "__v": 0
+  },
+  {
+   "_id": "5e61aea0209d685560a633c1",
+   "name": "minute",
+   "abbreviation": "min",
+   "precedence": 6,
+   "__v": 0
+  },
+  {
+   "_id": "5e61aea3209d685560a633c2",
+   "name": "hour",
+   "abbreviation": "h",
+   "precedence": 5,
+   "__v": 0
+  },
+  {
+   "_id": "5e61aea7209d685560a633c3",
+   "name": "day",
+   "abbreviation": "day",
+   "precedence": 4,
+   "__v": 0
+  },
+  {
+   "_id": "5e61aeab209d685560a633c4",
+   "name": "week",
+   "abbreviation": "wk",
+   "precedence": 3,
+   "__v": 0
+  },
+  {
+   "_id": "5e61aeb1209d685560a633c5",
+   "name": "month",
+   "abbreviation": "mo",
+   "precedence": 2,
+   "__v": 0
+  },
+  {
+   "_id": "5e61aec3209d685560a633c6",
+   "name": "year",
+   "abbreviation": "yr",
+   "precedence": 1,
+   "__v": 0
+  }
+ ],
+ "apiPainLevel": [
+  {
+   "_id": "5e61acf3209d685560a633bf",
+   "name": "excruciating",
+   "abbreviation": "E",
+   "description": "The last block marks the threshold of pain under which most people would choose taking their own life immediately rather than standing it. This is obviously the case of severe heat and burning, which when makes the victims even jump buildings. Other conditions have also been associated with suicide by sufferers even after short episodes, such as cluster headaches (often described as one of the most painful conditions known to humans). The most gruesome forms of torture observed throughout human history have been designed to inflict pain at this level in the victims. Behavioral patterns associated with pain experiences in this categories include loud screaming, involuntary shaking and extreme restlessness and pacing. Another indicator is the expression of behaviors individuals would strongly refrain from displaying (e.g. for being dangerous or embarrassing) but that may relieve or simply expresses the pain. The assignment of conditions to this level must be therefore done cautiously and economically (self-reporting at this level ought to be evaluated with special care).",
+   "conv_factor": "to be defined",
+   "color_code": "7a3a5f",
+   "order": 4,
+   "__v": 0
+  },
+  {
+   "_id": "5e61acda209d685560a633be",
+   "name": "disabling",
+   "abbreviation": "D",
+   "description": "The division between the first two and the last two blocks marks a \u201cdisability threshold\u201d that, if crossed, prevents most forms of functioning or enjoyment (socialization, sex, work, or most forms of entertainment) as the direct result of pain. Symptoms are continuously distressing. Individuals affected by the conditions in this category often substantially reduce their activity levels, may change eating patterns and often refrain from moving. Acute episodes of several diseases (e.g. severe pneumonia, some types of cancer), as well as hemorrhagic ulcers, strong migraines, food poisoning symptoms, acute postoperative pain and recent fractures in the acute inflammatory phase are in this category. Pain at this level disrupts or prevents sleeping. Only strong pain medications can relieve it.",
+   "conv_factor": "to be defined",
+   "color_code": "b53f2f",
+   "order": 3,
+   "__v": 0
+  },
+  {
+   "_id": "5e61acc7209d685560a633bd",
+   "name": "hurtful",
+   "abbreviation": "H",
+   "description": "Pain experiences within this block include those that most would consider disruptive and disturbing. Although not entirely preventing individuals to function and conduct their usual daily activities, their ability to do so is impaired as the direct result of pain, and often associated with the desire to take painkillers or seek prompt treatment. Experiences in this category are associated with frequent complaints. The possibility to enjoy pleasant experiences is impaired, as is concentration and performance on mentally demanding tasks. Reduced alertness and attention to ongoing stimuli can be also present. Experiences in this category include stomach cramps, sinusitis and moderate headaches. The use of pain medications can relieve symptoms.",
+   "conv_factor": "to be defined",
+   "color_code": "b8923b",
+   "order": 2
+  },
+  {
+   "_id": "5e61ac89209d685560a633bc",
+   "name": "annoying",
+   "abbreviation": "A",
+   "description": "Pain experiences within this block represent nuisances, discomfort and experiences often classified as mild pain. Here, the pain experience is not intense enough to disrupt the routine or daily activities of individuals, their possibility to enjoy pleasant (positive) experiences, or their ability to conduct mentally demanding tasks that require concentration. Sufferers do not think about this sensation most of the time, and when they do they can adapt to it. In this category are often conditions such as mild itch, thermal discomfort, and mild musculoskeletal or joint pain.",
+   "conv_factor": "to be defined",
+   "color_code": "939238",
+   "order": 1
+  }
+ ],
+ "apiProductionSystems": [
+  {
+   "_id": "61b8dd6946c620000e6f075b",
+   "userId": "5ef5a2aea20703000e0600f6",
+   "name": "E: proper",
+   "order": 6,
+   "__v": 0,
+   "burdens": [
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.55,
+      "max": 0.848
+     },
+     "location": [],
+     "segment_names": [
+      "Prop"
+     ],
+     "mode": "chance",
+     "_id": "61b8de8846c620000e6f3dc9",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E prop) Leg Compression: Proper",
+     "order": 1,
+     "tracks": [
+      {
+       "_id": "61b8de8846c620000e6f3dc6",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61b8de8846c620000e6f3dc7",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 30,
+          "hurtful": 70,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61b8de8846c620000e6f3dc8"
+         }
+        }
+       ],
+       "name": "Leg C",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.004583333333333333,
+         "standard_deviation": 0.0029166666666666664
+        },
+        "hurtful": {
+         "expected_time_spent": 0.010694444444444444,
+         "standard_deviation": 0.006805555555555555
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-14T18:12:24.788Z",
+     "durations": [
+      {
+       "_id": "61b8deea46c620000e6f3fd6",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0032037500000000004,
+       "standard_deviation": 0.0020916295509101845
+      },
+      "hurtful": {
+       "expected_time_spent": 0.007475416666666667,
+       "standard_deviation": 0.004880468952123764
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.15,
+      "max": 0.45
+     },
+     "location": [],
+     "segment_names": [
+      "Heavier"
+     ],
+     "mode": "chance",
+     "_id": "61b8dfff51df2c000e70b18e",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Leg Compression: lame",
+     "order": 2,
+     "tracks": [
+      {
+       "_id": "61b8dfff51df2c000e70b18b",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61b8dfff51df2c000e70b18c",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 50,
+          "hurtful": 50,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61b8dfff51df2c000e70b18d"
+         }
+        }
+       ],
+       "name": "Leg C: Heavier",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0076388888888888895,
+         "standard_deviation": 0.004861111111111111
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0076388888888888895,
+         "standard_deviation": 0.004861111111111111
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-14T18:18:39.268Z",
+     "durations": [
+      {
+       "_id": "61b8fc590d860e000eba4a13",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0022916666666666667,
+       "standard_deviation": 0.0016557804191064396
+      },
+      "hurtful": {
+       "expected_time_spent": 0.0022916666666666667,
+       "standard_deviation": 0.0016557804191064396
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.002,
+      "max": 0.04
+     },
+     "location": [],
+     "segment_names": [
+      "Injured"
+     ],
+     "mode": "chance",
+     "_id": "61b8e0f543ce07000eca6e40",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Leg Compression: Injured",
+     "order": 3,
+     "tracks": [
+      {
+       "_id": "61b8e0f543ce07000eca6e3d",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61b8e0f543ce07000eca6e3e",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 70,
+          "hurtful": 30,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61b8e0f543ce07000eca6e3f"
+         }
+        }
+       ],
+       "name": "Leg C: Injured",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.010694444444444444,
+         "standard_deviation": 0.006805555555555555
+        },
+        "hurtful": {
+         "expected_time_spent": 0.004583333333333333,
+         "standard_deviation": 0.0029166666666666664
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-14T18:22:45.582Z",
+     "durations": [
+      {
+       "_id": "61b8e12043ce07000eca706f",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00022458333333333334,
+       "standard_deviation": 0.00019940196403575586
+      },
+      "hurtful": {
+       "expected_time_spent": 9.625000000000001e-05,
+       "standard_deviation": 8.54579845867525e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 1,
+      "max": 1
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61b8f751a9f004000e18a95c",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Inversion",
+     "order": 4,
+     "tracks": [
+      {
+       "_id": "61b8f751a9f004000e18a959",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61b8f751a9f004000e18a95a",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 0,
+          "hurtful": 20,
+          "annoying": 80,
+          "no_pain": 0,
+          "_id": "61b8f751a9f004000e18a95b"
+         }
+        }
+       ],
+       "name": "Distress",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "hurtful": {
+         "expected_time_spent": 0.003055555555555556,
+         "standard_deviation": 0.0019444444444444446
+        },
+        "annoying": {
+         "expected_time_spent": 0.012222222222222225,
+         "standard_deviation": 0.007777777777777778
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-14T19:58:09.059Z",
+     "durations": [
+      {
+       "_id": "61b8fbd3b7c215000e2183cc",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "hurtful": {
+       "expected_time_spent": 0.003055555555555556,
+       "standard_deviation": 0.0019444444444444446
+      },
+      "annoying": {
+       "expected_time_spent": 0.012222222222222225,
+       "standard_deviation": 0.007777777777777778
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.02,
+      "max": 0.05
+     },
+     "location": [],
+     "segment_names": [
+      "Wing fractures"
+     ],
+     "mode": "chance",
+     "_id": "61b8f801bef0b8000e38e690",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Wing Fractures",
+     "order": 5,
+     "tracks": [
+      {
+       "_id": "61b8f801bef0b8000e38e68d",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61b8f801bef0b8000e38e68e",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 5,
+          "disabling": 95,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61b8f801bef0b8000e38e68f"
+         }
+        }
+       ],
+       "name": "Wing Fractures",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.000763888888888889,
+         "standard_deviation": 0.00048611111111111115
+        },
+        "disabling": {
+         "expected_time_spent": 0.014513888888888889,
+         "standard_deviation": 0.009236111111111112
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-14T20:01:05.706Z",
+     "durations": [
+      {
+       "_id": "61b8f8e8a288fb000ef48f78",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 2.673611111111112e-05,
+       "standard_deviation": 1.8733918000300296e-05
+      },
+      "disabling": {
+       "expected_time_spent": 0.0005079861111111112,
+       "standard_deviation": 0.0003559444420057056
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 2
+     },
+     "prevalence": {
+      "min": 0.1,
+      "max": 0.4
+     },
+     "location": [],
+     "segment_names": [
+      "Shock",
+      "Post-Shock Pai"
+     ],
+     "mode": "chance",
+     "_id": "61b8fff31cb136000e0a8da2",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Pre-stun shocks",
+     "order": 6,
+     "tracks": [
+      {
+       "_id": "61b8fff21cb136000e0a8d9f",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61b8fff31cb136000e0a8da0",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 100,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61b8fff31cb136000e0a8da1"
+         }
+        },
+        {
+         "anatomies": [],
+         "_id": "61b900281cb136000e0a8fdb",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 50,
+          "hurtful": 50,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61b900281cb136000e0a8fdc"
+         }
+        }
+       ],
+       "name": "Prestun shocks",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.00045138888888888887,
+         "standard_deviation": 0.00017361111111111114
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0002777777777777778,
+         "standard_deviation": 0.00013888888888888892
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-14T20:34:59.005Z",
+     "durations": [
+      {
+       "_id": "61d8c95de57836000efb395c",
+       "time_started": null,
+       "duration_max": 1,
+       "duration_min": 0.25,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      },
+      {
+       "_id": "61b9003a1dd480000e9215f8",
+       "time_started": null,
+       "duration_max": 3,
+       "duration_min": 1,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 1,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00016927083333333334,
+       "standard_deviation": 0.00010084026199603517
+      },
+      "hurtful": {
+       "expected_time_spent": 0.00010416666666666666,
+       "standard_deviation": 6.839484584580629e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 1,
+      "max": 1
+     },
+     "location": [],
+     "segment_names": [
+      "Electronarcosis"
+     ],
+     "mode": "chance",
+     "_id": "61b9040e45cb3b000ed8dea8",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Electronarcosis",
+     "order": 8,
+     "tracks": [
+      {
+       "_id": "61b9040e45cb3b000ed8dea5",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61b9040e45cb3b000ed8dea6",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 50,
+          "disabling": 50,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61b9040e45cb3b000ed8dea7"
+         }
+        }
+       ],
+       "name": "Electronarcosis",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.00020833333333333332,
+         "standard_deviation": 6.944444444444444e-05
+        },
+        "disabling": {
+         "expected_time_spent": 0.00020833333333333332,
+         "standard_deviation": 6.944444444444444e-05
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-14T20:52:30.508Z",
+     "durations": [
+      {
+       "_id": "61d8cb91e57836000efb3fb2",
+       "time_started": null,
+       "duration_max": 2,
+       "duration_min": 1,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0.00020833333333333332,
+       "standard_deviation": 6.944444444444444e-05
+      },
+      "disabling": {
+       "expected_time_spent": 0.00020833333333333332,
+       "standard_deviation": 6.944444444444444e-05
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.035,
+      "max": 0.083
+     },
+     "location": [],
+     "segment_names": [
+      "Proper Incision"
+     ],
+     "mode": "chance",
+     "_id": "61b9be77c62f93000e51cb2c",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Neck Cutting - Proper",
+     "order": 9,
+     "tracks": [
+      {
+       "_id": "61b9be77c62f93000e51cb29",
+       "name": "Incisional Pain",
+       "physical_or_psychological": "physical",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61b9be77c62f93000e51cb2a",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 70,
+          "hurtful": 20,
+          "annoying": 10,
+          "no_pain": 0,
+          "_id": "61b9be77c62f93000e51cb2b"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0034027777777777776,
+         "standard_deviation": 0.0024305555555555556
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0009722222222222223,
+         "standard_deviation": 0.0006944444444444446
+        },
+        "annoying": {
+         "expected_time_spent": 0.00048611111111111115,
+         "standard_deviation": 0.0003472222222222223
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T10:07:51.503Z",
+     "durations": [
+      {
+       "_id": "61b9beadc62f93000e51cd78",
+       "time_started": null,
+       "duration_max": 30,
+       "duration_min": 5,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0002007638888888889,
+       "standard_deviation": 0.0001546666223908382
+      },
+      "hurtful": {
+       "expected_time_spent": 5.736111111111112e-05,
+       "standard_deviation": 4.419046354023949e-05
+      },
+      "annoying": {
+       "expected_time_spent": 2.868055555555556e-05,
+       "standard_deviation": 2.2095231770119746e-05
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.004,
+      "max": 0.024
+     },
+     "location": [],
+     "segment_names": [
+      "Improper"
+     ],
+     "mode": "chance",
+     "_id": "61b9c12f521bf3000e1a1b74",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Neck Cutting (Improper)",
+     "order": 10,
+     "tracks": [
+      {
+       "_id": "61b9c12f521bf3000e1a1b71",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61b9c12f521bf3000e1a1b72",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 70,
+          "hurtful": 20,
+          "annoying": 10,
+          "no_pain": 0,
+          "_id": "61b9c12f521bf3000e1a1b73"
+         }
+        }
+       ],
+       "name": "Incisional Pain",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.01361111111111111,
+         "standard_deviation": 0.009722222222222222
+        },
+        "hurtful": {
+         "expected_time_spent": 0.003888888888888889,
+         "standard_deviation": 0.0027777777777777783
+        },
+        "annoying": {
+         "expected_time_spent": 0.0019444444444444446,
+         "standard_deviation": 0.0013888888888888892
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T10:19:27.065Z",
+     "durations": [
+      {
+       "_id": "61b9c15e521bf3000e1a1da4",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00019055555555555555,
+       "standard_deviation": 0.00016689028208719653
+      },
+      "hurtful": {
+       "expected_time_spent": 5.444444444444445e-05,
+       "standard_deviation": 4.7682937739199024e-05
+      },
+      "annoying": {
+       "expected_time_spent": 2.7222222222222226e-05,
+       "standard_deviation": 2.3841468869599512e-05
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.0001,
+      "max": 0.006
+     },
+     "location": [],
+     "segment_names": [
+      "Scalding"
+     ],
+     "mode": "chance",
+     "_id": "61b9c750137f96000ed5f39d",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Scalding",
+     "order": 11,
+     "tracks": [
+      {
+       "_id": "61b9c750137f96000ed5f39a",
+       "name": "Scalding",
+       "physical_or_psychological": "physical",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61b9c750137f96000ed5f39b",
+         "painLevel": {
+          "excruciating": 100,
+          "disabling": 0,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61b9c750137f96000ed5f39c"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.019444444444444445,
+         "standard_deviation": 0.013888888888888888
+        },
+        "disabling": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T10:45:36.584Z",
+     "durations": [
+      {
+       "_id": "61d8d312d60eeb000ebe52e7",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 5.930555555555556e-05,
+       "standard_deviation": 5.874354224205443e-05
+      },
+      "disabling": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 1,
+      "max": 1
+     },
+     "location": [],
+     "segment_names": [
+      "Shackling"
+     ],
+     "mode": "chance",
+     "_id": "61b9d6b0fb8f40000e9eb9cb",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Fear (Shackling)",
+     "order": 12,
+     "tracks": [
+      {
+       "_id": "61b9d6b0fb8f40000e9eb9c8",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61b9d6b0fb8f40000e9eb9c9",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61b9d6b0fb8f40000e9eb9ca"
+         }
+        }
+       ],
+       "name": "Fear Shackling",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.011458333333333334,
+         "standard_deviation": 0.007291666666666667
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0038194444444444448,
+         "standard_deviation": 0.0024305555555555556
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T11:51:12.980Z",
+     "durations": [
+      {
+       "_id": "61b9d6de4e08ec000efb86cc",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.011458333333333334,
+       "standard_deviation": 0.007291666666666667
+      },
+      "hurtful": {
+       "expected_time_spent": 0.0038194444444444448,
+       "standard_deviation": 0.0024305555555555556
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 1,
+      "max": 1
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61b9d71013d67c000e34a64e",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Fear (Waterbath)",
+     "order": 13,
+     "tracks": [
+      {
+       "_id": "61b9d71013d67c000e34a64b",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61b9d71013d67c000e34a64c",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61b9d71013d67c000e34a64d"
+         }
+        }
+       ],
+       "name": "Effective Waterbath",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.00031249999999999995,
+         "standard_deviation": 0.00010416666666666667
+        },
+        "hurtful": {
+         "expected_time_spent": 0.00010416666666666666,
+         "standard_deviation": 3.472222222222222e-05
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T11:52:48.358Z",
+     "durations": [
+      {
+       "_id": "61b9d73a13d67c000e34a87e",
+       "time_started": null,
+       "duration_max": 2,
+       "duration_min": 1,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00031249999999999995,
+       "standard_deviation": 0.00010416666666666667
+      },
+      "hurtful": {
+       "expected_time_spent": 0.00010416666666666666,
+       "standard_deviation": 3.472222222222222e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.04,
+      "max": 0.1
+     },
+     "location": [],
+     "segment_names": [
+      "Fear Stun to Neck"
+     ],
+     "mode": "chance",
+     "_id": "61b9d8028b88c7000ef8d331",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Fear: Stun to Neck",
+     "order": 15,
+     "tracks": [
+      {
+       "_id": "61b9d8018b88c7000ef8d32e",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61b9d8018b88c7000ef8d32f",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61b9d8028b88c7000ef8d330"
+         }
+        }
+       ],
+       "name": "Fear Stun to Neck",
+       "physical_or_psychological": "psychological",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0021875,
+         "standard_deviation": 0.0015625
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0007291666666666667,
+         "standard_deviation": 0.0005208333333333333
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T11:56:50.006Z",
+     "durations": [
+      {
+       "_id": "61b9d8298b88c7000ef8d56e",
+       "time_started": null,
+       "duration_max": 18,
+       "duration_min": 3,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00015312500000000002,
+       "standard_deviation": 0.00011887329126006398
+      },
+      "hurtful": {
+       "expected_time_spent": 5.1041666666666676e-05,
+       "standard_deviation": 3.9624430420021326e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.035,
+      "max": 0.083
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61b9d86cfe789c000edff499",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Fear: Bleeding (proper)",
+     "order": 16,
+     "tracks": [
+      {
+       "_id": "61b9d86cfe789c000edff496",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61b9d86cfe789c000edff497",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61b9d86cfe789c000edff498"
+         }
+        }
+       ],
+       "name": "Fear Bleeding",
+       "physical_or_psychological": "psychological",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0036458333333333334,
+         "standard_deviation": 0.0026041666666666665
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0012152777777777778,
+         "standard_deviation": 0.0008680555555555555
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T11:58:36.960Z",
+     "durations": [
+      {
+       "_id": "61d991bca81b39000ed251b7",
+       "time_started": null,
+       "duration_max": 30,
+       "duration_min": 5,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0002151041666666667,
+       "standard_deviation": 0.00016571423827589806
+      },
+      "hurtful": {
+       "expected_time_spent": 7.170138888888889e-05,
+       "standard_deviation": 5.523807942529935e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.004,
+      "max": 0.024
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba418dcec703000e497ae9",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Fear (Bleeding-Improper)",
+     "order": 17,
+     "tracks": [
+      {
+       "_id": "61ba418dcec703000e497ae6",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba418dcec703000e497ae7",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba418dcec703000e497ae8"
+         }
+        }
+       ],
+       "name": "Bleeding Improper",
+       "physical_or_psychological": "psychological",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.019444444444444445,
+         "standard_deviation": 0.013888888888888888
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T19:27:09.458Z",
+     "durations": [
+      {
+       "_id": "61ba41c3cec703000e497d1b",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00020416666666666668,
+       "standard_deviation": 0.00017881101652199627
+      },
+      "hurtful": {
+       "expected_time_spent": 6.805555555555556e-05,
+       "standard_deviation": 5.9603672173998765e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.0001,
+      "max": 0.006
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba41f52385fe000edf0e5e",
+     "productionSystemId": "61b8dd6946c620000e6f075b",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E proper) Fear - Scalding",
+     "order": 19,
+     "tracks": [
+      {
+       "_id": "61ba420b2385fe000edf1075",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba420b2385fe000edf1076",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 50,
+          "disabling": 50,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba420b2385fe000edf1077"
+         }
+        }
+       ],
+       "physical_or_psychological": "psychological",
+       "name": "Fear Scalding",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.009722222222222222,
+         "standard_deviation": 0.006944444444444444
+        },
+        "disabling": {
+         "expected_time_spent": 0.009722222222222222,
+         "standard_deviation": 0.006944444444444444
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T19:28:53.429Z",
+     "durations": [
+      {
+       "_id": "61d9d0c3591718000eeec999",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 2,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 3.4947916666666675e-05,
+       "standard_deviation": 2.6681395807449737e-05
+      },
+      "disabling": {
+       "expected_time_spent": 3.4947916666666675e-05,
+       "standard_deviation": 2.6681395807449737e-05
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    }
+   ],
+   "id": "61b8dd6946c620000e6f075b"
+  },
+  {
+   "_id": "61ba3f7e7c677f000e2a3de7",
+   "userId": "5ef5a2aea20703000e0600f6",
+   "name": "E: stun-kill",
+   "order": 7,
+   "__v": 0,
+   "burdens": [
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.55,
+      "max": 0.848
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba435e520e5a000e546ec0",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E-SKill) Leg compression: Proper",
+     "order": 1,
+     "tracks": [
+      {
+       "_id": "61ba435e520e5a000e546ebd",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba435e520e5a000e546ebe",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 30,
+          "hurtful": 70,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba435e520e5a000e546ebf"
+         }
+        }
+       ],
+       "name": "Leg C Proper",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.004583333333333333,
+         "standard_deviation": 0.0029166666666666664
+        },
+        "hurtful": {
+         "expected_time_spent": 0.010694444444444444,
+         "standard_deviation": 0.006805555555555555
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T19:34:54.847Z",
+     "durations": [
+      {
+       "_id": "61df8284a46ec2000e91e6e3",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0032037500000000004,
+       "standard_deviation": 0.0020916295509101845
+      },
+      "hurtful": {
+       "expected_time_spent": 0.007475416666666667,
+       "standard_deviation": 0.004880468952123764
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.15,
+      "max": 0.45
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba43ebd4a1d6000e8f99fe",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E--SKill) Leg compression: lame",
+     "order": 2,
+     "tracks": [
+      {
+       "_id": "61ba43ebd4a1d6000e8f99fb",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba43ebd4a1d6000e8f99fc",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 50,
+          "hurtful": 50,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba43ebd4a1d6000e8f99fd"
+         }
+        }
+       ],
+       "name": "Leg compression: heavier",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0076388888888888895,
+         "standard_deviation": 0.004861111111111111
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0076388888888888895,
+         "standard_deviation": 0.004861111111111111
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T19:37:15.874Z",
+     "durations": [
+      {
+       "_id": "61df82aaa46ec2000e91eb74",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0022916666666666667,
+       "standard_deviation": 0.0016557804191064396
+      },
+      "hurtful": {
+       "expected_time_spent": 0.0022916666666666667,
+       "standard_deviation": 0.0016557804191064396
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.002,
+      "max": 0.04
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba44d30f51db000e96bbd3",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E--SKill) Leg compression: injured",
+     "order": 3,
+     "tracks": [
+      {
+       "_id": "61ba44d30f51db000e96bbd0",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba44d30f51db000e96bbd1",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 70,
+          "hurtful": 30,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba44d30f51db000e96bbd2"
+         }
+        }
+       ],
+       "name": "Leg compression: injured",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.010694444444444444,
+         "standard_deviation": 0.006805555555555555
+        },
+        "hurtful": {
+         "expected_time_spent": 0.004583333333333333,
+         "standard_deviation": 0.0029166666666666664
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T19:41:07.853Z",
+     "durations": [
+      {
+       "_id": "61ba45030f51db000e96bdf0",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00022458333333333334,
+       "standard_deviation": 0.00019940196403575586
+      },
+      "hurtful": {
+       "expected_time_spent": 9.625000000000001e-05,
+       "standard_deviation": 8.54579845867525e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 1,
+      "max": 1
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba45871e06d6000e17db3a",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E--SKill) Inversion",
+     "order": 4,
+     "tracks": [
+      {
+       "_id": "61ba45871e06d6000e17db37",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba45871e06d6000e17db38",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 0,
+          "hurtful": 20,
+          "annoying": 80,
+          "no_pain": 0,
+          "_id": "61ba45871e06d6000e17db39"
+         }
+        }
+       ],
+       "name": "Respiratory distress",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "hurtful": {
+         "expected_time_spent": 0.003055555555555556,
+         "standard_deviation": 0.0019444444444444446
+        },
+        "annoying": {
+         "expected_time_spent": 0.012222222222222225,
+         "standard_deviation": 0.007777777777777778
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T19:44:07.025Z",
+     "durations": [
+      {
+       "_id": "61ba45a81e06d6000e17dd56",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "hurtful": {
+       "expected_time_spent": 0.003055555555555556,
+       "standard_deviation": 0.0019444444444444446
+      },
+      "annoying": {
+       "expected_time_spent": 0.012222222222222225,
+       "standard_deviation": 0.007777777777777778
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.02,
+      "max": 0.05
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba45d3b48021000e6e95ff",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E--SKill) Wing Fractures",
+     "order": 5,
+     "tracks": [
+      {
+       "_id": "61ba45d3b48021000e6e95fc",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba45d3b48021000e6e95fd",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 5,
+          "disabling": 95,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba45d3b48021000e6e95fe"
+         }
+        }
+       ],
+       "name": "Fractures",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.000763888888888889,
+         "standard_deviation": 0.00048611111111111115
+        },
+        "disabling": {
+         "expected_time_spent": 0.014513888888888889,
+         "standard_deviation": 0.009236111111111112
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T19:45:23.501Z",
+     "durations": [
+      {
+       "_id": "61e021b3d6f488000efb6829",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 2.673611111111112e-05,
+       "standard_deviation": 1.8733918000300296e-05
+      },
+      "disabling": {
+       "expected_time_spent": 0.0005079861111111112,
+       "standard_deviation": 0.0003559444420057056
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 2
+     },
+     "prevalence": {
+      "min": 0.1,
+      "max": 0.4
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba466413fac0000e06c1aa",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E--SKill) Pre-stun shock",
+     "order": 6,
+     "tracks": [
+      {
+       "_id": "61ba466413fac0000e06c1a7",
+       "name": "Pre-stun shocks",
+       "physical_or_psychological": "physical",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba466413fac0000e06c1a8",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 100,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba466413fac0000e06c1a9"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        },
+        {
+         "anatomies": [],
+         "_id": "61ba4690f370e6000e21c660",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 50,
+          "hurtful": 50,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba4690f370e6000e21c661"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.00045138888888888887,
+         "standard_deviation": 0.00017361111111111114
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0002777777777777778,
+         "standard_deviation": 0.00013888888888888892
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T19:47:48.919Z",
+     "durations": [
+      {
+       "_id": "61e0231ad6f488000efb75d8",
+       "time_started": null,
+       "duration_max": 1,
+       "duration_min": 0.25,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      },
+      {
+       "_id": "61ba46a8b3fb70000e7b7260",
+       "time_started": null,
+       "duration_max": 3,
+       "duration_min": 1,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 1,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 1.6276041666666666e-05,
+       "standard_deviation": 1.1660332145841743e-05
+      },
+      "disabling": {
+       "expected_time_spent": 0.00015299479166666668,
+       "standard_deviation": 9.158680323543131e-05
+      },
+      "hurtful": {
+       "expected_time_spent": 0.00010416666666666666,
+       "standard_deviation": 6.839484584580629e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.9,
+      "max": 0.99
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba4aac4f09bd000e5f1893",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E--SKill) Fatal Electrocution",
+     "order": 7,
+     "tracks": [
+      {
+       "_id": "61ba4aac4f09bd000e5f1890",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba4aac4f09bd000e5f1891",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 90,
+          "disabling": 10,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba4aac4f09bd000e5f1892"
+         }
+        }
+       ],
+       "name": "Stun-kill",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.0005,
+         "standard_deviation": 0.00025000000000000006
+        },
+        "disabling": {
+         "expected_time_spent": 5.555555555555556e-05,
+         "standard_deviation": 2.7777777777777786e-05
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T20:06:04.035Z",
+     "durations": [
+      {
+       "_id": "61d9890abbcd71000e98e12e",
+       "time_started": null,
+       "duration_max": 3,
+       "duration_min": 1,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0.00047250000000000005,
+       "standard_deviation": 0.00023669600757089256
+      },
+      "disabling": {
+       "expected_time_spent": 5.250000000000001e-05,
+       "standard_deviation": 2.6299556396765843e-05
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.012,
+      "max": 0.081
+     },
+     "location": [],
+     "segment_names": [
+      "Proper incision"
+     ],
+     "mode": "chance",
+     "_id": "61ba4c68a8e518000ed91149",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E--SKill) Neck Cutting - Proper",
+     "order": 9,
+     "tracks": [
+      {
+       "_id": "61ba4c68a8e518000ed91146",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba4c68a8e518000ed91147",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 70,
+          "hurtful": 20,
+          "annoying": 10,
+          "no_pain": 0,
+          "_id": "61ba4c68a8e518000ed91148"
+         }
+        }
+       ],
+       "name": "Incisional pain",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0034027777777777776,
+         "standard_deviation": 0.0024305555555555556
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0009722222222222223,
+         "standard_deviation": 0.0006944444444444446
+        },
+        "annoying": {
+         "expected_time_spent": 0.00048611111111111115,
+         "standard_deviation": 0.0003472222222222223
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T20:13:28.261Z",
+     "durations": [
+      {
+       "_id": "61ba4cab78d034000ed8e885",
+       "time_started": null,
+       "duration_max": 30,
+       "duration_min": 5,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00015822916666666665,
+       "standard_deviation": 0.000140397565569436
+      },
+      "hurtful": {
+       "expected_time_spent": 4.520833333333334e-05,
+       "standard_deviation": 4.0113590162696e-05
+      },
+      "annoying": {
+       "expected_time_spent": 2.260416666666667e-05,
+       "standard_deviation": 2.0056795081348e-05
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.002,
+      "max": 0.022000000000000002
+     },
+     "location": [],
+     "segment_names": [
+      "Improper"
+     ],
+     "mode": "chance",
+     "_id": "61ba4d3c426259000ed50e76",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E--SKill) Neck Cutting (Improper)",
+     "order": 10,
+     "tracks": [
+      {
+       "_id": "61ba4d3c426259000ed50e73",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba4d3c426259000ed50e74",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 70,
+          "hurtful": 20,
+          "annoying": 10,
+          "no_pain": 0,
+          "_id": "61ba4d3c426259000ed50e75"
+         }
+        }
+       ],
+       "name": "Incisional Pain",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.01361111111111111,
+         "standard_deviation": 0.009722222222222222
+        },
+        "hurtful": {
+         "expected_time_spent": 0.003888888888888889,
+         "standard_deviation": 0.0027777777777777783
+        },
+        "annoying": {
+         "expected_time_spent": 0.0019444444444444446,
+         "standard_deviation": 0.0013888888888888892
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T20:17:00.134Z",
+     "durations": [
+      {
+       "_id": "61ba4d72426259000ed5109e",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00016333333333333334,
+       "standard_deviation": 0.00015145046318302863
+      },
+      "hurtful": {
+       "expected_time_spent": 4.666666666666667e-05,
+       "standard_deviation": 4.327156090943676e-05
+      },
+      "annoying": {
+       "expected_time_spent": 2.3333333333333336e-05,
+       "standard_deviation": 2.163578045471838e-05
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.0001,
+      "max": 0.006
+     },
+     "location": [],
+     "segment_names": [
+      "Scalding"
+     ],
+     "mode": "chance",
+     "_id": "61ba4dd625c854000ec09537",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E--SKill) Scalding",
+     "order": 11,
+     "tracks": [
+      {
+       "_id": "61ba4dd625c854000ec09534",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba4dd625c854000ec09535",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 100,
+          "disabling": 0,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba4dd625c854000ec09536"
+         }
+        }
+       ],
+       "name": "Scalding",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.019444444444444445,
+         "standard_deviation": 0.013888888888888888
+        },
+        "disabling": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T20:19:34.876Z",
+     "durations": [
+      {
+       "_id": "61dad48140f7ea000e980191",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 5.930555555555556e-05,
+       "standard_deviation": 5.874354224205443e-05
+      },
+      "disabling": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 1,
+      "max": 1
+     },
+     "location": [],
+     "segment_names": [
+      "Shackling"
+     ],
+     "mode": "chance",
+     "_id": "61ba4ef32d37ed000e6dd33d",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E--SKill) Fear: Shackling",
+     "order": 12,
+     "tracks": [
+      {
+       "_id": "61ba4ef32d37ed000e6dd33a",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba4ef32d37ed000e6dd33b",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba4ef32d37ed000e6dd33c"
+         }
+        }
+       ],
+       "name": "Fear shackling",
+       "physical_or_psychological": "psychological",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.011458333333333334,
+         "standard_deviation": 0.007291666666666667
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0038194444444444448,
+         "standard_deviation": 0.0024305555555555556
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T20:24:19.378Z",
+     "durations": [
+      {
+       "_id": "61ba4f192d37ed000e6dd566",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.011458333333333334,
+       "standard_deviation": 0.007291666666666667
+      },
+      "hurtful": {
+       "expected_time_spent": 0.0038194444444444448,
+       "standard_deviation": 0.0024305555555555556
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.9,
+      "max": 0.99
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba4f6525c854000ec09745",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E--SKill) Fear (Waterbath effective)",
+     "order": 13,
+     "tracks": [
+      {
+       "_id": "61ba4f6525c854000ec09742",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba4f6525c854000ec09743",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba4f6525c854000ec09744"
+         }
+        }
+       ],
+       "name": "Effective Waterbath",
+       "physical_or_psychological": "psychological",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.00031249999999999995,
+         "standard_deviation": 0.00010416666666666667
+        },
+        "hurtful": {
+         "expected_time_spent": 0.00010416666666666666,
+         "standard_deviation": 3.472222222222222e-05
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T20:26:13.719Z",
+     "durations": [
+      {
+       "_id": "61ba4fa025c854000ec09749",
+       "time_started": null,
+       "duration_max": 2,
+       "duration_min": 1,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00029531249999999995,
+       "standard_deviation": 9.880882346101486e-05
+      },
+      "hurtful": {
+       "expected_time_spent": 9.84375e-05,
+       "standard_deviation": 3.293627448700495e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.01,
+      "max": 0.1
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba4fc58b20d4000e0c06c2",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E--SKill) Fear (Waterbath ineffective)",
+     "order": 14,
+     "tracks": [
+      {
+       "_id": "61ba4fc58b20d4000e0c06bf",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba4fc58b20d4000e0c06c0",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba4fc58b20d4000e0c06c1"
+         }
+        }
+       ],
+       "name": "Waterbath ineffective",
+       "physical_or_psychological": "psychological",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.002916666666666667,
+         "standard_deviation": 0.0020833333333333333
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0009722222222222223,
+         "standard_deviation": 0.0006944444444444445
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T20:27:49.311Z",
+     "durations": [
+      {
+       "_id": "61ba4fe6b79aef000e0a1c47",
+       "time_started": null,
+       "duration_max": 24,
+       "duration_min": 4,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00016041666666666667,
+       "standard_deviation": 0.00014765234599483268
+      },
+      "hurtful": {
+       "expected_time_spent": 5.3472222222222224e-05,
+       "standard_deviation": 4.921744866494423e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.01,
+      "max": 0.1
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba5028322168000e451045",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E-SKill) Fear Stun to Neck",
+     "order": 15,
+     "tracks": [
+      {
+       "_id": "61ba5028322168000e451042",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba5028322168000e451043",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba5028322168000e451044"
+         }
+        }
+       ],
+       "name": "Fear Stun to Neck",
+       "physical_or_psychological": "psychological",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0021875,
+         "standard_deviation": 0.0015625
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0007291666666666667,
+         "standard_deviation": 0.0005208333333333333
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T20:29:28.637Z",
+     "durations": [
+      {
+       "_id": "61ba505a322168000e45126a",
+       "time_started": null,
+       "duration_max": 18,
+       "duration_min": 3,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00012031250000000002,
+       "standard_deviation": 0.00011073925949612451
+      },
+      "hurtful": {
+       "expected_time_spent": 4.010416666666667e-05,
+       "standard_deviation": 3.691308649870817e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.012,
+      "max": 0.081
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba508cb5c0e1000edf1141",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E-SKill) Fear: Bleeding (proper)",
+     "order": 16,
+     "tracks": [
+      {
+       "_id": "61ba508cb5c0e1000edf113e",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba508cb5c0e1000edf113f",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba508cb5c0e1000edf1140"
+         }
+        }
+       ],
+       "name": "Fear Bleeding",
+       "physical_or_psychological": "psychological",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0036458333333333334,
+         "standard_deviation": 0.0026041666666666665
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0012152777777777778,
+         "standard_deviation": 0.0008680555555555555
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T20:31:08.454Z",
+     "durations": [
+      {
+       "_id": "61ba50acb5c0e1000edf1365",
+       "time_started": null,
+       "duration_max": 30,
+       "duration_min": 5,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00016953125,
+       "standard_deviation": 0.00015042596311010999
+      },
+      "hurtful": {
+       "expected_time_spent": 5.651041666666667e-05,
+       "standard_deviation": 5.014198770336999e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.002,
+      "max": 0.022000000000000002
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba50eb792753000ef341f0",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E-SKill) Fear (Bleeding Improper)",
+     "order": 17,
+     "tracks": [
+      {
+       "_id": "61ba50eb792753000ef341ed",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba50eb792753000ef341ee",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba50eb792753000ef341ef"
+         }
+        }
+       ],
+       "name": "Bleeding Improper",
+       "physical_or_psychological": "psychological",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.014583333333333334,
+         "standard_deviation": 0.010416666666666666
+        },
+        "hurtful": {
+         "expected_time_spent": 0.004861111111111111,
+         "standard_deviation": 0.003472222222222222
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T20:32:43.811Z",
+     "durations": [
+      {
+       "_id": "61d9d321591718000eeed408",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.000175,
+       "standard_deviation": 0.00016226835341038784
+      },
+      "hurtful": {
+       "expected_time_spent": 5.833333333333333e-05,
+       "standard_deviation": 5.408945113679595e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.0001,
+      "max": 0.006
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61ba51be151cfd000ebe5d2a",
+     "productionSystemId": "61ba3f7e7c677f000e2a3de7",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E-SKill) Fear: Scalding",
+     "order": 18,
+     "tracks": [
+      {
+       "_id": "61ba51be151cfd000ebe5d27",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61ba51be151cfd000ebe5d28",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 50,
+          "disabling": 50,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61ba51be151cfd000ebe5d29"
+         }
+        }
+       ],
+       "name": "Fear Scalding",
+       "physical_or_psychological": "psychological",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.009722222222222222,
+         "standard_deviation": 0.006944444444444444
+        },
+        "disabling": {
+         "expected_time_spent": 0.009722222222222222,
+         "standard_deviation": 0.006944444444444444
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-15T20:36:14.767Z",
+     "durations": [
+      {
+       "_id": "61e029bbfc6dcc000e5cedc2",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 2.965277777777778e-05,
+       "standard_deviation": 2.9371771121027215e-05
+      },
+      "disabling": {
+       "expected_time_spent": 2.965277777777778e-05,
+       "standard_deviation": 2.9371771121027215e-05
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    }
+   ],
+   "id": "61ba3f7e7c677f000e2a3de7"
+  },
+  {
+   "_id": "61bb120bdff407000e1ee9d0",
+   "userId": "5ef5a2aea20703000e0600f6",
+   "name": "CO2: proper",
+   "order": 5,
+   "__v": 0,
+   "burdens": [
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 1,
+      "max": 1
+     },
+     "location": [],
+     "segment_names": [
+      "20%",
+      "30%",
+      "40%"
+     ],
+     "mode": "chance",
+     "_id": "61bb1261dff407000e1eefb2",
+     "productionSystemId": "61bb120bdff407000e1ee9d0",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "CO2 - Stunner",
+     "order": 1,
+     "tracks": [
+      {
+       "_id": "61bb1261dff407000e1eefaf",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61bb1261dff407000e1eefb0",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 0,
+          "hurtful": 70,
+          "annoying": 30,
+          "no_pain": 0,
+          "_id": "61bb1261dff407000e1eefb1"
+         }
+        },
+        {
+         "anatomies": [],
+         "_id": "61bb12bfb5ed9e000ee6df91",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 20,
+          "hurtful": 20,
+          "annoying": 20,
+          "no_pain": 0,
+          "_id": "61bb12bfb5ed9e000ee6df92"
+         }
+        },
+        {
+         "anatomies": [],
+         "_id": "61bb12e81415d7000ecdfdbf",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 3,
+          "hurtful": 2,
+          "annoying": 5,
+          "no_pain": 0,
+          "_id": "61bb12e81415d7000ecdfdc0"
+         }
+        }
+       ],
+       "name": "CO2 (5)",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0024472222222222226,
+         "standard_deviation": 0.0009457670477670363
+        },
+        "hurtful": {
+         "expected_time_spent": 0.011663888888888889,
+         "standard_deviation": 0.001737763657942068
+        },
+        "annoying": {
+         "expected_time_spent": 0.0064444444444444445,
+         "standard_deviation": 0.0011355812401965875
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-16T10:18:09.956Z",
+     "durations": [
+      {
+       "_id": "61e02d91fc6dcc000e5cff9b",
+       "time_started": null,
+       "duration_max": 55,
+       "duration_min": 40,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      },
+      {
+       "_id": "61e02d91fc6dcc000e5cff9c",
+       "time_started": null,
+       "duration_max": 60,
+       "duration_min": 26,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      },
+      {
+       "_id": "61e02d91fc6dcc000e5cff9d",
+       "time_started": null,
+       "duration_max": 13,
+       "duration_min": 1,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 2,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0024472222222222226,
+       "standard_deviation": 0.0009457670477670363
+      },
+      "hurtful": {
+       "expected_time_spent": 0.011663888888888889,
+       "standard_deviation": 0.001737763657942068
+      },
+      "annoying": {
+       "expected_time_spent": 0.0064444444444444445,
+       "standard_deviation": 0.0011355812401965875
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.00017,
+      "max": 0.0003
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61bb1ddebdfa35000eb07526",
+     "productionSystemId": "61bb120bdff407000e1ee9d0",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "CO2 Neck Cutting (Proper)",
+     "order": 2,
+     "tracks": [
+      {
+       "_id": "61bb1ddebdfa35000eb07523",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61bb1ddebdfa35000eb07524",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 70,
+          "hurtful": 20,
+          "annoying": 10,
+          "no_pain": 0,
+          "_id": "61bb1ddebdfa35000eb07525"
+         }
+        }
+       ],
+       "name": "Incisional pain",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0034027777777777776,
+         "standard_deviation": 0.0024305555555555556
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0009722222222222223,
+         "standard_deviation": 0.0006944444444444446
+        },
+        "annoying": {
+         "expected_time_spent": 0.00048611111111111115,
+         "standard_deviation": 0.0003472222222222223
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-16T11:07:10.196Z",
+     "durations": [
+      {
+       "_id": "61d9cdd1591718000eeea554",
+       "time_started": null,
+       "duration_max": 30,
+       "duration_min": 5,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 7.996527777777777e-07,
+       "standard_deviation": 5.923462193104456e-07
+      },
+      "hurtful": {
+       "expected_time_spent": 2.2847222222222224e-07,
+       "standard_deviation": 1.6924177694584165e-07
+      },
+      "annoying": {
+       "expected_time_spent": 1.1423611111111112e-07,
+       "standard_deviation": 8.462088847292083e-08
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 1.8e-05,
+      "max": 9.599999999999999e-05
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61bb1e90b02526000e82d6c7",
+     "productionSystemId": "61bb120bdff407000e1ee9d0",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "CO2 Neck Cutting (Improper)",
+     "order": 3,
+     "tracks": [
+      {
+       "_id": "61bb1e90b02526000e82d6c4",
+       "name": "Incisional Pain",
+       "physical_or_psychological": "physical",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61bb1e90b02526000e82d6c5",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 70,
+          "hurtful": 20,
+          "annoying": 10,
+          "no_pain": 0,
+          "_id": "61bb1e90b02526000e82d6c6"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.01361111111111111,
+         "standard_deviation": 0.009722222222222222
+        },
+        "hurtful": {
+         "expected_time_spent": 0.003888888888888889,
+         "standard_deviation": 0.0027777777777777783
+        },
+        "annoying": {
+         "expected_time_spent": 0.0019444444444444446,
+         "standard_deviation": 0.0013888888888888892
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-16T11:10:08.921Z",
+     "durations": [
+      {
+       "_id": "61bb1ecbb02526000e82d90b",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 7.758333333333332e-07,
+       "standard_deviation": 6.700381760820852e-07
+      },
+      "hurtful": {
+       "expected_time_spent": 2.2166666666666668e-07,
+       "standard_deviation": 1.914394788805958e-07
+      },
+      "annoying": {
+       "expected_time_spent": 1.1083333333333334e-07,
+       "standard_deviation": 9.57197394402979e-08
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.0001,
+      "max": 0.0002
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61bb1f37385bc1000ecea746",
+     "productionSystemId": "61bb120bdff407000e1ee9d0",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "CO2: Scalding",
+     "order": 4,
+     "tracks": [
+      {
+       "_id": "61bb1f37385bc1000ecea743",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61bb1f37385bc1000ecea744",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 100,
+          "disabling": 0,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61bb1f37385bc1000ecea745"
+         }
+        }
+       ],
+       "name": "Scal",
+       "physical_or_psychological": "",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.019444444444444445,
+         "standard_deviation": 0.013888888888888888
+        },
+        "disabling": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-16T11:12:55.423Z",
+     "durations": [
+      {
+       "_id": "61d9ce34591718000eeeaa74",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 3.4375000000000005e-06,
+       "standard_deviation": 1.7232159991218832e-06
+      },
+      "disabling": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 1,
+      "max": 1
+     },
+     "location": [],
+     "segment_names": [
+      "20%",
+      "30%",
+      "40%"
+     ],
+     "mode": "chance",
+     "_id": "61bb9f7a3a1c64000e510819",
+     "productionSystemId": "61bb120bdff407000e1ee9d0",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "CO2 (Fear) Stunner",
+     "order": 5,
+     "tracks": [
+      {
+       "_id": "61bb9f7a3a1c64000e510816",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61bb9f7a3a1c64000e510817",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 0,
+          "hurtful": 50,
+          "annoying": 50,
+          "no_pain": 0,
+          "_id": "61bb9f7a3a1c64000e510818"
+         }
+        },
+        {
+         "anatomies": [],
+         "_id": "61bc704fe5cd08000e2ad6fb",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 0,
+          "hurtful": 30,
+          "annoying": 30,
+          "no_pain": 0,
+          "_id": "61bc704fe5cd08000e2ad6fc"
+         }
+        },
+        {
+         "anatomies": [],
+         "_id": "61bc7056fc2b62000e087cc4",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 0,
+          "hurtful": 0,
+          "annoying": 5,
+          "no_pain": 0,
+          "_id": "61bc7056fc2b62000e087cc5"
+         }
+        }
+       ],
+       "name": "fear",
+       "physical_or_psychological": "psychological",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "hurtful": {
+         "expected_time_spent": 0.010180555555555556,
+         "standard_deviation": 0.0017584123205007661
+        },
+        "annoying": {
+         "expected_time_spent": 0.010277777777777778,
+         "standard_deviation": 0.0017603858478564673
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-16T20:20:10.602Z",
+     "durations": [
+      {
+       "_id": "61d9a44233eb21000eb39e22",
+       "time_started": null,
+       "duration_max": 55,
+       "duration_min": 40,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      },
+      {
+       "_id": "61d9a44233eb21000eb39e23",
+       "time_started": null,
+       "duration_max": 60,
+       "duration_min": 26,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      },
+      {
+       "_id": "61d9a44233eb21000eb39e24",
+       "time_started": null,
+       "duration_max": 13,
+       "duration_min": 1,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 2,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "hurtful": {
+       "expected_time_spent": 0.010277777777777778,
+       "standard_deviation": 0.0017603858478564673
+      },
+      "annoying": {
+       "expected_time_spent": 0.010180555555555556,
+       "standard_deviation": 0.0017584123205007661
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.0001,
+      "max": 0.0002
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61d9d1e7591718000eeecbea",
+     "productionSystemId": "61bb120bdff407000e1ee9d0",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "CO2 (Fear) Scalding",
+     "order": 6,
+     "tracks": [
+      {
+       "_id": "61d9d1e7591718000eeecbe7",
+       "name": "",
+       "physical_or_psychological": "",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d9d1e7591718000eeecbe8",
+         "painLevel": {
+          "excruciating": 50,
+          "disabling": 50,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d9d1e7591718000eeecbe9"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.009722222222222222,
+         "standard_deviation": 0.006944444444444444
+        },
+        "disabling": {
+         "expected_time_spent": 0.009722222222222222,
+         "standard_deviation": 0.006944444444444444
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T18:03:19.918Z",
+     "durations": [
+      {
+       "_id": "61d9d201591718000eeece9b",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 1.4583333333333335e-06,
+       "standard_deviation": 1.0972808235640122e-06
+      },
+      "disabling": {
+       "expected_time_spent": 1.4583333333333335e-06,
+       "standard_deviation": 1.0972808235640122e-06
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    }
+   ],
+   "id": "61bb120bdff407000e1ee9d0"
+  },
+  {
+   "_id": "61bb9b413745fa000ea0dbb1",
+   "userId": "5ef5a2aea20703000e0600f6",
+   "name": "CO2: poor",
+   "order": 5,
+   "__v": 0,
+   "burdens": [
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 1,
+      "max": 1
+     },
+     "location": [],
+     "segment_names": [
+      "20%",
+      "30%",
+      "40%"
+     ],
+     "mode": "chance",
+     "_id": "61bb9bc83745fa000ea0e4c6",
+     "productionSystemId": "61bb9b413745fa000ea0dbb1",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "CO2 (Improper) Stunner",
+     "order": 1,
+     "tracks": [
+      {
+       "_id": "61bb9bc83745fa000ea0e4c3",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61bb9bc83745fa000ea0e4c4",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 0,
+          "hurtful": 70,
+          "annoying": 30,
+          "no_pain": 0,
+          "_id": "61bb9bc83745fa000ea0e4c5"
+         }
+        },
+        {
+         "anatomies": [],
+         "_id": "61bb9c0c3745fa000ea0e712",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 20,
+          "hurtful": 20,
+          "annoying": 20,
+          "no_pain": 0,
+          "_id": "61bb9c0c3745fa000ea0e713"
+         }
+        },
+        {
+         "anatomies": [],
+         "_id": "61bb9c330a8047000e32d48c",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 3,
+          "hurtful": 2,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61bb9c330a8047000e32d48d"
+         }
+        }
+       ],
+       "name": "CO2 (short",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0024472222222222226,
+         "standard_deviation": 0.0009457670477670363
+        },
+        "hurtful": {
+         "expected_time_spent": 0.011663888888888889,
+         "standard_deviation": 0.001737763657942068
+        },
+        "annoying": {
+         "expected_time_spent": 0.006347222222222222,
+         "standard_deviation": 0.0011325194517720107
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-16T20:04:24.289Z",
+     "durations": [
+      {
+       "_id": "61e02dc6fc6dcc000e5d0590",
+       "time_started": null,
+       "duration_max": 55,
+       "duration_min": 40,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      },
+      {
+       "_id": "61e02dc6fc6dcc000e5d0591",
+       "time_started": null,
+       "duration_max": 60,
+       "duration_min": 26,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      },
+      {
+       "_id": "61e02dc6fc6dcc000e5d0592",
+       "time_started": null,
+       "duration_max": 13,
+       "duration_min": 1,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 2,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0024472222222222226,
+       "standard_deviation": 0.0009457670477670363
+      },
+      "hurtful": {
+       "expected_time_spent": 0.011663888888888889,
+       "standard_deviation": 0.001737763657942068
+      },
+      "annoying": {
+       "expected_time_spent": 0.006347222222222222,
+       "standard_deviation": 0.0011325194517720107
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.019,
+      "max": 0.24
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61bb9cc375cac3000e706860",
+     "productionSystemId": "61bb9b413745fa000ea0dbb1",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "CO2 (Improper) Cutting (Proper)",
+     "order": 2,
+     "tracks": [
+      {
+       "_id": "61bb9cc375cac3000e70685d",
+       "name": "Incisional Pain",
+       "physical_or_psychological": "physical",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61bb9cc375cac3000e70685e",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 70,
+          "hurtful": 20,
+          "annoying": 10,
+          "no_pain": 0,
+          "_id": "61bb9cc375cac3000e70685f"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0034027777777777776,
+         "standard_deviation": 0.0024305555555555556
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0009722222222222223,
+         "standard_deviation": 0.0006944444444444446
+        },
+        "annoying": {
+         "expected_time_spent": 0.00048611111111111115,
+         "standard_deviation": 0.0003472222222222223
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-16T20:08:35.999Z",
+     "durations": [
+      {
+       "_id": "61bb9cfb75cac3000e706aad",
+       "time_started": null,
+       "duration_max": 30,
+       "duration_min": 5,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0004406597222222222,
+       "standard_deviation": 0.00041260566370609944
+      },
+      "hurtful": {
+       "expected_time_spent": 0.00012590277777777779,
+       "standard_deviation": 0.000117887332487457
+      },
+      "annoying": {
+       "expected_time_spent": 6.295138888888889e-05,
+       "standard_deviation": 5.89436662437285e-05
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.0036,
+      "max": 0.07
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61bb9e09de772a000e9011ef",
+     "productionSystemId": "61bb9b413745fa000ea0dbb1",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "CO2 (Improper) Cutting (Improper)",
+     "order": 4,
+     "tracks": [
+      {
+       "_id": "61bb9e09de772a000e9011ec",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61bb9e09de772a000e9011ed",
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": [],
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 70,
+          "hurtful": 20,
+          "annoying": 10,
+          "no_pain": 0,
+          "_id": "61bb9e09de772a000e9011ee"
+         }
+        }
+       ],
+       "name": "incisional pai",
+       "physical_or_psychological": "physical",
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.01361111111111111,
+         "standard_deviation": 0.009722222222222222
+        },
+        "hurtful": {
+         "expected_time_spent": 0.003888888888888889,
+         "standard_deviation": 0.0027777777777777783
+        },
+        "annoying": {
+         "expected_time_spent": 0.0019444444444444446,
+         "standard_deviation": 0.0013888888888888892
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-16T20:14:01.532Z",
+     "durations": [
+      {
+       "_id": "61bb9e3ade772a000e901432",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0005008888888888889,
+       "standard_deviation": 0.00048041783083173546
+      },
+      "hurtful": {
+       "expected_time_spent": 0.00014311111111111114,
+       "standard_deviation": 0.00013726223738049588
+      },
+      "annoying": {
+       "expected_time_spent": 7.155555555555557e-05,
+       "standard_deviation": 6.863111869024794e-05
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.001,
+      "max": 0.06
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61bb9ea86f19f5000e753125",
+     "productionSystemId": "61bb9b413745fa000ea0dbb1",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "CO2 (Improper) Scalding",
+     "order": 4,
+     "tracks": [
+      {
+       "_id": "61bb9ea86f19f5000e753122",
+       "name": "Scalding",
+       "physical_or_psychological": "physical",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61bb9ea86f19f5000e753123",
+         "painLevel": {
+          "excruciating": 100,
+          "disabling": 0,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61bb9ea86f19f5000e753124"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.019444444444444445,
+         "standard_deviation": 0.013888888888888888
+        },
+        "disabling": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-16T20:16:40.023Z",
+     "durations": [
+      {
+       "_id": "61d9cf68591718000eeeb9d9",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0.0005930555555555555,
+       "standard_deviation": 0.0005874354224205443
+      },
+      "disabling": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 1,
+      "max": 1
+     },
+     "location": [],
+     "segment_names": [
+      "20%",
+      "30%",
+      "40%"
+     ],
+     "mode": "chance",
+     "_id": "61bdbd3166499a000e058cf3",
+     "productionSystemId": "61bb9b413745fa000ea0dbb1",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "CO2 (Improper) Fear Stunner",
+     "order": 5,
+     "tracks": [
+      {
+       "_id": "61bdbd3166499a000e058cf0",
+       "name": "Fear Stunner",
+       "physical_or_psychological": "psychological",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61bdbd3166499a000e058cf1",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 0,
+          "hurtful": 50,
+          "annoying": 50,
+          "no_pain": 0,
+          "_id": "61bdbd3166499a000e058cf2"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        },
+        {
+         "anatomies": [],
+         "_id": "61bdbd9cd6e0ed000e4bb113",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 0,
+          "hurtful": 30,
+          "annoying": 30,
+          "no_pain": 0,
+          "_id": "61bdbd9cd6e0ed000e4bb114"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        },
+        {
+         "anatomies": [],
+         "_id": "61bdbdc863bd61000ebd819c",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 0,
+          "hurtful": 5,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61bdbdc863bd61000ebd819d"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "hurtful": {
+         "expected_time_spent": 0.010277777777777778,
+         "standard_deviation": 0.0017603858478564673
+        },
+        "annoying": {
+         "expected_time_spent": 0.010180555555555556,
+         "standard_deviation": 0.0017584123205007661
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-18T10:51:29.464Z",
+     "durations": [
+      {
+       "_id": "61d9cfca591718000eeebee7",
+       "time_started": null,
+       "duration_max": 55,
+       "duration_min": 40,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      },
+      {
+       "_id": "61d9cfca591718000eeebee8",
+       "time_started": null,
+       "duration_max": 60,
+       "duration_min": 26,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      },
+      {
+       "_id": "61bdbdd663bd61000ebd81b8",
+       "time_started": null,
+       "duration_max": 13,
+       "duration_min": 1,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 2,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "hurtful": {
+       "expected_time_spent": 0.010277777777777778,
+       "standard_deviation": 0.0017603858478564673
+      },
+      "annoying": {
+       "expected_time_spent": 0.010180555555555556,
+       "standard_deviation": 0.0017584123205007661
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.019,
+      "max": 0.24
+     },
+     "location": [],
+     "segment_names": [
+      "Proper Incision"
+     ],
+     "mode": "chance",
+     "_id": "61bdbee4b7bcdd000e291550",
+     "productionSystemId": "61bb9b413745fa000ea0dbb1",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "CO2 (Improper) Fear: Bleeding",
+     "order": 6,
+     "tracks": [
+      {
+       "_id": "61bdbee4b7bcdd000e29154d",
+       "name": "Incision P",
+       "physical_or_psychological": "physical",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61bdbee4b7bcdd000e29154e",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 25,
+          "hurtful": 75,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61bdbee4b7bcdd000e29154f"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0012152777777777778,
+         "standard_deviation": 0.0008680555555555555
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0036458333333333334,
+         "standard_deviation": 0.0026041666666666665
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-18T10:58:44.485Z",
+     "durations": [
+      {
+       "_id": "61bdbf4bb7bcdd000e2917bf",
+       "time_started": null,
+       "duration_max": 30,
+       "duration_min": 5,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00015737847222222222,
+       "standard_deviation": 0.00014735916560932124
+      },
+      "hurtful": {
+       "expected_time_spent": 0.0004721354166666667,
+       "standard_deviation": 0.0004420774968279637
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.0036,
+      "max": 0.07
+     },
+     "location": [],
+     "segment_names": [
+      "Improper incision"
+     ],
+     "mode": "chance",
+     "_id": "61bdbfb0f7c701000eed1995",
+     "productionSystemId": "61bb9b413745fa000ea0dbb1",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "CO2 (Improper) Fear Bleeding (improper)",
+     "order": 7,
+     "tracks": [
+      {
+       "_id": "61bdbfb0f7c701000eed1992",
+       "name": "Fear Improper Incision",
+       "physical_or_psychological": "psychological",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61bdbfb0f7c701000eed1993",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 25,
+          "hurtful": 75,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61bdbfb0f7c701000eed1994"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.004861111111111111,
+         "standard_deviation": 0.003472222222222222
+        },
+        "hurtful": {
+         "expected_time_spent": 0.014583333333333334,
+         "standard_deviation": 0.010416666666666666
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-18T11:02:08.719Z",
+     "durations": [
+      {
+       "_id": "61bdbfdc89c7c3000e98ae3e",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0001788888888888889,
+       "standard_deviation": 0.00017157779672561982
+      },
+      "hurtful": {
+       "expected_time_spent": 0.0005366666666666667,
+       "standard_deviation": 0.0005147333901768594
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.001,
+      "max": 0.06
+     },
+     "location": [],
+     "segment_names": [
+      "Fear Scalding"
+     ],
+     "mode": "chance",
+     "_id": "61bdc014671225000eb210a3",
+     "productionSystemId": "61bb9b413745fa000ea0dbb1",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "CO2 (Improper) Fear Scalding",
+     "order": 8,
+     "tracks": [
+      {
+       "_id": "61bdc014671225000eb210a0",
+       "name": "Fear Scaldin",
+       "physical_or_psychological": "psychological",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61bdc014671225000eb210a1",
+         "painLevel": {
+          "excruciating": 50,
+          "disabling": 50,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61bdc014671225000eb210a2"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.009722222222222222,
+         "standard_deviation": 0.006944444444444444
+        },
+        "disabling": {
+         "expected_time_spent": 0.009722222222222222,
+         "standard_deviation": 0.006944444444444444
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2021-12-18T11:03:48.406Z",
+     "durations": [
+      {
+       "_id": "61d9d073591718000eeec501",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0.00029652777777777777,
+       "standard_deviation": 0.00029371771121027213
+      },
+      "disabling": {
+       "expected_time_spent": 0.00029652777777777777,
+       "standard_deviation": 0.00029371771121027213
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    }
+   ],
+   "id": "61bb9b413745fa000ea0dbb1"
+  },
+  {
+   "_id": "61d63d128904d7000e6978dc",
+   "userId": "5ef5a2aea20703000e0600f6",
+   "name": "E: lowV-highF",
+   "order": 7,
+   "__v": 0,
+   "burdens": [
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.55,
+      "max": 0.848
+     },
+     "location": [],
+     "segment_names": [
+      "Prope"
+     ],
+     "mode": "chance",
+     "_id": "61d98b5104b6cd000e181b05",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage) Leg Compression: proper",
+     "order": 1,
+     "tracks": [
+      {
+       "_id": "61d98b5104b6cd000e181b02",
+       "name": "Leg C",
+       "physical_or_psychological": "physical",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d98b5104b6cd000e181b03",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 30,
+          "hurtful": 70,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d98b5104b6cd000e181b04"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.004583333333333333,
+         "standard_deviation": 0.0029166666666666664
+        },
+        "hurtful": {
+         "expected_time_spent": 0.010694444444444444,
+         "standard_deviation": 0.006805555555555555
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:02:09.413Z",
+     "durations": [
+      {
+       "_id": "61d98b9e04b6cd000e181dfa",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0032037500000000004,
+       "standard_deviation": 0.0020916295509101845
+      },
+      "hurtful": {
+       "expected_time_spent": 0.007475416666666667,
+       "standard_deviation": 0.004880468952123764
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.15,
+      "max": 0.45
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61d98bc104b6cd000e18204e",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Leg compression: lame",
+     "order": 2,
+     "tracks": [
+      {
+       "_id": "61d98bc104b6cd000e18204b",
+       "name": "Lame",
+       "physical_or_psychological": "physical",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d98bc104b6cd000e18204c",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 50,
+          "hurtful": 50,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d98bc104b6cd000e18204d"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0076388888888888895,
+         "standard_deviation": 0.004861111111111111
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0076388888888888895,
+         "standard_deviation": 0.004861111111111111
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:04:01.125Z",
+     "durations": [
+      {
+       "_id": "61d98c0804b6cd000e182339",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0022916666666666667,
+       "standard_deviation": 0.0016557804191064396
+      },
+      "hurtful": {
+       "expected_time_spent": 0.0022916666666666667,
+       "standard_deviation": 0.0016557804191064396
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.002,
+      "max": 0.04
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61d98c2b04b6cd000e182597",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Leg compression (Injured)",
+     "order": 3,
+     "tracks": [
+      {
+       "_id": "61d98c2b04b6cd000e182594",
+       "name": "",
+       "physical_or_psychological": "",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d98c2b04b6cd000e182595",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 70,
+          "hurtful": 30,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d98c2b04b6cd000e182596"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.010694444444444444,
+         "standard_deviation": 0.006805555555555555
+        },
+        "hurtful": {
+         "expected_time_spent": 0.004583333333333333,
+         "standard_deviation": 0.0029166666666666664
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:05:47.502Z",
+     "durations": [
+      {
+       "_id": "61d98c5504b6cd000e18287b",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00022458333333333334,
+       "standard_deviation": 0.00019940196403575586
+      },
+      "hurtful": {
+       "expected_time_spent": 9.625000000000001e-05,
+       "standard_deviation": 8.54579845867525e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 1,
+      "max": 1
+     },
+     "location": [],
+     "segment_names": [
+      "Inver"
+     ],
+     "mode": "chance",
+     "_id": "61d98c8e04b6cd000e182ad4",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Inversion",
+     "order": 4,
+     "tracks": [
+      {
+       "_id": "61d98c8e04b6cd000e182ad1",
+       "name": "",
+       "physical_or_psychological": "",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d98c8e04b6cd000e182ad2",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 0,
+          "hurtful": 20,
+          "annoying": 80,
+          "no_pain": 0,
+          "_id": "61d98c8e04b6cd000e182ad3"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "hurtful": {
+         "expected_time_spent": 0.003055555555555556,
+         "standard_deviation": 0.0019444444444444446
+        },
+        "annoying": {
+         "expected_time_spent": 0.012222222222222225,
+         "standard_deviation": 0.007777777777777778
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:07:26.620Z",
+     "durations": [
+      {
+       "_id": "61d98cb704b6cd000e182da8",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "hurtful": {
+       "expected_time_spent": 0.003055555555555556,
+       "standard_deviation": 0.0019444444444444446
+      },
+      "annoying": {
+       "expected_time_spent": 0.012222222222222225,
+       "standard_deviation": 0.007777777777777778
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.02,
+      "max": 0.05
+     },
+     "location": [],
+     "segment_names": [
+      "Wing fractures"
+     ],
+     "mode": "chance",
+     "_id": "61d98cce04b6cd000e183006",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Wing Fractures",
+     "order": 5,
+     "tracks": [
+      {
+       "_id": "61d98cce04b6cd000e183003",
+       "name": "Wing fractures",
+       "physical_or_psychological": "physical",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d98cce04b6cd000e183004",
+         "painLevel": {
+          "excruciating": 5,
+          "disabling": 95,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d98cce04b6cd000e183005"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.000763888888888889,
+         "standard_deviation": 0.00048611111111111115
+        },
+        "disabling": {
+         "expected_time_spent": 0.014513888888888889,
+         "standard_deviation": 0.009236111111111112
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:08:30.110Z",
+     "durations": [
+      {
+       "_id": "61d98cf704b6cd000e183300",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 2.673611111111112e-05,
+       "standard_deviation": 1.8733918000300296e-05
+      },
+      "disabling": {
+       "expected_time_spent": 0.0005079861111111112,
+       "standard_deviation": 0.0003559444420057056
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 2
+     },
+     "prevalence": {
+      "min": 0.1,
+      "max": 0.4
+     },
+     "location": [],
+     "segment_names": [
+      "",
+      "post-shock pain"
+     ],
+     "mode": "chance",
+     "_id": "61d98d3004b6cd000e183586",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Prestun shocks",
+     "order": 6,
+     "tracks": [
+      {
+       "_id": "61d98d3004b6cd000e183583",
+       "name": "prestun shocks",
+       "physical_or_psychological": "physical",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d98d3004b6cd000e183584",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 100,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d98d3004b6cd000e183585"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        },
+        {
+         "anatomies": [],
+         "_id": "61d98d6404b6cd000e183877",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 50,
+          "hurtful": 50,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d98d6404b6cd000e183878"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.00045138888888888887,
+         "standard_deviation": 0.00017361111111111114
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0002777777777777778,
+         "standard_deviation": 0.00013888888888888892
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:10:08.182Z",
+     "durations": [
+      {
+       "_id": "61d98d6204b6cd000e183862",
+       "time_started": null,
+       "duration_max": 1,
+       "duration_min": 0.25,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      },
+      {
+       "_id": "61d98d9504b6cd000e1838ef",
+       "time_started": null,
+       "duration_max": 3,
+       "duration_min": 1,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 3,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00016927083333333334,
+       "standard_deviation": 0.00010084026199603517
+      },
+      "hurtful": {
+       "expected_time_spent": 0.00010416666666666666,
+       "standard_deviation": 6.839484584580629e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.3,
+      "max": 0.95
+     },
+     "location": [],
+     "segment_names": [
+      "Electronarcosis"
+     ],
+     "mode": "chance",
+     "_id": "61d98e1904b6cd000e183b7b",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Electronarcosis",
+     "order": 7,
+     "tracks": [
+      {
+       "_id": "61d98e1904b6cd000e183b78",
+       "name": "",
+       "physical_or_psychological": "physical",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d98e1904b6cd000e183b79",
+         "painLevel": {
+          "excruciating": 50,
+          "disabling": 50,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d98e1904b6cd000e183b7a"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.00020833333333333332,
+         "standard_deviation": 6.944444444444444e-05
+        },
+        "disabling": {
+         "expected_time_spent": 0.00020833333333333332,
+         "standard_deviation": 6.944444444444444e-05
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:14:01.075Z",
+     "durations": [
+      {
+       "_id": "61d98e4804b6cd000e183e72",
+       "time_started": null,
+       "duration_max": 2,
+       "duration_min": 1,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0.00013020833333333333,
+       "standard_deviation": 5.98475885946686e-05
+      },
+      "disabling": {
+       "expected_time_spent": 0.00013020833333333333,
+       "standard_deviation": 5.98475885946686e-05
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.05,
+      "max": 0.7
+     },
+     "location": [],
+     "segment_names": [
+      "Electroimmobilization"
+     ],
+     "mode": "chance",
+     "_id": "61d98e7404b6cd000e1840e1",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Immobilization",
+     "order": 8,
+     "tracks": [
+      {
+       "_id": "61d98e7404b6cd000e1840de",
+       "name": "",
+       "physical_or_psychological": "",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d98e7404b6cd000e1840df",
+         "painLevel": {
+          "excruciating": 50,
+          "disabling": 50,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d98e7404b6cd000e1840e0"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.0019444444444444446,
+         "standard_deviation": 0.001388888888888889
+        },
+        "disabling": {
+         "expected_time_spent": 0.0019444444444444446,
+         "standard_deviation": 0.001388888888888889
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:15:32.390Z",
+     "durations": [
+      {
+       "_id": "61d98eae04b6cd000e1843ee",
+       "time_started": null,
+       "duration_max": 24,
+       "duration_min": 4,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0.0007291666666666667,
+       "standard_deviation": 0.0006872427502248572
+      },
+      "disabling": {
+       "expected_time_spent": 0.0007291666666666667,
+       "standard_deviation": 0.0006872427502248572
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.069,
+      "max": 0.57
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61d98f06a4798f000e0f8f94",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Neck Cutting Proper",
+     "order": 9,
+     "tracks": [
+      {
+       "_id": "61d98f06a4798f000e0f8f91",
+       "name": "",
+       "physical_or_psychological": "",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d98f06a4798f000e0f8f92",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 70,
+          "hurtful": 20,
+          "annoying": 10,
+          "no_pain": 0,
+          "_id": "61d98f06a4798f000e0f8f93"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0034027777777777776,
+         "standard_deviation": 0.0024305555555555556
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0009722222222222223,
+         "standard_deviation": 0.0006944444444444446
+        },
+        "annoying": {
+         "expected_time_spent": 0.00048611111111111115,
+         "standard_deviation": 0.0003472222222222223
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:17:58.446Z",
+     "durations": [
+      {
+       "_id": "61d98f2ba4798f000e0f926c",
+       "time_started": null,
+       "duration_max": 30,
+       "duration_min": 5,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0010871875,
+       "standard_deviation": 0.000984281464177488
+      },
+      "hurtful": {
+       "expected_time_spent": 0.00031062500000000003,
+       "standard_deviation": 0.00028122327547928233
+      },
+      "annoying": {
+       "expected_time_spent": 0.00015531250000000001,
+       "standard_deviation": 0.00014061163773964117
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.013000000000000001,
+      "max": 0.16
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61d98f5fa4798f000e0f94df",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Neck Cutting Improper",
+     "order": 10,
+     "tracks": [
+      {
+       "_id": "61d98f5fa4798f000e0f94dc",
+       "name": "",
+       "physical_or_psychological": "",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d98f5fa4798f000e0f94dd",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 70,
+          "hurtful": 20,
+          "annoying": 10,
+          "no_pain": 0,
+          "_id": "61d98f5fa4798f000e0f94de"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.01361111111111111,
+         "standard_deviation": 0.009722222222222222
+        },
+        "hurtful": {
+         "expected_time_spent": 0.003888888888888889,
+         "standard_deviation": 0.0027777777777777783
+        },
+        "annoying": {
+         "expected_time_spent": 0.0019444444444444446,
+         "standard_deviation": 0.0013888888888888892
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:19:27.526Z",
+     "durations": [
+      {
+       "_id": "61d98f7ea4798f000e0f97bd",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0011773611111111112,
+       "standard_deviation": 0.0011004795443911972
+      },
+      "hurtful": {
+       "expected_time_spent": 0.00033638888888888895,
+       "standard_deviation": 0.0003144227269689135
+      },
+      "annoying": {
+       "expected_time_spent": 0.00016819444444444447,
+       "standard_deviation": 0.00015721136348445676
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.001,
+      "max": 0.06
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61d98fb4a81b39000ed231b1",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Scalding",
+     "order": 11,
+     "tracks": [
+      {
+       "_id": "61d98fb4a81b39000ed231ae",
+       "name": "",
+       "physical_or_psychological": "",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d98fb4a81b39000ed231af",
+         "painLevel": {
+          "excruciating": 100,
+          "disabling": 0,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d98fb4a81b39000ed231b0"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.019444444444444445,
+         "standard_deviation": 0.013888888888888888
+        },
+        "disabling": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:20:52.503Z",
+     "durations": [
+      {
+       "_id": "61d98fcda81b39000ed2344d",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0.0005930555555555555,
+       "standard_deviation": 0.0005874354224205443
+      },
+      "disabling": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 1,
+      "max": 1
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61d9900aa81b39000ed236f8",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Fear Shackling",
+     "order": 12,
+     "tracks": [
+      {
+       "_id": "61d9900aa81b39000ed236f5",
+       "name": "",
+       "physical_or_psychological": "",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d9900aa81b39000ed236f6",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d9900aa81b39000ed236f7"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.011458333333333334,
+         "standard_deviation": 0.007291666666666667
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0038194444444444448,
+         "standard_deviation": 0.0024305555555555556
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:22:18.740Z",
+     "durations": [
+      {
+       "_id": "61d9902fa81b39000ed239c7",
+       "time_started": null,
+       "duration_max": 90,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.011458333333333334,
+       "standard_deviation": 0.007291666666666667
+      },
+      "hurtful": {
+       "expected_time_spent": 0.0038194444444444448,
+       "standard_deviation": 0.0024305555555555556
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.3,
+      "max": 0.95
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61d9904ba81b39000ed23c15",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Fear Waterbath (proper)",
+     "order": 13,
+     "tracks": [
+      {
+       "_id": "61d9904ba81b39000ed23c12",
+       "name": "",
+       "physical_or_psychological": "",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d9904ba81b39000ed23c13",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d9904ba81b39000ed23c14"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.00031249999999999995,
+         "standard_deviation": 0.00010416666666666667
+        },
+        "hurtful": {
+         "expected_time_spent": 0.00010416666666666666,
+         "standard_deviation": 3.472222222222222e-05
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:23:23.125Z",
+     "durations": [
+      {
+       "_id": "61d99070a81b39000ed23ef4",
+       "time_started": null,
+       "duration_max": 2,
+       "duration_min": 1,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00019531249999999996,
+       "standard_deviation": 8.97713828920029e-05
+      },
+      "hurtful": {
+       "expected_time_spent": 6.510416666666667e-05,
+       "standard_deviation": 2.99237942973343e-05
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.05,
+      "max": 0.7
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61d9909aa81b39000ed24166",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Fear Waterbath (improper)",
+     "order": 14,
+     "tracks": [
+      {
+       "_id": "61d9909aa81b39000ed24163",
+       "name": "",
+       "physical_or_psychological": "",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d9909aa81b39000ed24164",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d9909aa81b39000ed24165"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.002916666666666667,
+         "standard_deviation": 0.0020833333333333333
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0009722222222222223,
+         "standard_deviation": 0.0006944444444444445
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:24:42.633Z",
+     "durations": [
+      {
+       "_id": "61d990c8a81b39000ed244a6",
+       "time_started": null,
+       "duration_max": 24,
+       "duration_min": 4,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.00109375,
+       "standard_deviation": 0.0010308641253372857
+      },
+      "hurtful": {
+       "expected_time_spent": 0.00036458333333333335,
+       "standard_deviation": 0.0003436213751124286
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.05,
+      "max": 0.7
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61d9912ca81b39000ed2472a",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Fear Stun-to-Neck",
+     "order": 15,
+     "tracks": [
+      {
+       "_id": "61d9912ca81b39000ed24727",
+       "name": "",
+       "physical_or_psychological": "",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d9912ca81b39000ed24728",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d9912ca81b39000ed24729"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0021875,
+         "standard_deviation": 0.0015625
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0007291666666666667,
+         "standard_deviation": 0.0005208333333333333
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:27:08.096Z",
+     "durations": [
+      {
+       "_id": "61d99150a81b39000ed24a0a",
+       "time_started": null,
+       "duration_max": 18,
+       "duration_min": 3,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0008203125000000001,
+       "standard_deviation": 0.0007731480940029645
+      },
+      "hurtful": {
+       "expected_time_spent": 0.0002734375,
+       "standard_deviation": 0.00025771603133432143
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.059000000000000004,
+      "max": 0.57
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61d99196a81b39000ed24c82",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Fear Bleeding Proper",
+     "order": 16,
+     "tracks": [
+      {
+       "_id": "61d99196a81b39000ed24c7f",
+       "name": "",
+       "physical_or_psychological": "",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d99196a81b39000ed24c80",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d99196a81b39000ed24c81"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.0036458333333333334,
+         "standard_deviation": 0.0026041666666666665
+        },
+        "hurtful": {
+         "expected_time_spent": 0.0012152777777777778,
+         "standard_deviation": 0.0008680555555555555
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:28:54.109Z",
+     "durations": [
+      {
+       "_id": "61d991e3a81b39000ed25405",
+       "time_started": null,
+       "duration_max": 30,
+       "duration_min": 5,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0011466145833333333,
+       "standard_deviation": 0.001052418781179553
+      },
+      "hurtful": {
+       "expected_time_spent": 0.0003822048611111111,
+       "standard_deviation": 0.0003508062603931843
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.013000000000000001,
+      "max": 0.16
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61d99216a81b39000ed25682",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Fear Bleeding Improper",
+     "order": 17,
+     "tracks": [
+      {
+       "_id": "61d99216a81b39000ed2567f",
+       "name": "",
+       "physical_or_psychological": "",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d99216a81b39000ed25680",
+         "painLevel": {
+          "excruciating": 0,
+          "disabling": 75,
+          "hurtful": 25,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d99216a81b39000ed25681"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "disabling": {
+         "expected_time_spent": 0.014583333333333334,
+         "standard_deviation": 0.010416666666666666
+        },
+        "hurtful": {
+         "expected_time_spent": 0.004861111111111111,
+         "standard_deviation": 0.003472222222222222
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:31:02.314Z",
+     "durations": [
+      {
+       "_id": "61d9923aa81b39000ed25989",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "disabling": {
+       "expected_time_spent": 0.0012614583333333334,
+       "standard_deviation": 0.0011790852261334254
+      },
+      "hurtful": {
+       "expected_time_spent": 0.00042048611111111117,
+       "standard_deviation": 0.0003930284087111418
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    },
+    {
+     "occurrences": {
+      "min": 1,
+      "max": 1
+     },
+     "prevalence": {
+      "min": 0.001,
+      "max": 0.06
+     },
+     "location": [],
+     "segment_names": [
+      ""
+     ],
+     "mode": "chance",
+     "_id": "61d99270a81b39000ed25c09",
+     "productionSystemId": "61d63d128904d7000e6978dc",
+     "userId": "5ef5a2aea20703000e0600f6",
+     "name": "(E LowDamage): Fear Scalding",
+     "order": 18,
+     "tracks": [
+      {
+       "_id": "61d99270a81b39000ed25c06",
+       "name": "",
+       "physical_or_psychological": "",
+       "segments": [
+        {
+         "anatomies": [],
+         "_id": "61d99270a81b39000ed25c07",
+         "painLevel": {
+          "excruciating": 50,
+          "disabling": 50,
+          "hurtful": 0,
+          "annoying": 0,
+          "no_pain": 0,
+          "_id": "61d99270a81b39000ed25c08"
+         },
+         "symptoms": [],
+         "interventions": [],
+         "depths": [],
+         "textures": []
+        }
+       ],
+       "resume": {
+        "excruciating": {
+         "expected_time_spent": 0.009722222222222222,
+         "standard_deviation": 0.006944444444444444
+        },
+        "disabling": {
+         "expected_time_spent": 0.009722222222222222,
+         "standard_deviation": 0.006944444444444444
+        },
+        "hurtful": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        },
+        "annoying": {
+         "expected_time_spent": 0,
+         "standard_deviation": 0
+        }
+       }
+      }
+     ],
+     "createdAt": "2022-01-08T13:32:32.014Z",
+     "durations": [
+      {
+       "_id": "61e02965fc6dcc000e5ce048",
+       "time_started": null,
+       "duration_max": 120,
+       "duration_min": 20,
+       "comments": "",
+       "time_unit": "5e61ae9b209d685560a633c0",
+       "unit": {
+        "_id": "5e61ae9b209d685560a633c0",
+        "name": "second",
+        "abbreviation": "sec",
+        "precedence": 7,
+        "__v": 0
+       }
+      }
+     ],
+     "__v": 0,
+     "resume": {
+      "excruciating": {
+       "expected_time_spent": 0.00029652777777777777,
+       "standard_deviation": 0.00029371771121027213
+      },
+      "disabling": {
+       "expected_time_spent": 0.00029652777777777777,
+       "standard_deviation": 0.00029371771121027213
+      },
+      "hurtful": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      },
+      "annoying": {
+       "expected_time_spent": 0,
+       "standard_deviation": 0
+      }
+     }
+    }
+   ],
+   "id": "61d63d128904d7000e6978dc"
+  }
+ ]
+}

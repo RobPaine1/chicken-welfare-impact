@@ -17,7 +17,8 @@ var TEXT = {
     'No perching':             'no raised places to rest, which chickens seek out for safety',
     'No dustbathing':          'no loose, dry substrate for the bathing behaviour that keeps feathers healthy',
     'Breeder hen hunger':      'the parent hens are kept chronically hungry to limit their growth; their pain is spread over the chicks each produces',
-    'Breeder hen peritonitis': 'infection of the abdomen in the parent hens, spread over the chicks each produces'
+    'Breeder hen peritonitis': 'infection of the abdomen in the parent hens, spread over the chicks each produces',
+    'Stunning and slaughter':  'hung upside down in shackles, then electrically stunned. Where stunning is unregulated, the report estimates 5 to 70% of birds are still conscious after the stunner and 0.01 to 6% reach the scalding tank alive'
   },
 
   // The kinds within each harm, as the Welfare Footprint Project splits them (its "burden" names are the keys).
@@ -44,7 +45,15 @@ var TEXT = {
     'F6. Dustbathing Deprivation': ['Frustration of dustbathing', ''],
     'F6. Breeder Hunger':        ['Chronic hunger', 'from feed restriction over the parent hen’s life'],
     'F6. Breeder Acute Peritonitis (fatal)': ['Acute peritonitis, fatal', 'septic infection of the abdomen; the hen dies within days'],
-    'F6. Breeder Chronic Peritonitis': ['Chronic peritonitis', 'yolk clumps in the abdomen; “a life of discomfort”']
+    'F6. Breeder Chronic Peritonitis': ['Chronic peritonitis', 'yolk clumps in the abdomen; “a life of discomfort”'],
+    // Slaughter (from the project's stunning Pain-Tracks; the calculator uses the low-voltage, high-frequency electrical waterbath scenario)
+    'Stun: Shackling':                 ['Shackling', 'hung upside down by the legs on a moving line, for 20 to 90 seconds; leg pain, fear, and some wing fractures'],
+    'Stun: Pre-stun shocks':           ['Pre-stun shocks', 'wings touch the electrified water before the head does'],
+    'Stun: Electrical stun':           ['Electrical stun', 'the moment of the shock, for the birds it does render unconscious'],
+    'Stun: Failed stun':               ['Failed stun', 'paralysed by the current but still conscious: the report assumes 5 to 70% of birds where stunning parameters are unregulated'],
+    'Stun: Neck cut while conscious':  ['Neck cut while conscious', 'the automatic blade cuts the neck of birds that were not stunned or came round'],
+    'Stun: Scalded alive':             ['Scalded alive', 'birds still conscious on entering the scalding tank: 0.01 to 6% where unregulated, 5.4% in one Dutch study'],
+    'Stun: Gas stun':                  ['Gas stun', 'controlled-atmosphere stunning with CO2, which is aversive to breathe before it causes unconsciousness']
   },
 
   // What each pain intensity means (Welfare Footprint Project definitions, shortened).
@@ -171,7 +180,7 @@ var TEXT = {
     notes: {
       'Breeder hen hunger': 'The parent hens of meat chickens. The calculator spreads each hen’s pain over the chicks she produces.',
       'Breeder hen peritonitis': 'The parent hens of meat chickens. The calculator spreads each hen’s pain over the chicks she produces.',
-      'Stunning and slaughter': 'Not counted by the calculator, which covers life on the farm; the report treats slaughter in its own chapter.'
+      'Stunning and slaughter': 'Counted by the calculator using the report’s low-voltage, high-frequency electrical waterbath scenario, which the report expects to prevail where stunning is unregulated, including the United States. The higher-welfare comparison on the Methodology page uses properly run CO2 stunning instead.'
     },
     // Quotes from the report that define each harm. Order here is the order on the page.
     definitions: {
@@ -211,6 +220,9 @@ var TEXT = {
         { quote: 'Egg peritonitis syndrome (EGS, a painful and often fatal reproductive condition) is the main production disease and leading cause of mortality in egg-laying hens. EGS is a disease characterized by the inflammation of the oviduct and abdominal cavity, often triggered by the presence of yolk. […] In chronic cases, the yolk form clumps in the abdominal cavity, leading to a life of discomfort.', cite: 'Chapter 6, page 12' }
       ],
       'Stunning and slaughter': [
+        { quote: 'Although the aim of a stunning system is to achieve a 100% effective stun, the most effective electrical parameters can achieve an effectiveness of up to 96% as measured using EEG. Therefore, we assume that 4-10% of chickens will be conscious before bleeding should an electrical waterbath system be ideally implemented. […] We tentatively estimate that these figures may typically vary from 5 to 70% of birds in the United States and other countries lacking regulation on stunning parameters.', cite: 'Chapter 8, page 7' },
+        { quote: 'We also estimate that 0.01% to 6% of birds may reach the scalding tank still conscious in countries lacking regulation on stunning parameters. The upper limit is based on an independent study that measured this parameter for flocks from 10 farms in a Dutch abattoir before European regulations on stunning were implemented, and which reports 5.4 ± 1.4% of birds entering the scalding tank still conscious.', cite: 'Chapter 8, page 8' },
+        { quote: 'Based only on official records in federally inspected slaughter plants in the United States, over 500 thousand chickens were scalded alive in that country in 2019 (though this figure is likely underestimated).', cite: 'Chapter 8, page 6' },
         { quote: 'Recognition that the pain endured during slaughter should be alleviated has become the main driver for the implementation of slaughter methods that include an initial stunning stage to render the animal unconscious and insensible to pain — ideally in an immediate and painless way — until the time of death. […] In this chapter we quantify the welfare impacts of existing and potential policies on the stunning of poultry prior to slaughter.', cite: 'Chapter 8, page 2' }
       ]
     }
@@ -243,7 +255,7 @@ var TEXT = {
                       'The weight side carries its own range: dressing percentage 72–75% (Wisconsin Extension) and edible share from 48% (meat only) to 68% (meat and skin), both USDA refuse figures, so the raw meat one bird yields is 1,027–1,515 g around the 1,485 g used. ' +
                       'The interval on the final number combines the weight-side and harm-side ranges as independent relative errors.',
     notesReformed: 'is the project’s reformed scenario: a slower-growing breed reaching 2.5 kg at 56 days under Better Chicken Commitment conditions. The dressing and edible-share percentages are assumed unchanged.',
-    notesExcluded: 'pain during transport and slaughter, and diseases the project did not model. The numbers are conservative.',
+    notesExcluded: 'pain during catching and transport, and diseases the project did not model. The numbers are conservative. Slaughter is counted using the project’s stunning Pain-Tracks: the low-voltage, high-frequency electrical waterbath scenario for conventional birds (the report expects it to prevail where stunning is unregulated) and properly run CO2 stunning for the reformed scenario. Those intervals are plain independent sums, as no published totals exist for them.',
     notesSources: 'by the tag shown as a subscript in the equations.'
   }
 };

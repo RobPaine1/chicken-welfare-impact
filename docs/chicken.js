@@ -52,12 +52,21 @@ function servingStats(cookedG, sysKey) {
     });
     return { name: c.name, what: harmWhat(c), hours: x.hours, lo: x.lo, hi: x.hi, perBird: c.total, perBirdLo: c.total_lo, perBirdHi: c.total_hi, parts: parts };
   });
+  // The published totals by intensity cover life on the farm; the slaughter harm (from the project's
+  // stunning Pain-Tracks) is added on top, its interval combined in quadrature.
+  var slaughter = data.causes.filter(function (c) { return c.scenario; })[0];
   var levels = LEVELS.map(function (l) {
-    var p = data.published[l], x = scaled(p.mean, p.lo, p.hi);
-    return { key: l, name: LEVEL_NAMES[l], def: LEVEL_DEFS[l], hours: x.hours, lo: x.lo, hi: x.hi, perBird: p.mean, perBirdLo: p.lo, perBirdHi: p.hi };
+    var p = data.published[l], mean = p.mean, lo = p.lo, hi = p.hi;
+    if (slaughter) {
+      var sdP = (p.hi - p.lo) / 2 / 1.645, sdS = (slaughter.hi[l] - slaughter.lo[l]) / 2 / 1.645, sd = Math.sqrt(sdP * sdP + sdS * sdS);
+      mean += slaughter.mean[l]; lo = Math.max(0, mean - 1.645 * sd); hi = mean + 1.645 * sd;
+    }
+    var x = scaled(mean, lo, hi);
+    return { key: l, name: LEVEL_NAMES[l], def: LEVEL_DEFS[l], hours: x.hours, lo: x.lo, hi: x.hi, perBird: mean, perBirdLo: lo, perBirdHi: hi };
   });
   var allPerBird = data.causes.reduce(function (s, c) { return s + c.total; }, 0);
   var allSd = Math.sqrt(LEVELS.reduce(function (s, l) { var sd = (data.published[l].hi - data.published[l].lo) / 2 / 1.645; return s + sd * sd; }, 0));
+  if (slaughter) { var sdSl = (slaughter.total_hi - slaughter.total_lo) / 2 / 1.645; allSd = Math.sqrt(allSd * allSd + sdSl * sdSl); }
   var allLo = Math.max(0, allPerBird - 1.645 * allSd), allHi = allPerBird + 1.645 * allSd;
   var all = scaled(allPerBird, allLo, allHi);
   return { cookedG: cookedG, rawG: rawG, rawPerBird: rawPerBird, rawPerBirdLo: rawPerBirdLo, rawPerBirdHi: rawPerBirdHi,

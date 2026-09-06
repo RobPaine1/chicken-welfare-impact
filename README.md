@@ -39,6 +39,15 @@ item with a photo, put a cut-out PNG or WebP in `docs/img/`, add the file name
 as the fourth field of the item, and add its credit to `photos.js`. The cut-outs
 were made with `rembg` (`pip install "rembg[cpu]"`) and cropped to the subject.
 
+The slaughter harm comes from the project's second app, the Pain-Track for
+stunning and slaughter (`data/paintrack_stunning_raw.json`): the low-voltage,
+high-frequency electrical waterbath scenario for conventional birds and properly
+run CO2 stunning for the reformed scenario, grouped into kinds (shackling,
+pre-stun shocks, failed stun, neck cut while conscious, scalded alive). Its
+intervals are plain independent sums, since the project publishes no totals for
+them. `scripts/fetch_paintrack.py` fetches both apps, or runs offline from the
+saved raw files (`python3 scripts/fetch_paintrack.py data/paintrack_broilers_raw.json`).
+
 ## Harms and About pages
 
 `docs/harms.html` is a grid of photo cards, one per harm. Each opens

@@ -76,6 +76,7 @@ var SRC = {
   sr28:    'https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/methods-and-application-of-food-composition-laboratory/mafcl-site-pages/sr11-sr28/',
   ncc:     'https://www.nationalchickencouncil.org/about-the-industry/statistics/u-s-broiler-performance/',
   wfp:     'https://welfarefootprint.org/broilers/',
+  stun:    'https://cp.pain-track.org/broilers/stunning',
   track:   'https://pain-track.org/broilers',
   tableau: 'https://public.tableau.com/app/profile/cynthia.schuck/viz/BroilerChickens2021/Broilers',
   defs:    'https://welfarefootprint.org/technical-definitions/pain-intensities/'
@@ -314,7 +315,7 @@ function renderNotes() {
     li('<b>SR28</b>: <a href="' + SRC.sr28 + '">USDA National Nutrient Database, Standard Reference 28</a>, item 05006 “Chicken, broilers or fryers, meat and skin, raw”: 32% refuse, so 68% edible; item 05011 “meat only, raw”: 52% refuse, so 48% if skin is not counted.') +
     li('<b>UMaine</b>: <a href="' + SRC.umaine + '">University of Maine Extension, Understanding Poultry Yields</a> (definitions of dressing percentage and carcass weight).') +
     li('<b>NCC</b>: <a href="' + SRC.ncc + '">National Chicken Council, U.S. Broiler Performance</a> (47-day lifetime for conventional birds).') +
-    li('<b>WFP</b>: Welfare Footprint Institute, <a href="' + SRC.track + '">Pain-Track for broilers</a> (hours by cause and intensity), <a href="' + SRC.tableau + '">Broiler Chickens 2021 workbook</a> (totals with 90% intervals) and <a href="' + SRC.wfp + '">Broilers overview</a> (scenario definitions; \u201conly hours awake are considered\u201d).') +
+    li('<b>WFP</b>: Welfare Footprint Institute, <a href="' + SRC.track + '">Pain-Track for broilers</a> (hours by cause and intensity), <a href="' + SRC.tableau + '">Broiler Chickens 2021 workbook</a> (totals with 90% intervals) and <a href="' + SRC.wfp + '">Broilers overview</a> (scenario definitions; \u201conly hours awake are considered\u201d), and <a href="' + SRC.stun + '">Pain-Track for stunning and slaughter</a> (the slaughter harm).') +
     '</ul>';
 }
 

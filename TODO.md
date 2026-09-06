@@ -30,6 +30,11 @@
       not for ascites and peritonitis, week of life for heat stress) are in
       `wfp.js` and shown inside the harm's dropdown on the Calculator. Labels and
       one-line descriptions are in `text.js` under `parts`.
+- [x] Stunning and slaughter added as a harm, from the project's stunning
+      Pain-Tracks (electrical waterbath, low voltage / high frequency, for
+      conventional birds; CO2 for reformed). Failed-stun rates are the
+      report's own ranges (5–70% conscious after the stunner, 0.01–6% scalded
+      alive, where unregulated); no better primary numbers exist.
 - [ ] Re-run it occasionally; the project revises its estimates.
 
 ## Scope
