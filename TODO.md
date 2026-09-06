@@ -26,6 +26,10 @@
       the harm interval. Net effect: about 11% more chicken per serving than
       before.
 - [x] Re-ran `scripts/fetch_paintrack.py` live on 2026-09-05: data unchanged.
+- [x] Each harm's kinds (gait scores 1–5 and culled birds for lameness, fatal or
+      not for ascites and peritonitis, week of life for heat stress) are in
+      `wfp.js` and shown inside the harm's dropdown on the Calculator. Labels and
+      one-line descriptions are in `text.js` under `parts`.
 - [ ] Re-run it occasionally; the project revises its estimates.
 
 ## Scope

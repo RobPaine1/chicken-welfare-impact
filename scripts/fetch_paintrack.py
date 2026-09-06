@@ -44,10 +44,15 @@ def fetch(url):
         return r.read().decode('utf-8', 'ignore')
 
 def main():
-    html = fetch(URL) if len(sys.argv) < 2 else open(sys.argv[1], encoding='utf-8', errors='ignore').read()
-    m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.S)
-    data = json.loads(m.group(1))['props']['pageProps']
-    json.dump(data, open('data/paintrack_broilers_raw.json', 'w'), indent=1)
+    # Live from pain-track.org, or offline from a saved copy of the page (argv[1] = .html) or of the
+    # extracted data (argv[1] = data/paintrack_broilers_raw.json).
+    if len(sys.argv) > 1 and sys.argv[1].endswith('.json'):
+        data = json.load(open(sys.argv[1]))
+    else:
+        html = fetch(URL) if len(sys.argv) < 2 else open(sys.argv[1], encoding='utf-8', errors='ignore').read()
+        m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.S)
+        data = json.loads(m.group(1))['props']['pageProps']
+        json.dump(data, open('data/paintrack_broilers_raw.json', 'w'), indent=1)
 
     # Published totals (mean and 90% interval per intensity and system) from the Tableau workbook.
     published = {}
@@ -82,6 +87,8 @@ def main():
                                         'var': {l: 0.0 for l in LEVELS}, 'sd_corr': {l: 0.0 for l in LEVELS}})
             r = b['resume']
             c['burdens'].append(b['name'])
+            c.setdefault('parts', []).append({'name': b['name'], 'prevalence': b.get('prevalence'),
+                'mean': {l: r[l]['expected_time_spent'] for l in LEVELS}, 'sd': {l: r[l]['standard_deviation'] for l in LEVELS}})
             for l in LEVELS:
                 c['mean'][l] += r[l]['expected_time_spent']
                 c['var'][l] += r[l]['standard_deviation'] ** 2     # sum as if burdens were independent
@@ -108,6 +115,12 @@ def main():
             c['lo'] = {l: max(0.0, c['mean'][l] - Z90 * scale[l] * c['sd_indep'][l]) for l in LEVELS}
             c['hi'] = {l: c['mean'][l] + Z90 * scale[l] * c['sd_indep'][l] for l in LEVELS}
             sd_tot = math.sqrt(sum((scale[l] * c['sd_indep'][l]) ** 2 for l in LEVELS))
+            for part in c['parts']:   # each burden (e.g. one gait score) gets the same interval rule as its cause
+                part['lo'] = {l: max(0.0, part['mean'][l] - Z90 * scale[l] * part['sd'][l]) for l in LEVELS}
+                part['hi'] = {l: part['mean'][l] + Z90 * scale[l] * part['sd'][l] for l in LEVELS}
+                part['total'] = sum(part['mean'].values())
+                psd = math.sqrt(sum((scale[l] * part['sd'][l]) ** 2 for l in LEVELS))
+                part['total_lo'] = max(0.0, part['total'] - Z90 * psd); part['total_hi'] = part['total'] + Z90 * psd
             c['total_lo'] = max(0.0, c['total'] - Z90 * sd_tot)
             c['total_hi'] = c['total'] + Z90 * sd_tot
             for k in ('sd', 'sd_corr'):

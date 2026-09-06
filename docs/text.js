@@ -20,6 +20,33 @@ var TEXT = {
     'Breeder hen peritonitis': 'infection of the abdomen in the parent hens, spread over the chicks each produces'
   },
 
+  // The kinds within each harm, as the Welfare Footprint Project splits them (its "burden" names are the keys).
+  // [short label, one-line description]. Gait scores follow the Bristol scale used in the report.
+  parts: {
+    'F6. Lameness GS1':          ['Gait score 1', 'a slight walking defect, hard to pin down'],
+    'F6. Lameness GS2':          ['Gait score 2', 'a definite, identifiable defect that does not yet limit the bird’s movement'],
+    'F6. Lameness GS3':          ['Gait score 3', 'an obvious defect that affects the bird’s ability to move'],
+    'F6. Lameness GS4':          ['Gait score 4', 'a severe defect; the bird walks only when driven, a few steps before sitting down'],
+    'F6. Lameness GS4 Culled':   ['Gait score 4, culled', 'as above, then killed on the farm; includes the hunger and thirst of a bird that cannot reach feed and water'],
+    'F6. Lameness GS5':          ['Gait score 5', 'unable to walk at all'],
+    'F6. Lameness GS5 Culled':   ['Gait score 5, culled', 'unable to walk, then killed on the farm; includes the hunger and thirst before that'],
+    'F6. Ascites (non-fatal)':   ['Non-fatal', 'pulmonary hypertension with a swollen abdomen and laboured breathing; the bird survives to slaughter'],
+    'F6. Ascites (fatal)':       ['Fatal', 'the bird dies of heart failure before slaughter, after days of symptoms'],
+    'F6. Sudden Death':          ['Sudden death', 'acute heart failure, over in seconds'],
+    'F6. Heat Stress Wk3':       ['Week 3 of life', 'as the bird grows, it makes more heat and can shed less of it'],
+    'F6. Heat Stress Wk 4':      ['Week 4 of life', ''],
+    'F6. Heat Stress Wk5':       ['Week 5 of life', ''],
+    'F6. Heat Stress Wk 6':      ['Week 6 of life', 'the heaviest birds, in the most crowded sheds'],
+    'F6. Heat Stress Wk 7':      ['Week 7 of life', 'slower-growing birds only'],
+    'F6. Heat Stress Wk 8':      ['Week 8 of life', 'slower-growing birds only'],
+    'F6. Foraging & Exploration Deprivation': ['Frustration of foraging and exploring', ''],
+    'F6. Perching Deprivation':  ['Frustration of perching and roosting', ''],
+    'F6. Dustbathing Deprivation': ['Frustration of dustbathing', ''],
+    'F6. Breeder Hunger':        ['Chronic hunger', 'from feed restriction over the parent hen’s life'],
+    'F6. Breeder Acute Peritonitis (fatal)': ['Acute peritonitis, fatal', 'septic infection of the abdomen; the hen dies within days'],
+    'F6. Breeder Chronic Peritonitis': ['Chronic peritonitis', 'yolk clumps in the abdomen; “a life of discomfort”']
+  },
+
   // What each pain intensity means (Welfare Footprint Project definitions, shortened).
   intensities: {
     annoying:     'unpleasant, but does not disrupt normal activity',
@@ -59,6 +86,8 @@ var TEXT = {
     causeLine: 'of {harm}',                         // after the hours, e.g. "52 hours of lameness"
     rangeLine: 'likely {lo} to {hi}',               // the grey 90% range
     // {what} {perBird} {fraction}
+    // Heading of the table of kinds inside a harm's dropdown (only shown when the harm has more than one kind).
+    partsHeading: 'Made up of:',
     // Link at the end of each harm's description, to that harm's page.
     causeLink: 'Read what the report says about it.',
     causeDetail: '{what}. An average bird in this system spends <b>{perBird}</b> in this pain over its life; this serving is {fraction} of a bird, so it carries that share.',

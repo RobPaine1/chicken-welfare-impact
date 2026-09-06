@@ -18,6 +18,8 @@ var LEVEL_NAMES = { annoying: 'Annoying', hurtful: 'Hurtful', disabling: 'Disabl
 var LEVEL_DEFS = TEXT.intensities;
 // URL-safe name of a harm, used for docs/harms/<slug>.html.
 function harmSlug(name) { return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+// Label and description for one Pain-Track burden (a kind of a harm), from text.js; falls back to the raw name.
+function partLabel(raw) { var t = TEXT.parts[raw]; return t ? t : [raw.replace(/^F\d+\.\s*/, ''), '']; }
 function harmWhat(c) { return TEXT.harms[c.name] || c.what; }   // description from text.js, else from the data file
 function fmt(template, vars) { return template.replace(/\{(\w+)\}/g, function (m, k) { return vars[k] !== undefined ? vars[k] : m; }); }
 
@@ -42,7 +44,13 @@ function servingStats(cookedG, sysKey) {
   }
   var causes = data.causes.map(function (c) {
     var x = scaled(c.total, c.total_lo, c.total_hi);
-    return { name: c.name, what: harmWhat(c), hours: x.hours, lo: x.lo, hi: x.hi, perBird: c.total, perBirdLo: c.total_lo, perBirdHi: c.total_hi };
+    // The kinds within a harm (e.g. each gait score of lameness), from the Pain-Track burdens.
+    var parts = (c.parts || []).map(function (pt) {
+      var y = scaled(pt.total, pt.total_lo, pt.total_hi), lab = partLabel(pt.name);
+      return { raw: pt.name, name: lab[0], what: lab[1], hours: y.hours, lo: y.lo, hi: y.hi, perBird: pt.total, perBirdLo: pt.total_lo, perBirdHi: pt.total_hi,
+               prevalence: pt.prevalence };
+    });
+    return { name: c.name, what: harmWhat(c), hours: x.hours, lo: x.lo, hi: x.hi, perBird: c.total, perBirdLo: c.total_lo, perBirdHi: c.total_hi, parts: parts };
   });
   var levels = LEVELS.map(function (l) {
     var p = data.published[l], x = scaled(p.mean, p.lo, p.hi);
