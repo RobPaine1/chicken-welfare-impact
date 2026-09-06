@@ -15,6 +15,10 @@ function renderHarmsIndex() {
     var r = REPORT.harms[name] || { slug: harmSlug(name), pages: [] };
     var defs = HP.definitions[name];
     h += '<h2 id="' + r.slug + '">' + name + '</h2>';
+    var ph = HP.photos && HP.photos[name], cr = ph && typeof PHOTOS !== 'undefined' && PHOTOS[ph[0]];
+    if (ph) h += '<figure class="harm-photo"><img src="' + ph[0] + '" alt="" loading="lazy"><figcaption>' + ph[1] +
+                 (cr ? ' <span class="credit">' + HP.photoCredit.replace('{author}', '<a href="' + cr.page + '">' + cr.author + '</a>').replace('{license}', '<a href="' + cr.licenseUrl + '">' + cr.license + '</a>') + '</span>' : '') +
+                 '</figcaption></figure>';
     if (HP.notes[name]) h += '<p class="muted">' + HP.notes[name] + '</p>';
     defs.forEach(function (d) { h += '<blockquote>' + d.quote + '<cite>' + d.cite + '</cite></blockquote>'; });
     h += '<p class="pages"><a href="harms/' + r.slug + '.html">' + HP.pagesLink.replace('{n}', r.pages.length).replace('{name}', name.toLowerCase()) + '</a></p>';

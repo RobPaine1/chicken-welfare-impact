@@ -22,5 +22,26 @@ var PHOTOS = {
   'img/chicken-caesar-salad.webp': { title: 'Chicken Caesar Salad', author: 'Andy Li', license: 'CC0 1.0',
     licenseUrl: 'https://creativecommons.org/publicdomain/zero/1.0/', page: 'https://commons.wikimedia.org/wiki/File:Chicken_Caesar_Salad_-_Amo_2026-04-11.jpg' },
   'img/chicken-noodle-soup.webp': { title: 'Bowl of chicken soup', author: 'RWS', license: 'CC BY-SA 3.0',
-    licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/', page: 'https://commons.wikimedia.org/wiki/File:Bowl_of_chicken_soup.jpg' }
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/', page: 'https://commons.wikimedia.org/wiki/File:Bowl_of_chicken_soup.jpg' },
+  // Photos on the Harms page and in the calculator's harm dropdowns.
+  'img/harms/lameness.jpg': { title: 'Chicken with deformed legs in a darkness coop', author: 'Ofir Ben Hemo', license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/', page: 'https://commons.wikimedia.org/wiki/File:Chicken_with_deformed_legs_in_a_darkness_coup.jpg' },
+  'img/harms/ascites.jpg': { title: 'Ascites in Chicken', author: 'Balogunreal1', license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/', page: 'https://commons.wikimedia.org/wiki/File:Ascites_in_Chicken.jpg' },
+  'img/harms/sudden-death-syndrome.jpg': { title: 'Broiler, one week after placement', author: 'Otwarte Klatki (Andrew Skowron)', license: 'CC BY 2.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/2.0/', page: 'https://commons.wikimedia.org/wiki/File:I_tydzie_po_wsadzie_-Brojler017_(37832883645).jpg' },
+  'img/harms/heat-stress.jpg': { title: 'Factory farming of poultry for meat in Kfar Yehoshua, Israel', author: 'Reem Bar', license: 'CC BY-SA 3.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/', page: 'https://commons.wikimedia.org/wiki/File:Factory_farming_of_poultry_for_meat_in_Kfar_Yehoshua,_Israel.jpg' },
+  'img/harms/no-foraging-or-exploring.jpg': { title: 'Pickender Hahn Rheingönheim', author: '4028mdk09', license: 'CC BY-SA 3.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/', page: 'https://commons.wikimedia.org/wiki/File:Pickender_Hahn_Rheing%C3%B6nheim.JPG' },
+  'img/harms/no-perching.jpg': { title: 'Hühner im Wildpark Schloss Tambach', author: 'Stephan van Helden', license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/', page: 'https://commons.wikimedia.org/wiki/File:H%C3%BChner_im_Wildpark_Schloss_Tambach_2.jpg' },
+  'img/harms/no-dustbathing.jpg': { title: 'Staubbadendes Haushuhn', author: '4028mdk09', license: 'CC BY-SA 3.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/', page: 'https://commons.wikimedia.org/wiki/File:Staubbadendes_Haushuhn.JPG' },
+  'img/harms/breeder-hen-hunger.jpg': { title: 'Inside a breeder farm, Lisowice', author: 'Otwarte Klatki (Andrew Skowron)', license: 'CC BY 2.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/2.0/', page: 'https://commons.wikimedia.org/wiki/File:Interewcja_Ferma_Zarodowa_Lisowice_(_srodek_kurnika)_14.03_(29)_(40420628083).jpg' },
+  'img/harms/breeder-hen-peritonitis.jpg': { title: 'Hen with colibacillosis during lay', author: 'Lucyin', license: 'CC BY-SA 3.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/', page: 'https://commons.wikimedia.org/wiki/File:Colibacil%C3%B4ze_polet_pindant_d%27_l%27_aiye.JPG' },
+  'img/harms/stunning-and-slaughter.jpg': { title: 'Hens hung on a slaughter line', author: 'L214 – Éthique & animaux', license: 'CC BY 3.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/3.0/', page: 'https://commons.wikimedia.org/wiki/File:Poules-suspendues-chaine-abattage.jpg' }
 };

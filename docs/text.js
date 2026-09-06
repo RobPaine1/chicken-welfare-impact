@@ -153,6 +153,21 @@ var TEXT = {
     pageIntro: 'Pages of {book} that mention {name}.',
     chapterLabel: 'Chapter {n}. {title}',
     pageLabel: 'Chapter {n}, page {p}',
+    // Photo for each harm (in docs/img/harms/; credits in docs/photos.js) and its caption. Remove a line to drop the photo.
+    photos: {
+      'Lameness':                 ['img/harms/lameness.jpg', 'A broiler with deformed legs lying in a shed.'],
+      'Ascites':                  ['img/harms/ascites.jpg', 'A hen with ascites: fluid has swollen the abdomen. This case followed an egg problem rather than heart failure, but the fluid build-up looks the same.'],
+      'Sudden death syndrome':    ['img/harms/sudden-death-syndrome.jpg', 'A broiler chick found dead in a shed one week after placement.'],
+      'Heat stress':              ['img/harms/heat-stress.jpg', 'A crowded broiler shed. At these densities the birds’ own body heat is hard to shed.'],
+      'No foraging or exploring': ['img/harms/no-foraging-or-exploring.jpg', 'A rooster pecking at the ground: the foraging that a barren shed floor does not allow.'],
+      'No perching':              ['img/harms/no-perching.jpg', 'Hens roosting on a perch, the raised, safe spot chickens seek at night.'],
+      'No dustbathing':           ['img/harms/no-dustbathing.jpg', 'A hen dustbathing in dry, loose earth.'],
+      'Breeder hen hunger':       ['img/harms/breeder-hen-hunger.jpg', 'Inside a broiler breeder farm in Poland.'],
+      'Breeder hen peritonitis':  ['img/harms/breeder-hen-peritonitis.jpg', 'A laying hen with an E. coli infection, the usual cause of egg peritonitis, hunched in the “penguin” stance the report describes.'],
+      'Stunning and slaughter':   ['img/harms/stunning-and-slaughter.jpg', 'Hens hung by the legs in shackles on a slaughter line, the step before an electrical water-bath stun.']
+    },
+    // Credit line under a photo. {author} {license} become the photographer and licence, linked.
+    photoCredit: 'Photo: {author}, {license}, via Wikimedia Commons.',
     // Short notes shown under a harm's name on the Harms page.
     notes: {
       'Breeder hen hunger': 'The parent hens of meat chickens. The calculator spreads each hen’s pain over the chicks she produces.',

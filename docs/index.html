@@ -56,6 +56,9 @@
   details.harm summary .range { color: #777; white-space: nowrap; font-size: 0.9em; }
   details.harm .desc { margin: 0 0.5em 0.6em 8.5em; color: #444; font-size: 0.92em; }
   .total { padding: 0.35em 0.5em; display: flex; gap: 0.5em; }
+  details.harm .desc a.thumb { float: right; width: 140px; margin: 0 0 0.5em 1em; }
+  details.harm .desc a.thumb img { display: block; width: 100%; border-radius: 4px; }
+  details.harm .desc table.parts { clear: both; }
   .parts-heading { margin: 0.6em 0 0.2em; font-weight: bold; color: #333; }
   details.harm .desc table.parts { width: calc(100% + 8em); margin-left: -8em; }
   table.parts td { padding: 0.25em 0.5em; border-bottom: 1px solid #f0f0f0; font-size: 0.95em; }
@@ -181,7 +184,8 @@ function render() {
     var what = c.what.charAt(0).toUpperCase() + c.what.slice(1);
     return '<details class="harm" data-name="' + c.name + '"' + (openHarms[c.name] ? ' open' : '') + '><summary>' +
       '<span class="num">' + dur(c.hours) + '</span><span class="name">' + fmt(P.causeLine, { harm: c.name.toLowerCase() }) + '</span><span class="range">' + durRange(c.lo, c.hi) + '</span></summary>' +
-      '<div class="desc">' + fmt(P.causeDetail, { what: what, perBird: dur(c.perBird), fraction: frac(st.lifetimes) }) +
+      '<div class="desc">' + (TEXT.harmsPage.photos[c.name] ? '<a class="thumb" href="harms/' + harmSlug(c.name) + '.html"><img src="' + TEXT.harmsPage.photos[c.name][0] + '" alt="" loading="lazy"></a>' : '') +
+      fmt(P.causeDetail, { what: what, perBird: dur(c.perBird), fraction: frac(st.lifetimes) }) +
       ' <a href="harms/' + harmSlug(c.name) + '.html">' + P.causeLink + '</a>' + partsTable(c) + '</div></details>';
   }).join('') + '<div class="total"><span class="num">' + dur(st.allHours) + '</span><span>' + P.totalLine + '</span></div>';
 
@@ -283,6 +287,13 @@ window.addEventListener('DOMContentLoaded', function () {
     if (!ph) return;
     var li = document.createElement('li');
     li.innerHTML = it[0] + ': <a href="' + ph.page + '">' + ph.title + '</a> by ' + ph.author + ', <a href="' + ph.licenseUrl + '">' + ph.license + '</a>, via Wikimedia Commons' + (ph.note ? ' (' + ph.note + ')' : '') + '.';
+    cl.appendChild(li);
+  });
+  Object.keys(TEXT.harmsPage.photos || {}).forEach(function (name) {
+    var f = TEXT.harmsPage.photos[name][0], ph = typeof PHOTOS !== 'undefined' && PHOTOS[f];
+    if (!ph) return;
+    var li = document.createElement('li');
+    li.innerHTML = name + ': <a href="' + ph.page + '">' + ph.title + '</a> by ' + ph.author + ', <a href="' + ph.licenseUrl + '">' + ph.license + '</a>, via Wikimedia Commons.';
     cl.appendChild(li);
   });
   if (!cl.children.length) document.getElementById('credits').hidden = true;
