@@ -75,6 +75,7 @@ var SRC = {
   cooking: 'https://www.ars.usda.gov/ARSUserFiles/80400525/data/retn/usda_cookingyields_meatpoultry.pdf',
   sr28:    'https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/methods-and-application-of-food-composition-laboratory/mafcl-site-pages/sr11-sr28/',
   ncc:     'https://www.nationalchickencouncil.org/about-the-industry/statistics/u-s-broiler-performance/',
+  ers:     'https://www.ers.usda.gov/data-products/charts-of-note/chart-detail?chartId=105929',
   wfp:     'https://welfarefootprint.org/broilers/',
   stun:    'https://cp.pain-track.org/broilers/stunning',
   track:   'https://pain-track.org/broilers',
@@ -317,6 +318,7 @@ function renderNotes() {
     li('<b>UWisc</b>: <a href="' + SRC.wisc + '">University of Wisconsin Extension, Bird Breakdown</a> (dressing percentage 72–75% for a 6.5 lb commercial broiler; 73.5% used).') +
     li('<b>SR28</b>: <a href="' + SRC.sr28 + '">USDA National Nutrient Database, Standard Reference 28</a>, item 05006 “Chicken, broilers or fryers, meat and skin, raw”: 32% refuse, so 68% edible; item 05011 “meat only, raw”: 52% refuse, of which 12% is skin, so 56% if skin is not counted.') +
     li('<b>UMaine</b>: <a href="' + SRC.umaine + '">University of Maine Extension, Understanding Poultry Yields</a> (definitions of dressing percentage and carcass weight).') +
+    li('<b>ERS</b>: <a href="' + SRC.ers + '">USDA ERS, food availability data</a> (68.1 lb of chicken per person in 2021 on a boneless, edible basis; the calculator’s “typical American’s week” preset, converted to cooked weight).') +
     li('<b>NCC</b>: <a href="' + SRC.ncc + '">National Chicken Council, U.S. Broiler Performance</a> (U.S. market age about 47 days, for context; the equation uses the project’s 42-day bird).') +
     li('<b>WFP</b>: Welfare Footprint Institute, <a href="' + SRC.track + '">Pain-Track for broilers</a> (hours by cause and intensity), <a href="' + SRC.tableau + '">Broiler Chickens 2021 workbook</a> (totals with 90% intervals) and <a href="' + SRC.wfp + '">Broilers overview</a> (scenario definitions; \u201conly hours awake are considered\u201d), and <a href="' + SRC.stun + '">Pain-Track for stunning and slaughter</a> (the slaughter harm).') +
     '</ul>';

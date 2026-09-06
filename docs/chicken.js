@@ -4,6 +4,8 @@ var COOKING_YIELD = 0.75, COOKING_YIELD_LO = 0.70, COOKING_YIELD_HI = 0.80;   //
 var LIVE_LB_PER_YEAR = 61.1e9;      // USDA NASS 2024: lb of live chickens produced in the U.S. (context only, see below)
 var BIRDS_PER_YEAR = 9.33e9;        // USDA NASS 2024: chickens produced
 var US_LIVE_G = LIVE_LB_PER_YEAR / BIRDS_PER_YEAR * 453.6;   // 2,971 g: the average U.S. broiler, heavier and older than the project's bird
+var US_BONELESS_LB_PER_YEAR = 68.1;   // USDA ERS food availability, 2021: chicken per person, boneless edible basis, before cooking loss and plate waste
+var US_COOKED_G_PER_WEEK = US_BONELESS_LB_PER_YEAR * 453.6 / 52 * COOKING_YIELD;   // about 445 g cooked a week
 var DRESSING = 0.735, DRESSING_LO = 0.72, DRESSING_HI = 0.75;   // University of Wisconsin Extension: 72–75% for a 6.5 lb commercial broiler
 var EDIBLE_SHARE = 0.68;            // USDA SR28 item 05006, whole broiler raw, meat and skin: 32% refuse (bone)
 var EDIBLE_MEAT_ONLY = 0.56;        // without skin: SR28 item 05011's 52% refuse is 32% bone + 12% skin + 8% separable fat; dropping skin alone leaves 56%

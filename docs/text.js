@@ -72,12 +72,17 @@ var TEXT = {
 
   // ---- Calculator page ----------------------------------------------------
   plate: {
-    title: 'Whats the welfare footprint of chicken?',
+    title: 'What’s the welfare footprint of chicken?',
     typeHeading: 'Type an amount',
     // Shown at the bottom of the page.
     caveat: 'This assumes a conventional fast-growing bird, which is what nearly all chicken sold is, including most free-range and organic chicken in the US. ' +
             'A slower-growing bird raised to Better Chicken Commitment standards would carry about two-thirds less disabling pain; the Equation page shows that comparison.',
     typeHint: 'Count the chicken meat only, not the bun, breading or bones. A restaurant chicken breast is about 6 oz; a deck-of-cards portion is about 3 oz.',
+    // The "typical American" preset under the amount box. {oz} and {g} are the cooked chicken per week; {lb} the ERS figure.
+    presetLabel: 'Or take a typical American’s week: {oz} oz of cooked chicken',
+    presetNote: 'USDA ERS food availability, 2021: {lb} lb of boneless chicken per person a year, before plate waste, so a slight overestimate of what is eaten.',
+    presetSource: 'https://www.ers.usda.gov/data-products/charts-of-note/chart-detail?chartId=105929',
+    presetItem: ' (a typical American’s week)',
     pickHeading: 'Or pick a common item',
     pickHint: 'Approximate cooked-meat weights.',
     // Shown under an item's name when you hover over it. {oz} is the ounces of cooked chicken.
@@ -119,6 +124,8 @@ var TEXT = {
       defaultYears: 10,
       // {times} {years} {meals} {chickens} {chickensLo} {chickensHi} {perYear} (lb a year) {perYearKg}
       headline: 'That’s <b>{meals} meals</b>, or <b>{chickens} chickens</b>, over {years} years.',
+      // Used instead when the typical-American preset is on (the amount is a week's worth, not a meal).
+      headlinePreset: 'That’s <b>{chickens} chickens</b> over {years} years.',
       headlineSmall: 'About {perYear} lb of chicken a year (likely {chickensLo} to {chickensHi} chickens). Between them, those chickens spent:',
       causesHeading: 'In total:',
       levelsHeading: 'Which researchers think they felt as:',

@@ -66,8 +66,10 @@
       and at the bottom of the page.
 - [x] Weekly intake: the "Over the long run" block under the results takes
       times a week and years and scales the same numbers up.
-- [ ] A "typical American" preset for the long-run block, once a sourced
-      weekly figure (USDA per-capita chicken) is in hand.
+- [x] A "typical American" preset: USDA ERS 2021 boneless availability, 68.1 lb
+      a year, converted to 15.7 oz of cooked chicken a week. It is availability
+      before plate waste, so a slight overestimate; a loss-adjusted figure would
+      be better if one can be found.
 - [ ] Fuller descriptions of the harms (currently one line each in
       `docs/text.js`). The Harms page now carries the report's own definitions
       and every page of the report per harm; the calculator's one-liners are

@@ -24,6 +24,9 @@
   @media (hover: none) { .items button span { position: static; transform: none; width: auto; max-width: none; opacity: 1; border: 0; box-shadow: none; background: none; } }
   #credits { font-size: 0.85em; color: #666; }
   #credits li { margin: 0.15em 0; }
+  button.preset { font: inherit; padding: 0.35em 0.7em; background: #f6f6f6; border: 1px solid #ccc; border-radius: 6px; cursor: pointer; }
+  button.preset:hover { background: #ececec; }
+  button.preset.on { background: #e4ecf7; border-color: #9bb7dd; }
   #headline { font-size: 1.35em; margin: 1.2em 0 0.4em; }
   #longrun { margin-top: 2.5em; padding-top: 1em; border-top: 2px solid #ddd; }
   #longrun h2:first-child { font-size: 1.35em; margin: 0 0 0.4em; }
@@ -78,6 +81,7 @@
     <p><b id="type-heading"></b></p>
     <p><input type="number" id="amount" min="0" step="0.5" placeholder="0"> <select id="unit"><option value="oz">oz</option><option value="g">grams</option></select></p>
     <p class="muted" id="type-hint"></p>
+    <p><button type="button" id="preset" class="preset"></button><br><small class="muted" id="preset-note"></small></p>
   </div>
   <div>
     <p><b id="pick-heading"></b></p>
@@ -177,7 +181,7 @@ function render() {
 
   var vars = { days: n(st.days, st.days < 10 ? 1 : 0), daysLo: n(st.daysLo, st.daysLo < 10 ? 1 : 0), daysHi: n(st.daysHi, st.daysHi < 10 ? 1 : 0), farm: TEXT.systems[sysKey].farm, fraction: frac(st.lifetimes), lifetime: st.lifetimeDays, grams: n(st.cookedG, 0),
                amount: document.getElementById('amount').value + ' ' + (document.getElementById('unit').value === 'oz' ? 'oz' : 'g'),
-               item: pickedItem === null ? '' : fmt(P.headlineItem, { name: itemName(ITEMS[pickedItem][0]), a: /^(\d|half )/i.test(ITEMS[pickedItem][0]) ? '' : 'a ' }) };
+               item: presetOn ? P.presetItem : pickedItem === null ? '' : fmt(P.headlineItem, { name: itemName(ITEMS[pickedItem][0]), a: /^(\d|half )/i.test(ITEMS[pickedItem][0]) ? '' : 'a ' }) };
   document.getElementById('headline').innerHTML = fmt(P.headline, vars) + '<br><small>' + fmt(P.headlineSmall, vars) + '</small>';
 
   var openHarms = {};
@@ -210,7 +214,7 @@ function renderLongRun(st) {
   var vars = { times: n(times, times % 1 ? 1 : 0), years: n(years, 0), meals: n(meals, 0),
                chickens: n(chickens, chickens < 10 ? 1 : 0), chickensLo: n(st.lifetimesLo * meals, 0), chickensHi: n(st.lifetimesHi * meals, 0),
                perYear: n(st.cookedG * times * 52 / 453.6, 0), perYearKg: n(st.cookedG * times * 52 / 1000, 0) };
-  document.getElementById('long-headline').innerHTML = fmt(L.headline, vars) + '<br><small>' + fmt(L.headlineSmall, vars) + '</small>';
+  document.getElementById('long-headline').innerHTML = fmt(presetOn && L.headlinePreset ? L.headlinePreset : L.headline, vars) + '<br><small>' + fmt(L.headlineSmall, vars) + '</small>';
   document.getElementById('long-causes').innerHTML = st.causes.slice().sort(function (a, b) { return b.hours - a.hours; }).map(function (c) {
     return '<div class="row"><span class="num">' + durBig(c.hours * meals) + '</span><span class="name">' + fmt(P.causeLine, { harm: c.name.toLowerCase() }) +
       '</span><span class="range">' + durRangeBig(c.lo * meals, c.hi * meals, c.hours * meals) + '</span></div>';
@@ -259,9 +263,20 @@ function itemName(name) {
   return brand ? name : name.charAt(0).toLowerCase() + name.slice(1);
 }
 var pickedItem = null;   // index into ITEMS of the picked common item, or null when an amount was typed
+var presetOn = false;    // true when the typical-American week preset was chosen
+function usePreset() {
+  var unit = document.getElementById('unit').value;
+  document.getElementById('amount').value = unit === 'oz' ? Math.round(US_COOKED_G_PER_WEEK / OZ_TO_G * 10) / 10 : Math.round(US_COOKED_G_PER_WEEK);
+  document.getElementById('times').value = 1;
+  pickedItem = null; presetOn = true;
+  document.querySelectorAll('.items button').forEach(function (b) { b.classList.remove('on'); });
+  document.getElementById('preset').classList.add('on');
+  render();
+  scrollToResult();
+}
 function pick(i) {
   var it = ITEMS[i];
-  pickedItem = i;
+  pickedItem = i; presetOn = false; document.getElementById('preset').classList.remove('on');
   var unit = document.getElementById('unit').value;
   document.getElementById('amount').value = unit === 'oz' ? Math.round(it[1] / OZ_TO_G * 10) / 10 : it[1];
   document.querySelectorAll('.items button').forEach(function (b, j) { b.classList.toggle('on', j === i); });
@@ -299,6 +314,10 @@ window.addEventListener('DOMContentLoaded', function () {
     cl.appendChild(li);
   });
   if (!cl.children.length) document.getElementById('credits').hidden = true;
+  var presetVars = { oz: n(US_COOKED_G_PER_WEEK / OZ_TO_G, 1), g: n(US_COOKED_G_PER_WEEK, 0), lb: n(US_BONELESS_LB_PER_YEAR, 1) };
+  document.getElementById('preset').textContent = fmt(P.presetLabel, presetVars);
+  document.getElementById('preset-note').innerHTML = fmt(P.presetNote, presetVars) + (P.presetSource ? ' <a href="' + P.presetSource + '">Source.</a>' : '');
+  document.getElementById('preset').addEventListener('click', usePreset);
   var items = document.getElementById('items');
   ITEMS.forEach(function (it, i) {
     var b = document.createElement('button');
@@ -312,7 +331,7 @@ window.addEventListener('DOMContentLoaded', function () {
   });
   var amount = document.getElementById('amount');
   amount.addEventListener('input', function () {
-    pickedItem = null;
+    pickedItem = null; presetOn = false; document.getElementById('preset').classList.remove('on');
     document.querySelectorAll('.items button').forEach(function (b) { b.classList.remove('on'); });
     var wasHidden = document.getElementById('result').hidden;
     render();
