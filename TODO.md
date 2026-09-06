@@ -35,6 +35,14 @@
       conventional birds; CO2 for reformed). Failed-stun rates are the
       report's own ranges (5–70% conscious after the stunner, 0.01–6% scalded
       alive, where unregulated); no better primary numbers exist.
+- [x] Methodology review (2026-09-06): the conventional bird now matches the
+      project's scenario (2.5 kg at 42 days) instead of the heavier U.S. bird,
+      which had understated every harm by about 19%; the no-skin edible bound is
+      56% (SR28's 52% refuse includes 8% separable fat); the cooking yield
+      carries a 0.70–0.80 range; the notes say every interval is approximate.
+- [ ] Check the 0.70–0.80 cooking-yield range against the ARS table itself
+      (the table could not be downloaded during the review).
+- [ ] Source the cooked-chicken weight of each common item (nutrition labels).
 - [ ] Re-run it occasionally; the project revises its estimates.
 
 ## Scope

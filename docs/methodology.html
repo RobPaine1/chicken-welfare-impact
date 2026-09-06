@@ -121,6 +121,7 @@ function buildEquation(oz, sysKey, hi) {     // hi = index into the system's cau
   var allTotal = st.allPerBird, allLo = st.allPerBirdLo, allHi = st.allPerBirdHi;
   var cookedG = st.cookedG, rawG = st.rawG, rawPerBird = st.rawPerBird, lifetimes = st.lifetimes;
   var gRange = '[\\,' + tex(st.rawPerBirdLo, 0) + '\\text{–}' + tex(st.rawPerBirdHi, 0) + '\\ \\text{g}\\,]';
+  var rRange = '[\\,' + tex(st.rawGLo, 0) + '\\text{–}' + tex(st.rawGHi, 0) + '\\ \\text{g}\\,]';
   var fRange = '[\\,' + tex(st.lifetimesLo, 3) + '\\text{–}' + tex(st.lifetimesHi, 3) + '\\,]';
   var lx = tex(lifetimes, 3);
   var approx = lifetimes > 0 && lifetimes < 0.67 ? ' \\approx \\tfrac{1}{' + Math.round(1 / lifetimes) + '}' : '';
@@ -136,10 +137,10 @@ function buildEquation(oz, sysKey, hi) {     // hi = index into the system's cau
   var lifetime = { w: K('lifetime', T('Animal Lifetime')),                n: K('lifetime', H(tex(lifeH, 0))) };
   var allserv  = { w: K('allserv',  F('All Harms', 'Serving')),           n: K('allserv',  hrs(allTotal * lifetimes)) };
 
+  // The project's scenario birds: every hour of pain is estimated for them, so the meat per bird is theirs too.
   var liveStep = sysKey === 'conventional'
-    ? [live.w + EQ + F('Live Weight Produced', 'Year') + DIV + F('Animals Produced', 'Year'),
-       live.n + EQ + S('NASS', '61.1 \\times 10^{9}\\ \\text{lb}') + DIV + S('NASS', '9.33 \\times 10^{9}')]
-    : [live.w + EQ + T('slower-growing breed at market age'), live.n + EQ + S('WFP', '2.5\\ \\text{kg}')];
+    ? [live.w + EQ + T('fast-growing breed at ' + sys.lifetimeDays + ' days'), live.n + EQ + S('WFP', '2.5\\ \\text{kg}')]
+    : [live.w + EQ + T('slower-growing breed at ' + sys.lifetimeDays + ' days'), live.n + EQ + S('WFP', '2.5\\ \\text{kg}')];
 
   var A = {
     id: 'lifetimes-per-serving', name: F('Animal Lifetime', 'Serving'), value: lx + '\\ \\text{chickens}' + approx + '\\ {\\small ' + fRange + '}',
@@ -148,12 +149,12 @@ function buildEquation(oz, sysKey, hi) {     // hi = index into the system's cau
       [cooked.w + EQ + T('Ounces Eaten') + TIMES + T('Grams per Ounce'),
        cooked.n + EQ + tex(oz) + '\\ \\text{oz}' + TIMES + '28.35\\ \\text{g/oz}'],
       [rawserv.w + EQ + cooked.w + TIMES + F('Raw Meat', 'Cooked Meat'),
-       rawserv.n + EQ + cooked.n + TIMES + S('ARS', tex(1 / COOKING_YIELD, 2))],
+       rawserv.n + '\\ ' + rRange + EQ + cooked.n + TIMES + tex(1 / COOKING_YIELD, 2) + '_{\\text{ARS}\\,[' + tex(1 / COOKING_YIELD_HI, 2) + '\\text{–}' + tex(1 / COOKING_YIELD_LO, 2) + ']}'],
       liveStep,
       [rawlife.w + EQ + live.w + TIMES + T('Dressing \\%') + TIMES + T('Edible Share \\%'),
-       rawlife.n + '\\ ' + gRange + EQ + live.n + TIMES + tex(DRESSING * 100, 1) + '\\%_{\\text{UWisc}\\,[72\\text{–}75]}' + TIMES + tex(EDIBLE_SHARE * 100, 0) + '\\%_{\\text{SR28}\\,[48\\text{–}68]}'],
+       rawlife.n + '\\ ' + gRange + EQ + live.n + TIMES + tex(DRESSING * 100, 1) + '\\%_{\\text{UWisc}\\,[72\\text{–}75]}' + TIMES + tex(EDIBLE_SHARE * 100, 0) + '\\%_{\\text{SR28}\\,[56\\text{–}68]}'],
       [lifeserv.w + EQ + rawserv.w + DIV + rawlife.w,
-       lifeserv.n + '\\ ' + fRange + EQ + rawserv.n + DIV + rawlife.n + '\\ ' + gRange]
+       lifeserv.n + '\\ ' + fRange + EQ + rawserv.n + '\\ ' + rRange + DIV + rawlife.n + '\\ ' + gRange]
     ]
   };
 
@@ -307,14 +308,15 @@ function renderNotes() {
     '<ul>' + LEVELS.map(function (l) { return li('<b>' + LEVEL_NAMES[l] + '</b>: ' + LEVEL_DEFS[l] + '.'); }).join('') + '</ul>' +
     '<p><b>Uncertainty.</b> ' + E.notesUncertainty + '</p>' +
     '<p><b>' + TEXT.systems.reformed.label + '</b> ' + E.notesReformed + '</p>' +
+    '<p><b>The bird.</b> ' + E.notesBird + '</p>' +
     '<p><b>Not included:</b> ' + E.notesExcluded + '</p>' +
     '<p><b>Sources</b>, ' + E.notesSources + '</p><ul>' +
-    li('<b>NASS</b>: <a href="' + SRC.nass + '">USDA NASS, Poultry Production and Value 2024 Summary</a> (9.33 billion broilers, 61.1 billion lb live weight).') +
-    li('<b>ARS</b>: <a href="' + SRC.cooking + '">USDA ARS, Table of Cooking Yields for Meat and Poultry</a> (cooking yield 0.75, so 1.33 g raw per cooked gram).') +
+    li('<b>NASS</b>: <a href="' + SRC.nass + '">USDA NASS, Poultry Production and Value 2024 Summary</a> (9.33 billion broilers, 61.1 billion lb live weight: 2.97 kg per bird, for context; the equation uses the project’s 2.5 kg bird).') +
+    li('<b>ARS</b>: <a href="' + SRC.cooking + '">USDA ARS, Table of Cooking Yields for Meat and Poultry</a> (cooking yield 0.75 used, so 1.33 g raw per cooked gram; 0.70–0.80 taken as an approximate range, since yields in the table vary by cut and cooking method).') +
     li('<b>UWisc</b>: <a href="' + SRC.wisc + '">University of Wisconsin Extension, Bird Breakdown</a> (dressing percentage 72–75% for a 6.5 lb commercial broiler; 73.5% used).') +
-    li('<b>SR28</b>: <a href="' + SRC.sr28 + '">USDA National Nutrient Database, Standard Reference 28</a>, item 05006 “Chicken, broilers or fryers, meat and skin, raw”: 32% refuse, so 68% edible; item 05011 “meat only, raw”: 52% refuse, so 48% if skin is not counted.') +
+    li('<b>SR28</b>: <a href="' + SRC.sr28 + '">USDA National Nutrient Database, Standard Reference 28</a>, item 05006 “Chicken, broilers or fryers, meat and skin, raw”: 32% refuse, so 68% edible; item 05011 “meat only, raw”: 52% refuse, of which 12% is skin, so 56% if skin is not counted.') +
     li('<b>UMaine</b>: <a href="' + SRC.umaine + '">University of Maine Extension, Understanding Poultry Yields</a> (definitions of dressing percentage and carcass weight).') +
-    li('<b>NCC</b>: <a href="' + SRC.ncc + '">National Chicken Council, U.S. Broiler Performance</a> (47-day lifetime for conventional birds).') +
+    li('<b>NCC</b>: <a href="' + SRC.ncc + '">National Chicken Council, U.S. Broiler Performance</a> (U.S. market age about 47 days, for context; the equation uses the project’s 42-day bird).') +
     li('<b>WFP</b>: Welfare Footprint Institute, <a href="' + SRC.track + '">Pain-Track for broilers</a> (hours by cause and intensity), <a href="' + SRC.tableau + '">Broiler Chickens 2021 workbook</a> (totals with 90% intervals) and <a href="' + SRC.wfp + '">Broilers overview</a> (scenario definitions; \u201conly hours awake are considered\u201d), and <a href="' + SRC.stun + '">Pain-Track for stunning and slaughter</a> (the slaughter harm).') +
     '</ul>';
 }
