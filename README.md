@@ -78,7 +78,7 @@ comes from, and whether it has been verified or is still an estimate.
 The weight constants are in `docs/chicken.js`, shared by both pages: the
 Welfare Footprint Project's scenario birds (2.5 kg at 42 days conventional, 2.5 kg
 at 56 days reformed, the birds its pain figures are estimated for), USDA ARS
-cooking yield (0.75, range 0.70–0.80), Wisconsin Extension dressing range
+cooking yield (0.75, range 0.65–0.75), Wisconsin Extension dressing range
 (72–75%) and USDA SR28 edible share (68%, or 56% without skin). USDA NASS live
 weight (2.97 kg per U.S. bird) is kept for context only. The file also has a
 `servingStats()` function that turns grams of cooked chicken into chickens,
