@@ -1,0 +1,12 @@
+/* Shared layout: a narrow nav on the left, the page on the right. */
+body { max-width: 1200px; margin: 1em auto; padding: 0 1em; line-height: 1.45; display: flex; gap: 2.5em; align-items: flex-start; }
+nav.side { flex: 0 0 9em; position: sticky; top: 1em; padding-top: 0.3em; font-size: 1.05em; }
+nav.side a, nav.side b { display: block; padding: 0.25em 0; }
+nav.side a { color: #444; text-decoration: none; }
+nav.side a:hover { text-decoration: underline; }
+nav.side b { color: #000; }
+main { flex: 1 1 auto; min-width: 0; }
+@media (max-width: 700px) {
+  body { display: block; }
+  nav.side { position: static; display: flex; flex-wrap: wrap; gap: 0 1.2em; margin-bottom: 0.5em; }
+}

@@ -1,29 +1,118 @@
-# Chicken Welfare Impact Calculator
+# Chicken welfare calculator
 
-Calculate the animal welfare impact of chicken-containing foods.
+Two pages in `docs/`, served by GitHub Pages, with a toggle between them.
 
-## Setup
+`docs/index.html` is the calculator, the default page: type an amount or pick a common
+item (a Chick-fil-A sandwich, a Chipotle bowl) and read how many days a chicken
+had to live on a farm for it, the hours of each harm, and the hours at each pain
+intensity with its definition.
 
-1. Place your FNDDS data file in `data/raw/`
-2. Update the filename in `scripts/01_load_data.R`
-3. Run the R pipeline:
-```r
-   source("scripts/01_load_data.R")
-   source("scripts/02_calculate_impacts.R")
-   source("scripts/03_export_json.R")
-```
-4. Open `website/index.html` in your browser
+Under the results, an "Over the long run" block takes how many times a week you eat that
+much and for how many years, and scales the same numbers up. `docs/methodology.html` is the methodology (equation) view. You type in ounces of cooked chicken
+and see one equation:
 
-## Project Structure
+    Specific Harm / Serving = Animal Lifetime / Serving × Specific Harm / Animal Lifetime
 
-- `data/raw/` - Original FNDDS data
-- `data/processed/` - Intermediate R data files
-- `scripts/` - R processing scripts
-- `output/` - JSON output for website
-- `website/` - Web application files
+Terms are written as word fractions so units cancel visibly, with the equation
+in words on the left and the same equation in numbers on the right. Clicking
+a row opens a table of worked steps directly beneath it: one horizontal
+equation per line, in words and in numbers, inputs first and the clicked term
+last. Sourced numbers carry a subscript tag (NASS, ARS, UMaine, UWisc, NCC,
+WFP) keyed to the Notes and sources section. Equations are typeset with KaTeX,
+vendored in `docs/katex/`. A small stylesheet, no build step.
 
-## Data Sources
+## Editing the words
 
-- FNDDS 2021-2023
-- Faunalytics Impact Methodology
-- Welfare Footprint Project
+Every heading, sentence, harm description, intensity definition, common-item
+name and note on both pages lives in `docs/text.js`. Edit that file and nothing
+else: on GitHub, open it, click the pencil, change the text, commit. Keep the
+`{placeholders}` (they are filled in with numbers) and the quotes around each
+string; an apostrophe inside a single-quoted string needs a backslash (`it\'s`)
+or use the curly ’ instead. GitHub Pages updates about a minute after the
+commit lands on `main`.
+
+The photos of the common items are in `docs/img/` as cut-outs with transparent
+backgrounds (WebP, cut from Wikimedia Commons photos under CC0 / CC BY /
+CC BY-SA). Each item in `text.js` names its photo file, and `docs/photos.js`
+holds the credit for each file, which the page lists at the bottom. To add an
+item with a photo, put a cut-out PNG or WebP in `docs/img/`, add the file name
+as the fourth field of the item, and add its credit to `photos.js`. The cut-outs
+were made with `rembg` (`pip install "rembg[cpu]"`) and cropped to the subject.
+
+The slaughter harm comes from the project's second app, the Pain-Track for
+stunning and slaughter (`data/paintrack_stunning_raw.json`): the low-voltage,
+high-frequency electrical waterbath scenario for conventional birds and properly
+run CO2 stunning for the reformed scenario, grouped into kinds (shackling,
+pre-stun shocks, failed stun, neck cut while conscious, scalded alive). Its
+intervals are plain independent sums, since the project publishes no totals for
+them. `scripts/fetch_paintrack.py` fetches both apps, or runs offline from the
+saved raw files (`python3 scripts/fetch_paintrack.py data/paintrack_broilers_raw.json`).
+
+## Harms and About pages
+
+`docs/harms.html` is a grid of photo cards, one per harm. Each opens
+`docs/harms/<name>.html`, which gives the Welfare Footprint Project's own
+description of the harm, quoted from *Quantifying Pain in Broiler Chickens*
+(Schuck-Paim & Alonso, eds, 2022), then every page of the report that mentions
+that harm, as images, with a further-reading list of outside sources in between.
+The quotes, the links and the page wording live in `text.js` under `harmsPage`. The chapter
+PDFs are in `data/report/`; `scripts/build_harms.py` (needs `pip install
+pymupdf pillow`) finds the pages by keyword, renders them to
+`docs/report/<chapter>/`, and writes the manifest `docs/report.js`. Re-run it
+after changing the keyword rules in the script or replacing a chapter PDF.
+
+Each harm on the Harms page has a photo (in `docs/img/harms/`, chosen in
+`text.js` under `harmsPage.photos` with its caption; credits in `photos.js`),
+which also appears as a thumbnail in the calculator's dropdown for that harm.
+
+`docs/about.html` shows the paragraphs in `text.js` under `about`. The nav on
+the left of every page is built by `docs/nav.js` from the labels in `text.js`.
+
+## Sources
+
+`SOURCES.md` lists every input the site uses, what it is used for, where it
+comes from, and whether it has been verified or is still an estimate.
+
+## Data
+
+The weight constants are in `docs/chicken.js`, shared by both pages: the
+Welfare Footprint Project's scenario birds (2.5 kg at 42 days conventional, 2.5 kg
+at 56 days reformed, the birds its pain figures are estimated for), USDA ARS
+cooking yield (0.75, range 0.65–0.75), Wisconsin Extension dressing range
+(72–75%) and USDA SR28 edible share (68%, or 56% without skin). USDA NASS live
+weight (2.97 kg per U.S. bird) is kept for context only. The file also has a
+`servingStats()` function that turns grams of cooked chicken into chickens,
+days and hours of pain. The pain data is in `docs/wfp.js`, generated by `scripts/fetch_paintrack.py` from the
+Welfare Footprint Project's Pain-Track for broilers (per-harm hours by
+intensity for the average bird, with standard deviations, and the same for each
+kind within a harm such as each gait score of lameness, for the Conventional
+and Reformed systems) and its Tableau workbook (published totals with 90%
+intervals, exported per intensity). Raw copies of both are kept in `data/`.
+Per-cause intervals are derived: each cause's independent-sum standard
+deviation, scaled so the same rule reproduces the published interval for the
+total. To refresh:
+
+    python3 scripts/fetch_paintrack.py
+
+Open items are tracked in `TODO.md`.
+
+## Archive
+
+- `archive/site-v2/` – the earlier two-page calculator (meal presets, weekly
+  view, turkey/pork/beef, explanation page). `calc.js` there holds every
+  constant with its source; `npm test` runs its unit tests.
+- `scripts/*.R`, `scripts/*.Rmd` – the original R pipeline that estimated chicken content of
+  specific FNDDS foods and joined it to the Welfare Footprint per-harm
+  dataset. Its raw data files are not in the repo. Two bugs were found and
+  noted while rebooting: seconds were divided by 60 instead of 3600 (fixed),
+  and the "Conventional" filter also picked up broiler-breeder harms.
+- `output/chicken_food_impacts.json` – last output of that pipeline.
+
+## Main sources
+
+- USDA NASS, Poultry Production and Value 2024 Summary
+- University of Maine and University of Wisconsin extension poultry yield guides
+- USDA Table of Cooking Yields for Meat and Poultry
+- National Chicken Council, U.S. Broiler Performance
+- Welfare Footprint Institute, Broilers and Pain-Track data;
+  Schuck-Paim & Alonso (2022), Quantifying Pain in Broiler Chickens

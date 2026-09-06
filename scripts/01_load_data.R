@@ -157,7 +157,7 @@ saveRDS(foods_complete, "data/processed/foods_complete.rds")
 wfp <- read_csv('/Users/robpaine/chicken-welfare-impact/data/raw/WFP Estimates of Time in Pain - Broilers (Farm) - Time in Pain per Harm.csv')
 
 wfp$pain_hours <- ifelse(wfp$`Time Unit` == "seconds", 
-                         wfp$`Mean time in pain (spent by 'average' population member, takes harm prevalence into account)` / 60,
+                         wfp$`Mean time in pain (spent by 'average' population member, takes harm prevalence into account)` / 3600,  # seconds -> hours (was /60, which gives minutes)
                          wfp$`Mean time in pain (spent by 'average' population member, takes harm prevalence into account)`)
 
 wfp <- wfp[wfp[ , 2] == "Conventional", ]

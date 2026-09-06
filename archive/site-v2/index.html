@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meat Welfare Calculator</title>
+<meta name="description" content="Enter what was on your plate and see how many animals it used and, for chicken, how many hours of pain it involved.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="index.html">Meat Welfare Calculator</a>
+  <nav><a href="index.html" class="active" aria-current="page">Calculator</a><a href="method.html">How it's calculated</a></nav>
+</div></header>
+
+<main>
+  <h1>What did this meal cost the animals?</h1>
+  <p class="lead">Enter what was on your plate. See the animals used and, for chicken, the hours of pain behind it.</p>
+
+  <section class="card">
+    <div class="controls">
+      <span class="seg" role="radiogroup" aria-label="Mode">
+        <input type="radio" name="mode" id="mode-meal" value="meal" checked><label for="mode-meal">One meal</label>
+        <input type="radio" name="mode" id="mode-week" value="week"><label for="mode-week">Typical week</label>
+      </span>
+      <span class="spacer"></span>
+      <span class="seg" role="radiogroup" aria-label="Units">
+        <input type="radio" name="unit" id="unit-oz" value="oz" checked><label for="unit-oz">oz</label>
+        <input type="radio" name="unit" id="unit-g" value="g"><label for="unit-g">g</label>
+      </span>
+      <span class="seg" role="radiogroup" aria-label="Period" id="period-control">
+        <input type="radio" name="period" id="period-week" value="week"><label for="period-week">per week</label>
+        <input type="radio" name="period" id="period-year" value="year" checked><label for="period-year">per year</label>
+      </span>
+    </div>
+    <div class="subcontrols" id="meal-input-control">
+      <span class="seg" role="radiogroup" aria-label="How to enter the meal">
+        <input type="radio" name="mealInput" id="mealInput-preset" value="preset" checked><label for="mealInput-preset">Pick a meal</label>
+        <input type="radio" name="mealInput" id="mealInput-weight" value="weight"><label for="mealInput-weight">Enter weight</label>
+      </span>
+    </div>
+    <div id="preset-panel">
+      <select id="preset" aria-label="Meal"></select>
+      <p class="muted" id="preset-note"></p>
+    </div>
+    <div id="weight-panel">
+    <div class="intake" id="intake"></div>
+    <p class="chips">Chicken portions:
+      <button type="button" class="chip" data-fill="chicken" data-oz="3">3 oz, deck of cards</button>
+      <button type="button" class="chip" data-fill="chicken" data-oz="6">6 oz breast</button>
+      <button type="button" class="chip" data-fill="chicken" data-oz="10">10 oz, half a rotisserie</button>
+    </p>
+    </div>
+  </section>
+
+  <section aria-live="polite">
+    <p class="headline" id="headline"></p>
+    <div id="cards"></div>
+  </section>
+
+  <footer>Numbers come from USDA production data and the Welfare Footprint Project. <a href="method.html">See the formula and sources.</a></footer>
+</main>
+
+<script src="calc.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
