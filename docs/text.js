@@ -69,6 +69,20 @@ var TEXT = {
     footnote: 'Hours are an average bird’s time in pain over its life (Welfare Footprint Project, waking hours only), scaled to this serving. ' +
               'Harms that happen at the same time are each counted, so the totals are harm-hours rather than clock hours; this matters most for the annoying and hurtful rows. ' +
               'The grey figures are 90% ranges. The causes and the intensities are the same hours split two ways. Sources and the full working are on the Equation page.',
+    // ---- The "over the long run" block at the bottom of the results ----
+    longrun: {
+      heading: 'Over the long run',
+      // {times} and {years} become the input box and the dropdown.
+      question: 'How often do you eat this much? {times} times a week, for {years} years.',
+      yearsOptions: [1, 5, 10, 20, 30, 40, 50],
+      defaultTimes: 2,
+      defaultYears: 10,
+      // {times} {years} {meals} {chickens} {chickensLo} {chickensHi} {perYear} (lb a year) {perYearKg}
+      headline: 'That’s <b>{meals} meals</b>, or <b>{chickens} chickens</b>, over {years} years.',
+      headlineSmall: 'About {perYear} lb of chicken a year (likely {chickensLo} to {chickensHi} chickens). Between them, those chickens spent:',
+      causesHeading: 'In total:',
+      levelsHeading: 'Which researchers think they felt as:'
+    },
     // Common items: [name, grams of cooked chicken meat, note, photo file]. Add, remove or reorder freely.
     // Photo files live in docs/img/; their credits are in docs/photos.js.
     items: [

@@ -47,8 +47,10 @@
 - [x] Add photos for the common items you can pick on the Calculator. Done with
       Wikimedia Commons photos (CC0, CC BY, CC BY-SA); credits in `docs/photos.js`
       and at the bottom of the page.
-- [ ] Weekly intake: enter the chicken you eat in a week and see what that
-      adds up to over months and years.
+- [x] Weekly intake: the "Over the long run" block under the results takes
+      times a week and years and scales the same numbers up.
+- [ ] A "typical American" preset for the long-run block, once a sourced
+      weekly figure (USDA per-capita chicken) is in hand.
 - [ ] Fuller descriptions of the harms (currently one line each in
       `docs/text.js`). The Harms page now carries the report's own definitions
       and every page of the report per harm; the calculator's one-liners are

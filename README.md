@@ -7,7 +7,8 @@ item (a Chick-fil-A sandwich, a Chipotle bowl) and read how many days a chicken
 had to live on a farm for it, the hours of each harm, and the hours at each pain
 intensity with its definition.
 
-`docs/methodology.html` is the methodology (equation) view. You type in ounces of cooked chicken
+Under the results, an "Over the long run" block takes how many times a week you eat that
+much and for how many years, and scales the same numbers up. `docs/methodology.html` is the methodology (equation) view. You type in ounces of cooked chicken
 and see one equation:
 
     Specific Harm / Serving = Animal Lifetime / Serving × Specific Harm / Animal Lifetime

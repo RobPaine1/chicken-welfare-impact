@@ -25,6 +25,17 @@
   #credits { font-size: 0.85em; color: #666; }
   #credits li { margin: 0.15em 0; }
   #headline { font-size: 1.35em; margin: 1.2em 0 0.4em; }
+  #longrun { margin-top: 2.5em; padding-top: 1em; border-top: 2px solid #ddd; }
+  #longrun h2:first-child { font-size: 1.35em; margin: 0 0 0.4em; }
+  #long-question { font-size: 1.1em; }
+  #long-question input { font-size: 1em; width: 3.5em; padding: 0.15em 0.3em; }
+  #long-question select { font-size: 1em; }
+  #long-headline { font-size: 1.35em; margin: 1em 0 0.4em; }
+  #long-headline small { font-size: 0.7em; color: #555; }
+  #long-causes .row, #long-causes .total { display: flex; gap: 0.5em; padding: 0.35em 0.5em; border-bottom: 1px solid #eee; }
+  #long-causes .row .num { width: 8em; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: bold; }
+  #long-causes .row .name { flex: 1; }
+  #long-causes .row .range { color: #777; white-space: nowrap; font-size: 0.9em; }
   #headline small { font-size: 0.7em; color: #555; }
   h2 { font-size: 1.1em; margin: 0.8em 0 0.4em; }
   table { border-collapse: collapse; width: 100%; }
@@ -79,6 +90,22 @@
     </div>
   </div>
   <p class="muted" id="foot"></p>
+
+  <div id="longrun">
+    <h2 id="long-heading"></h2>
+    <p id="long-question"></p>
+    <p id="long-headline"></p>
+    <div class="cols">
+      <div>
+        <h2 id="long-causes-heading"></h2>
+        <div id="long-causes"></div>
+      </div>
+      <div>
+        <h2 id="long-levels-heading"></h2>
+        <table id="long-levels"></table>
+      </div>
+    </div>
+  </div>
 </div>
 
 <p class="muted" id="caveat"></p>
@@ -108,6 +135,18 @@ function durRange(lo, hi) {
   var d = hi * unit < 10 ? 1 : 0;
   var u = unit === 3600 ? ' s' : unit === 60 ? ' min' : ' h';
   return fmt(P.rangeLine, { lo: n(lo * unit, d), hi: n(hi * unit, d) + u });
+}
+// Durations for the long-run block, where hours run into the thousands.
+function durBig(h) {
+  if (h >= 2 * 8760) return n(h / 8760, h / 8760 < 10 ? 1 : 0) + ' years';
+  if (h >= 48) return n(h / 24, 0) + ' days';
+  return dur(h);
+}
+function durRangeBig(lo, hi, mean) {   // same unit as durBig(mean), so the range reads with the number beside it
+  if (hi === 0) return '';
+  if (mean >= 2 * 8760) return fmt(P.rangeLine, { lo: n(lo / 8760, lo / 8760 < 10 ? 1 : 0), hi: n(hi / 8760, hi / 8760 < 10 ? 1 : 0) + ' years' });
+  if (mean >= 48) return fmt(P.rangeLine, { lo: n(lo / 24, 0), hi: n(hi / 24, 0) + ' days' });
+  return durRange(lo, hi);
 }
 function frac(x) { return x > 0 && x < 0.67 ? 'about 1/' + Math.round(1 / x) : n(x, 2); }
 
@@ -145,6 +184,28 @@ function render() {
   }).join('');
 
   document.getElementById('foot').innerHTML = P.footnote;
+  renderLongRun(st);
+}
+
+// The block at the bottom: this meal, so many times a week, for so many years.
+function renderLongRun(st) {
+  var L = P.longrun;
+  var times = parseFloat(document.getElementById('times').value), years = parseFloat(document.getElementById('years').value);
+  var box = document.getElementById('longrun');
+  if (!(times > 0) || !(years > 0)) { document.getElementById('long-headline').innerHTML = ''; document.getElementById('long-causes').innerHTML = ''; document.getElementById('long-levels').innerHTML = ''; return; }
+  var meals = times * 52 * years;
+  var chickens = st.lifetimes * meals;
+  var vars = { times: n(times, times % 1 ? 1 : 0), years: n(years, 0), meals: n(meals, 0),
+               chickens: n(chickens, chickens < 10 ? 1 : 0), chickensLo: n(st.lifetimesLo * meals, 0), chickensHi: n(st.lifetimesHi * meals, 0),
+               perYear: n(st.cookedG * times * 52 / 453.6, 0), perYearKg: n(st.cookedG * times * 52 / 1000, 0) };
+  document.getElementById('long-headline').innerHTML = fmt(L.headline, vars) + '<br><small>' + fmt(L.headlineSmall, vars) + '</small>';
+  document.getElementById('long-causes').innerHTML = st.causes.slice().sort(function (a, b) { return b.hours - a.hours; }).map(function (c) {
+    return '<div class="row"><span class="num">' + durBig(c.hours * meals) + '</span><span class="name">' + fmt(P.causeLine, { harm: c.name.toLowerCase() }) +
+      '</span><span class="range">' + durRangeBig(c.lo * meals, c.hi * meals, c.hours * meals) + '</span></div>';
+  }).join('') + '<div class="total"><span class="num">' + durBig(st.allHours * meals) + '</span><span>' + P.totalLine + '</span></div>';
+  document.getElementById('long-levels').innerHTML = st.levels.slice().reverse().map(function (l) {
+    return '<tr><td class="num"><b>' + durBig(l.hours * meals) + '</b></td><td>' + fmt(P.levelLine, { level: l.name.toLowerCase(), definition: l.def }) + '</td><td class="range">' + durRangeBig(l.lo * meals, l.hi * meals, l.hours * meals) + '</td></tr>';
+  }).join('');
 }
 
 // Keep an item's hover label inside the window when the item sits at an edge.
@@ -194,6 +255,13 @@ window.addEventListener('DOMContentLoaded', function () {
   [['title', P.title], ['caveat', P.caveat],
    ['type-heading', P.typeHeading], ['type-hint', P.typeHint], ['pick-heading', P.pickHeading], ['pick-hint', P.pickHint],
    ['causes-heading', P.causesHeading], ['levels-heading', P.levelsHeading]].forEach(function (x) { document.getElementById(x[0]).innerHTML = x[1]; });
+  var L = P.longrun;
+  ['long-heading', 'long-causes-heading', 'long-levels-heading'].forEach(function (id, i) { document.getElementById(id).innerHTML = [L.heading, L.causesHeading, L.levelsHeading][i]; });
+  document.getElementById('long-question').innerHTML = fmt(L.question, {
+    times: '<input type="number" id="times" min="0" step="0.5" value="' + L.defaultTimes + '">',
+    years: '<select id="years">' + L.yearsOptions.map(function (y) { return '<option value="' + y + '"' + (y === L.defaultYears ? ' selected' : '') + '>' + y + '</option>'; }).join('') + '</select>' });
+  document.getElementById('times').addEventListener('input', render);
+  document.getElementById('years').addEventListener('change', render);
   document.getElementById('credits-heading').textContent = P.photoCredits;
   var cl = document.getElementById('credits-list');
   ITEMS.forEach(function (it) {
