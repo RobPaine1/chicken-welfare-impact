@@ -68,6 +68,11 @@ which also appears as a thumbnail in the calculator's dropdown for that harm.
 `docs/about.html` shows the paragraphs in `text.js` under `about`. The nav on
 the left of every page is built by `docs/nav.js` from the labels in `text.js`.
 
+## Sources
+
+`SOURCES.md` lists every input the site uses, what it is used for, where it
+comes from, and whether it has been verified or is still an estimate.
+
 ## Data
 
 The weight constants are in `docs/chicken.js`, shared by both pages: the
