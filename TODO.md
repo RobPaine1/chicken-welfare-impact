@@ -40,8 +40,10 @@
       which had understated every harm by about 19%; the no-skin edible bound is
       56% (SR28's 52% refuse includes 8% separable fat); the cooking yield
       carries a 0.70–0.80 range; the notes say every interval is approximate.
-- [ ] Check the 0.70–0.80 cooking-yield range against the ARS table itself
-      (the table could not be downloaded during the review).
+- [x] Cooking-yield range now 0.65–0.75 from SR28 paired raw/roasted weights.
+- [ ] Settle whether the Wisconsin 72–75% dressing figure includes neck and
+      giblets. If it does, the edible share should be 61% (SR28: 276 g meat and
+      skin per lb ready-to-cook), raising every harm about 12%.
 - [ ] Source the cooked-chicken weight of each common item (nutrition labels).
 - [ ] Re-run it occasionally; the project revises its estimates.
 
