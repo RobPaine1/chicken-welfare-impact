@@ -10,26 +10,27 @@ function bookCite() {
 
 function renderHarmsIndex() {
   document.title = HP.title;
-  var h = '<h1>' + HP.title + '</h1><p>' + HP.intro.replace('{book}', bookCite()) + '</p>';
+  var h = '<h1>' + HP.title + '</h1><p>' + HP.intro.replace('{book}', bookCite()) + '</p><div class="cards">';
   Object.keys(HP.definitions).forEach(function (name) {
     var r = REPORT.harms[name] || { slug: harmSlug(name), pages: [] };
-    var defs = HP.definitions[name];
-    h += '<h2 id="' + r.slug + '">' + name + '</h2>';
-    var ph = HP.photos && HP.photos[name], cr = ph && typeof PHOTOS !== 'undefined' && PHOTOS[ph[0]];
-    if (ph) h += '<figure class="harm-photo"><img src="' + ph[0] + '" alt="" loading="lazy"><figcaption>' + ph[1] +
-                 (cr ? ' <span class="credit">' + HP.photoCredit.replace('{author}', '<a href="' + cr.page + '">' + cr.author + '</a>').replace('{license}', '<a href="' + cr.licenseUrl + '">' + cr.license + '</a>') + '</span>' : '') +
-                 '</figcaption></figure>';
-    if (HP.notes[name]) h += '<p class="muted">' + HP.notes[name] + '</p>';
-    defs.forEach(function (d) { h += '<blockquote>' + d.quote + '<cite>' + d.cite + '</cite></blockquote>'; });
-    h += '<p class="pages"><a href="harms/' + r.slug + '.html">' + HP.pagesLink.replace('{n}', r.pages.length).replace('{name}', name.toLowerCase()) + '</a></p>';
+    var ph = HP.photos && HP.photos[name];
+    h += '<a class="card" href="harms/' + r.slug + '.html">' + (ph ? '<img src="' + ph[0] + '" alt="" loading="lazy">' : '<div class="noimg"></div>') +
+         '<span class="name">' + name + '</span></a>';
   });
-  document.getElementById('harms').innerHTML = h;
+  document.getElementById('harms').innerHTML = h + '</div>';
 }
 
 function renderHarmPage(name) {
   document.title = name;
   var r = REPORT.harms[name];
-  var h = '<h1>' + name + '</h1><p class="muted">' + HP.pageIntro.replace('{name}', name.toLowerCase()).replace('{book}', bookCite()) + '</p>';
+  var h = '<h1>' + name + '</h1>';
+  var ph = HP.photos && HP.photos[name], cr = ph && typeof PHOTOS !== 'undefined' && PHOTOS[ph[0]];
+  if (ph) h += '<figure class="harm-photo"><img src="../' + ph[0] + '" alt=""><figcaption>' + ph[1] +
+               (cr ? ' <span class="credit">' + HP.photoCredit.replace('{author}', '<a href="' + cr.page + '">' + cr.author + '</a>').replace('{license}', '<a href="' + cr.licenseUrl + '">' + cr.license + '</a>') + '</span>' : '') +
+               '</figcaption></figure>';
+  if (HP.notes[name]) h += '<p class="muted">' + HP.notes[name] + '</p>';
+  (HP.definitions[name] || []).forEach(function (d) { h += '<blockquote>' + d.quote + '<cite>' + d.cite + '</cite></blockquote>'; });
+  h += '<h2 class="pages-heading">' + HP.pageIntro.replace('{name}', name.toLowerCase()).replace('{book}', bookCite().replace(/\.$/, '')) + '</h2>';
   var byChapter = {};
   r.pages.forEach(function (p) { (byChapter[p[0]] = byChapter[p[0]] || []).push(p[1]); });
   REPORT.chapters.forEach(function (c) {

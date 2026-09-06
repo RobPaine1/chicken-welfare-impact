@@ -146,11 +146,10 @@ var TEXT = {
   harmsPage: {
     title: 'Harms',
     // {book} becomes the report's citation with a link.
-    intro: 'The harms counted by the calculator, as the Welfare Footprint Project describes them in {book}. ' +
-           'Each quote is from the report; each link opens every page of the report that mentions that harm.',
+    intro: 'The harms counted by the calculator. Each opens the Welfare Footprint Project’s description of that harm and every page of {book} that mentions it.',
     pagesLink: 'See the {n} pages of the report that mention {name}',
     // Shown at the top of each harm's own page. {name} is the harm, {book} the citation.
-    pageIntro: 'Pages of {book} that mention {name}.',
+    pageIntro: 'Every page of {book} that mentions {name}:',
     chapterLabel: 'Chapter {n}. {title}',
     pageLabel: 'Chapter {n}, page {p}',
     // Photo for each harm (in docs/img/harms/; credits in docs/photos.js) and its caption. Remove a line to drop the photo.

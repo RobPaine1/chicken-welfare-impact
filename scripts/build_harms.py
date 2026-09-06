@@ -119,6 +119,7 @@ STUB = """<!DOCTYPE html>
 <main id="harm"></main>
 <script src="../text.js"></script>
 <script src="../nav.js"></script>
+<script src="../photos.js"></script>
 <script src="../report.js"></script>
 <script src="../harms.js"></script>
 <script>renderHarmPage('{NAME}');</script>

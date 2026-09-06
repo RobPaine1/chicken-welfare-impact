@@ -41,11 +41,12 @@ were made with `rembg` (`pip install "rembg[cpu]"`) and cropped to the subject.
 
 ## Harms and About pages
 
-`docs/harms.html` lists every harm with the Welfare Footprint Project's own
-description of it, quoted from *Quantifying Pain in Broiler Chickens*
-(Schuck-Paim & Alonso, eds, 2022). The quotes and the page wording live in
-`text.js` under `harmsPage`. Each harm links to `docs/harms/<name>.html`, which
-shows every page of the report that mentions that harm, as images. The chapter
+`docs/harms.html` is a grid of photo cards, one per harm. Each opens
+`docs/harms/<name>.html`, which gives the Welfare Footprint Project's own
+description of the harm, quoted from *Quantifying Pain in Broiler Chickens*
+(Schuck-Paim & Alonso, eds, 2022), then every page of the report that mentions
+that harm, as images. The quotes and the page wording live in `text.js` under
+`harmsPage`. The chapter
 PDFs are in `data/report/`; `scripts/build_harms.py` (needs `pip install
 pymupdf pillow`) finds the pages by keyword, renders them to
 `docs/report/<chapter>/`, and writes the manifest `docs/report.js`. Re-run it
